@@ -3415,7 +3415,7 @@ class SimplexNoise {
 /******/ 	
 /******/ 	/* webpack/runtime/publicPath */
 /******/ 	(() => {
-/******/ 		__webpack_require__.p = "/dist/";
+/******/ 		__webpack_require__.p = "";
 /******/ 	})();
 /******/ 	
 /************************************************************************/
@@ -3445,6 +3445,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+// Calculate the base URL based on the script's src attribute
+const baseUrl = new URL(document.currentScript.src).href.replace(/gltf-model-plus.min.js$/, "");
+// Set the webpack public path to load assets from the correct location
+__webpack_require__.p = `${baseUrl}dist/`;
 
 })();
 
