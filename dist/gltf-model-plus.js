@@ -3437,18 +3437,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_uv_scroll__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_components_uv_scroll__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _components_waypoint__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/waypoint */ "./src/components/waypoint.js");
 /* harmony import */ var _inflators__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./inflators */ "./src/inflators/index.js");
-
-
-
-
-
-
-
-
 // Calculate the base URL based on the script's src attribute
 const baseUrl = new URL(document.currentScript.src).href.replace(/gltf-model-plus.min.js$/, "");
 // Set the webpack public path to load assets from the correct location
 __webpack_require__.p = `${baseUrl}dist/`;
+
+
+
+
+
+
+
+
+
 
 })();
 
