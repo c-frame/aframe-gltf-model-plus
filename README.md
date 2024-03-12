@@ -10,13 +10,24 @@ This is an alternate implementation of how Hubs imported the scene glb with afra
 ## Usage
 
 ```html
-<a-assets timeout="30000">
-  <a-asset-item
-    id="sceneGLB"
-    src="https://cdn.jsdelivr.net/gh/c-frame/outdoor-festival@e9311cf/Outdoor_Festival.glb"
-  ></a-asset-item>
-</a-assets>
-<a-entity class="environment-settings" gltf-model-plus="#sceneGLB"></a-entity>
+<head>
+  <title>My A-Frame Scene</title>
+  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@main/dist/aframe-1.4.2-custom.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@main/dist/gltf-model-plus.min.js"></script>
+  ...
+</head>
+<body>
+  <a-scene>
+    <a-assets timeout="30000">
+      <a-asset-item
+        id="sceneGLB"
+        src="https://cdn.jsdelivr.net/gh/c-frame/outdoor-festival@e9311cf/Outdoor_Festival.glb"
+      ></a-asset-item>
+    </a-assets>
+    <a-entity class="environment-settings" gltf-model-plus="#sceneGLB"></a-entity>
+    ...
+  </a-scene>
+</body>
 ```
 
 See the [index.html](https://github.com/c-frame/aframe-gltf-model-plus/blob/main/index.html) file for the full example, some additional scripts and templates are required.
