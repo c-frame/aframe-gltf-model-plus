@@ -24,7 +24,7 @@ module.exports = {
     server: {
       type: "https",
     },
-    static: ["public"],
+    static: ["."],
   },
   performance: {
     assetFilter: function (assetFilename) {
