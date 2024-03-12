@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Basic example</title>
+    <meta name="description" content="Basic example" />
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.slim.js"></script> -->
+    <!-- <script src="/easyrtc/easyrtc.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/networked-aframe@^0.12.0/dist/networked-aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fern-solutions/aframe-mirror@1.0.3/dist/mirror.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-cursor-teleport@1.5.0/dist/aframe-cursor-teleport-component.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AdaRoseCannon/aframe-xr-boilerplate@f34468b9503d0c7326b9af0f1f09959004916875/simple-navmesh-constraint.js"></script>
+    <script src="../dist/gltf-model-plus.min.js"></script>
+    <script>
+      // integration between cursor-teleport and simple-navmesh-constraint
+      AFRAME.registerComponent("character-controller", {
+        events: {
+          "navigation-start": function () {
+            if (this.el.hasAttribute("simple-navmesh-constraint")) {
+              this.el.setAttribute("simple-navmesh-constraint", "enabled", false);
+            }
+          },
+          "navigation-end": function () {
+            if (this.el.hasAttribute("simple-navmesh-constraint")) {
+              this.el.setAttribute("simple-navmesh-constraint", "enabled", true);
+            }
+          },
+        },
+      });
+      // Replace this by your own player-info component
+      AFRAME.registerComponent("player-info", {
+        schema: {
+          name: { type: "string", default: "anonymous" },
+          avatarPose: { type: "string", default: "stand", oneOf: ["stand", "sit"] },
+          seatRotation: { type: "number", default: 0 },
+        },
+      });
+    </script>
+  </head>
+  <body>
+    <template id="waypoint-template">
+      <a-entity></a-entity>
+    </template>
+
+    <template id="media-template">
+      <a-entity></a-entity>
+    </template>
+
+    <template id="avatar-template">
+      <a-entity player-info>
+        <a-entity class="model">
+          <!-- here we add a text component for a nametag; the value will be updated by the player-info component -->
+          <a-text class="nametag" align="center" value="?" position="0 2.1 0" scale=".5 .5 .5"></a-text>
+        </a-entity>
+        <a-entity class="camera" position="0 1.6 0" networked-audio-source></a-entity>
+      </a-entity>
+    </template>
+
+    <a-scene
+      light="defaultLightsEnabled:false"
+      renderer="physicallyCorrectLights:true;colorManagement:true"
+      networked-scene="
+        connectOnLoad: false;
+        room: hub;
+        debug: true;
+        adapter: wseasyrtc;
+    "
+      shadow="type: pcfsoft"
+      gltf-model="meshoptDecoderPath:https://unpkg.com/meshoptimizer@0.19.0/meshopt_decoder.js"
+      raycaster="far: 100; objects: .clickable;"
+      cursor="rayOrigin: mouse"
+    >
+      <a-assets>
+        <a-asset-item
+          id="sceneGLB"
+          src="https://cdn.jsdelivr.net/gh/c-frame/outdoor-festival@e9311cf/Outdoor_Festival.glb"
+        ></a-asset-item>
+      </a-assets>
+      <a-entity
+        id="rig"
+        character-controller
+        cursor-teleport="cameraRig: #rig; cameraHead: #player; collisionEntities: .navmesh; ignoreEntities: .clickable"
+        movement-controls="fly:false;controls: gamepad, trackpad, keyboard, nipple;"
+        spawn-in-circle="radius:1"
+        networked="template:#avatar-template;attachTemplateToLocal:false"
+        player-info
+      >
+        <a-entity id="player" class="camera" camera position="0 1.6 0" look-controls></a-entity>
+      </a-entity>
+
+      <a-entity class="environment-settings" gltf-model-plus="#sceneGLB"></a-entity>
+
+      <a-entity light="type: point; color: #f4f4f4; intensity: 0.4; distance: 0" position="0 2 0"></a-entity>
+    </a-scene>
+  </body>
+</html>

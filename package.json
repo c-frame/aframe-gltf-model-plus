@@ -1,0 +1,50 @@
+{
+  "name": "@c-frame/aframe-gltf-model-plus",
+  "version": "0.1.0",
+  "description": "gltf-model-plus component to load glb file with hubs extensions.",
+  "main": "dist/gltf-model-plus.min.js",
+  "module": "index.js",
+  "exports": {
+    ".": {
+      "import": "index.js",
+      "require": "dist/aframe-gltf-model-plus.min.js"
+    },
+    "./assets/*": "./src/assets/*",
+    "./components/*": "./src/components/*",
+    "./inflators/*": "./src/inflators/*"
+  },
+  "scripts": {
+    "dist": "npm run dist:min && npm run dist:max",
+    "dist:max": "webpack",
+    "dist:min": "cross-env NODE_ENV=production webpack",
+    "prepublish": "npm run dist",
+    "start": "cross-env NODE_ENV=production webpack serve"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/c-frame/aframe-gltf-model-plus.git"
+  },
+  "keywords": [
+    "aframe",
+    "aframe-component",
+    "aframe-vr",
+    "vr",
+    "webvr",
+    "webxr"
+  ],
+  "author": "Vincent Fretin <vincent.fretin@gmail.com>",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/c-frame/aframe-gltf-model-plus/issues"
+  },
+  "homepage": "https://github.com/c-frame/aframe-gltf-model-plus#readme",
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "webpack": "^5.90.3",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.2"
+  },
+  "dependencies": {
+    "three": "^0.162.0"
+  }
+}
