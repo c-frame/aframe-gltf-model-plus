@@ -31,6 +31,7 @@ See the index.html file for a full example.
 
 ```html
 <a-entity
+  class="environment-settings"
   gltf-model-plus="https://cdn.jsdelivr.net/gh/c-frame/outdoor-festival@e9311cf/Outdoor_Festival.glb"
 ></a-entity>
 ```
