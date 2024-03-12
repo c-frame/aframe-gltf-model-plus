@@ -7,13 +7,19 @@ This is an alternate implementation of how Hubs imported the scene glb with afra
 - Don't inflate the scene glb as aframe entities, keep it as is, but if needed create an entity and reparent the mesh to apply an aframe component (nav-mesh, waypoint, simple-water), keep track of those to remove them when switching scene.
 - Properly dispose of geometries, materials and textures when switching scene
 
-Legend:
-
-- [x] done
-- [.] some of it done, see subtasks
-- [?] probably won't be implemented
-
 ## Usage
+
+```html
+<a-assets timeout="30000">
+  <a-asset-item
+    id="sceneGLB"
+    src="https://cdn.jsdelivr.net/gh/c-frame/outdoor-festival@e9311cf/Outdoor_Festival.glb"
+  ></a-asset-item>
+</a-assets>
+<a-entity class="environment-settings" gltf-model-plus="#sceneGLB"></a-entity>
+```
+
+See the [index.html](https://github.com/c-frame/aframe-gltf-model-plus/blob/main/index.html) file for the full example, some additional scripts and templates are required.
 
 The `gltf-model-plus` component make some assumptions:
 
@@ -27,16 +33,13 @@ The `waypoint` component make some assumptions:
 - You have a player-info component on the camera rig with avatarPose string property.
 - Optional: to have the transition animation when clicking on a waypoint, you need to have the `cursor-teleport` component on the camera rig.
 
-See the index.html file for a full example.
-
-```html
-<a-entity
-  class="environment-settings"
-  gltf-model-plus="https://cdn.jsdelivr.net/gh/c-frame/outdoor-festival@e9311cf/Outdoor_Festival.glb"
-></a-entity>
-```
-
 ## Blender hubs components compatibility
+
+Legend:
+
+- [x] done
+- [.] some of it done, see subtasks
+- [?] probably won't be implemented
 
 ### Scene
 
