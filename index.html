@@ -1,99 +1,69 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8" />
-    <title>Basic example</title>
-    <meta name="description" content="Basic example" />
-    <!-- <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script> -->
-    <script src="./dist/aframe-1.4.2-custom.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.slim.js"></script> -->
-    <!-- <script src="/easyrtc/easyrtc.js"></script> -->
-    <script src="https://cdn.jsdelivr.net/npm/networked-aframe@^0.12.0/dist/networked-aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@fern-solutions/aframe-mirror@1.0.3/dist/mirror.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-cursor-teleport@1.5.0/dist/aframe-cursor-teleport-component.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/AdaRoseCannon/aframe-xr-boilerplate@f34468b9503d0c7326b9af0f1f09959004916875/simple-navmesh-constraint.js"></script>
-    <script src="./dist/gltf-model-plus.min.js"></script>
-    <script>
-      // integration between cursor-teleport and simple-navmesh-constraint
-      AFRAME.registerComponent("character-controller", {
-        events: {
-          "navigation-start": function () {
-            if (this.el.hasAttribute("simple-navmesh-constraint")) {
-              this.el.setAttribute("simple-navmesh-constraint", "enabled", false);
-            }
-          },
-          "navigation-end": function () {
-            if (this.el.hasAttribute("simple-navmesh-constraint")) {
-              this.el.setAttribute("simple-navmesh-constraint", "enabled", true);
-            }
-          },
-        },
-      });
-      // Replace this by your own player-info component
-      AFRAME.registerComponent("player-info", {
-        schema: {
-          name: { type: "string", default: "anonymous" },
-          avatarPose: { type: "string", default: "stand", oneOf: ["stand", "sit"] },
-          seatRotation: { type: "number", default: 0 },
-        },
-      });
-    </script>
+    <meta charset="utf-8">
+    <title>A-Frame gltf-model-plus component</title>
+    <meta name="description" content="The A-Frame gltf-model-plus component allows to load glb file with hubs extensions."></meta>
+    <style>
+      html {
+        background: #33425B;
+        color: #FAFAFA;
+        font-family: monospace;
+        font-size: 20px;
+        padding: 10px 20px;
+      }
+      h1 {
+        font-weight: 300;
+      }
+      a {
+        color: #FAFAFA;
+        display: block;
+        padding: 15px 0;
+      }
+      img {
+        max-width: 320px;
+      }
+      ul {
+        display: flex;
+        list-style: none;
+        flex-wrap: wrap;
+        padding: 5px 0 0;
+      }
+      ul li {
+        margin-right: 30px;
+        padding: 5px 0 30px;
+      }
+      ul a {
+        background-size: cover;
+        display: block;
+        padding: 0;
+        height: 320px;
+        width: 320px;
+      }
+      ul h3,
+      ul p {
+        max-width: 320px;
+      }
+    </style>
   </head>
   <body>
-    <template id="waypoint-template">
-      <a-entity></a-entity>
-    </template>
+    <h1>A-Frame gltf-model-plus component</h1>
 
-    <template id="media-template">
-      <a-entity></a-entity>
-    </template>
+    <ul>
+      <li>
+        <a href="examples/outdoor-festival/index.html" style="background-image: url(https://cloud.githubusercontent.com/assets/674727/24217331/ba3d5b86-0efc-11e7-8a7c-ac74b3f35a65.png)"></a>
+        <h3>Outdoor Festival</h3>
+        <p>This scene uses nav-mesh, loop-animation, audio...</p>
+      </li>
+    </ul>
 
-    <template id="avatar-template">
-      <a-entity player-info>
-        <a-entity class="model">
-          <!-- here we add a text component for a nametag; the value will be updated by the player-info component -->
-          <a-text class="nametag" align="center" value="?" position="0 2.1 0" scale=".5 .5 .5"></a-text>
-        </a-entity>
-        <a-entity class="camera" position="0 1.6 0" networked-audio-source></a-entity>
-      </a-entity>
-    </template>
-
-    <a-scene
-      light="defaultLightsEnabled:false"
-      renderer="physicallyCorrectLights:true;colorManagement:true"
-      networked-scene="
-        connectOnLoad: false;
-        room: hub;
-        debug: true;
-        adapter: wseasyrtc;
-    "
-      shadow="type: pcfsoft"
-      gltf-model="meshoptDecoderPath:https://unpkg.com/meshoptimizer@0.19.0/meshopt_decoder.js"
-      raycaster="far: 100; objects: .clickable;"
-      cursor="rayOrigin: mouse"
-    >
-      <a-assets timeout="30000">
-        <a-asset-item
-          id="sceneGLB"
-          src="https://cdn.jsdelivr.net/gh/c-frame/outdoor-festival@e9311cf/Outdoor_Festival.glb"
-        ></a-asset-item>
-      </a-assets>
-      <a-entity
-        id="rig"
-        character-controller
-        cursor-teleport="cameraRig: #rig; cameraHead: #player; collisionEntities: .navmesh; ignoreEntities: .clickable"
-        movement-controls="fly:false;controls: gamepad, trackpad, keyboard, nipple;"
-        spawn-in-circle="radius:1"
-        networked="template:#avatar-template;attachTemplateToLocal:false"
-        player-info
-      >
-        <a-entity id="player" class="camera" camera position="0 1.6 0" look-controls></a-entity>
-      </a-entity>
-
-      <a-entity class="environment-settings" gltf-model-plus="#sceneGLB"></a-entity>
-
-      <a-entity light="type: point; color: #f4f4f4; intensity: 0.4; distance: 0" position="0 2 0"></a-entity>
-    </a-scene>
+    <!-- GitHub Corner. -->
+    <a href="https://github.com/c-frame/aframe-gltf-model-plus" class="github-corner">
+      <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#222; color:#fff; position: absolute; top: 0; border: 0; right: 0;">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+      </svg>
+    </a>
+    <style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
+    </style>
   </body>
 </html>

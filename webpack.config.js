@@ -5,8 +5,8 @@ module.exports = {
   output: {
     libraryTarget: "umd",
     path: path.resolve(__dirname, "dist"),
-    publicPath: "",
-    filename: process.env.NODE_ENV === "production" ? "gltf-model-plus.min.js" : "gltf-model-plus.js",
+    publicPath: process.env.NODE_ENV === "production" ? undefined : "/dist/",
+    filename: "gltf-model-plus.min.js",
   },
   externals: {
     // Stubs out `import ... from 'three'` so it returns `import ... from window.THREE` effectively using THREE global variable that is defined by AFRAME.

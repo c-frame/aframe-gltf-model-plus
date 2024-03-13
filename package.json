@@ -14,11 +14,9 @@
     "./inflators/*": "./src/inflators/*"
   },
   "scripts": {
-    "dist": "npm run dist:min && npm run dist:max",
-    "dist:max": "webpack",
-    "dist:min": "cross-env NODE_ENV=production webpack",
+    "dist": "cross-env NODE_ENV=production webpack",
     "prepublish": "npm run dist",
-    "start": "cross-env NODE_ENV=production webpack serve"
+    "start": "webpack serve"
   },
   "repository": {
     "type": "git",
