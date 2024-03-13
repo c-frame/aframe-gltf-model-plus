@@ -1,4 +1,5 @@
 /* global AFRAME, NAF, THREE */
+import { addComponent } from "../inflators/utils";
 import { EventDispatcher } from "./EventDispatcher";
 
 const MULTIPLE_COMPONENT_DELIMITER = "__";
