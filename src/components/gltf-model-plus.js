@@ -350,8 +350,9 @@ export const gltfModelPlus = {
             environmentSettings = defaultEnvironmentSettings;
           }
 
-          if (self.el.classList.contains("environment-settings")) {
-            gltfInflators.get("environment-settings")(self.el.sceneEl, environmentSettings);
+          // el could be a FakeEntity if we aliased gtlf-model to gtlf-model-plus, so we check classList is not undefined
+          if (el.classList?.contains("environment-settings")) {
+            gltfInflators.get("environment-settings")(el.sceneEl, environmentSettings);
           }
 
           for (let i = 0; i < finalizers.length; i++) {
