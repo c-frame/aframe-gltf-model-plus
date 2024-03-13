@@ -42,7 +42,7 @@ The `waypoint` component make some assumptions:
 
 - You have your camera rig with id="rig" or id="cameraRig", and a child entity with the camera component.
 - You have a raycaster component that targets `.clickable`, example `raycaster="far: 100; objects: .clickable;"`
-- You need to call unoccupyWaypoint() for navigation-start or moved events, see example in character-controller component in index.html
+- You need to call unoccupyWaypoint() for navigation-start and moved events, see the player-info component in index.html
 - Optional: you have a player-info component on the camera rig with avatarPose string property (stand or sit) and seatRotation number property (y angle).
 - Optional: to have the transition animation when clicking on a waypoint, you need to have the `cursor-teleport` component on the camera rig.
 

@@ -15,15 +15,28 @@
     <script src="https://cdn.jsdelivr.net/gh/AdaRoseCannon/aframe-xr-boilerplate@f34468b9503d0c7326b9af0f1f09959004916875/simple-navmesh-constraint.js"></script>
     <script src="../../dist/gltf-model-plus.min.js"></script>
     <script>
-      AFRAME.registerComponent("character-controller", {
+      // Replace this by your own player-info component
+      AFRAME.registerComponent("player-info", {
+        schema: {
+          name: { type: "string", default: "anonymous" },
+          avatarPose: { type: "string", default: "stand", oneOf: ["stand", "sit"] },
+          seatRotation: { type: "number", default: 0 },
+        },
         events: {
-          // integration between cursor-teleport and simple-navmesh-constraint
-          "navigation-start": function () {
-            if (this.el.hasAttribute("simple-navmesh-constraint")) {
-              this.el.setAttribute("simple-navmesh-constraint", "enabled", false);
-            }
+          // from movement-controls
+          moved: function () {
             if (this.el.sceneEl.systems.waypoint.occupyWaypoint) {
               this.el.sceneEl.systems.waypoint.unoccupyWaypoint();
+            }
+          },
+          // integration between cursor-teleport and simple-navmesh-constraint
+          "navigation-start": function () {
+            if (this.el.sceneEl.systems.waypoint.occupyWaypoint) {
+              this.el.sceneEl.systems.waypoint.unoccupyWaypoint();
+            }
+
+            if (this.el.hasAttribute("simple-navmesh-constraint")) {
+              this.el.setAttribute("simple-navmesh-constraint", "enabled", false);
             }
           },
           "navigation-end": function () {
@@ -31,20 +44,6 @@
               this.el.setAttribute("simple-navmesh-constraint", "enabled", true);
             }
           },
-          // from movement-controls
-          moved: function () {
-            if (this.el.sceneEl.systems.waypoint.occupyWaypoint) {
-              this.el.sceneEl.systems.waypoint.unoccupyWaypoint();
-            }
-          },
-        },
-      });
-      // Replace this by your own player-info component
-      AFRAME.registerComponent("player-info", {
-        schema: {
-          name: { type: "string", default: "anonymous" },
-          avatarPose: { type: "string", default: "stand", oneOf: ["stand", "sit"] },
-          seatRotation: { type: "number", default: 0 },
         },
       });
     </script>
@@ -90,7 +89,6 @@
       </a-assets>
       <a-entity
         id="rig"
-        character-controller
         cursor-teleport="cameraRig: #rig; cameraHead: #player; collisionEntities: .navmesh; ignoreEntities: .clickable"
         movement-controls="fly:false;controls: gamepad, trackpad, keyboard, nipple;"
         spawn-in-circle="radius:1"
