@@ -36,7 +36,7 @@ This example is really simple, demonstrating how to load a hubs scene. If you ne
 The `gltf-model-plus` component make some assumptions:
 
 - You have the `simple-navmesh-constraint` component loaded.
-- It will load the -settings extension from the glb only if you add the class "-settings" to the entity.
+- It will load the environment-settings extension from the glb only if you add the class "environment-settings" to the entity.
 
 The `waypoint` component make some assumptions:
 
