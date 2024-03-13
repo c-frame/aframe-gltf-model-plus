@@ -15,17 +15,26 @@
     <script src="https://cdn.jsdelivr.net/gh/AdaRoseCannon/aframe-xr-boilerplate@f34468b9503d0c7326b9af0f1f09959004916875/simple-navmesh-constraint.js"></script>
     <script src="../../dist/gltf-model-plus.min.js"></script>
     <script>
-      // integration between cursor-teleport and simple-navmesh-constraint
       AFRAME.registerComponent("character-controller", {
         events: {
+          // integration between cursor-teleport and simple-navmesh-constraint
           "navigation-start": function () {
             if (this.el.hasAttribute("simple-navmesh-constraint")) {
               this.el.setAttribute("simple-navmesh-constraint", "enabled", false);
+            }
+            if (this.el.sceneEl.systems.waypoint.occupyWaypoint) {
+              this.el.sceneEl.systems.waypoint.unoccupyWaypoint();
             }
           },
           "navigation-end": function () {
             if (this.el.hasAttribute("simple-navmesh-constraint")) {
               this.el.setAttribute("simple-navmesh-constraint", "enabled", true);
+            }
+          },
+          // from movement-controls
+          moved: function () {
+            if (this.el.sceneEl.systems.waypoint.occupyWaypoint) {
+              this.el.sceneEl.systems.waypoint.unoccupyWaypoint();
             }
           },
         },
@@ -36,14 +45,6 @@
           name: { type: "string", default: "anonymous" },
           avatarPose: { type: "string", default: "stand", oneOf: ["stand", "sit"] },
           seatRotation: { type: "number", default: 0 },
-        },
-        events: {
-          // from movement-controls
-          moved: function () {
-            if (this.el.sceneEl.systems.waypoint.occupyWaypoint) {
-              this.el.sceneEl.systems.waypoint.unoccupyWaypoint();
-            }
-          },
         },
       });
     </script>
