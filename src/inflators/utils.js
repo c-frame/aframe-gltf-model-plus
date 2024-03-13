@@ -1,6 +1,12 @@
+/* global AFRAME */
 import { FakeEntity } from "../components/FakeEntity";
 
 export const addComponent = (node, componentName, data) => {
+  if (!AFRAME.components[componentName]) {
+    console.error(`Component ${componentName} not registered`);
+    return;
+  }
+
   if (!node.fakeEl) {
     node.fakeEl = new FakeEntity(node);
   }
