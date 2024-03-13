@@ -1,3 +1,4 @@
+/* global AFRAME THREE */
 AFRAME.registerComponent("reflection-probe", {
   schema: {
     size: { default: 1 },
