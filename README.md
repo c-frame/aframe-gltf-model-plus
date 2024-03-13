@@ -36,7 +36,7 @@ This example is really simple, demonstrating how to load a hubs scene. If you ne
 The `gltf-model-plus` component make some assumptions:
 
 - You have the `simple-navmesh-constraint` component loaded.
-- It will load the environment-settings extension from the glb only if you add the class "environment-settings" to the entity.
+- It will load the -settings extension from the glb only if you add the class "-settings" to the entity.
 
 The `waypoint` component make some assumptions:
 
@@ -49,73 +49,77 @@ The `waypoint` component make some assumptions:
 
 Legend:
 
-- [x] done
-- [.] some of it done, see subtasks
-- [?] probably won't be implemented
-
-### Scene
-
-- [x] visible (used with nav-mesh component generally)
-- [x] nav-mesh (after the glb traversing is done, the mesh is moved to a new
-      a-entity appended to the scene and simple-navmesh-constraint is used on it)
-- [?] video-texture-source
-- [?] video-texture-target (set on a material associated to a plane on an avatar or in the scene)
-- [ ] ammo-shape
-- [?] skybox
-- [x] environment-settings
-  - [x] toneMapping with LUTToneMapping support (see how to patch aframe build below) & toneMappingExposure
-- [x] support of MOZ_lightmap
-- [x] reflection probes
-
-### Elements
-
-- [.] simple-water (use simple TextureLoader instead of HubsTextureLoader, so no ImageBitmap, only support high quality so MeshStandardMaterial)
-  - [x] simple-water aframe component
-  - [ ] handle simple-water component from glb, reparent to an entity to set the simple-water component
-- [?] Directional Light
-- [?] blender Point light when exporting glb with "Punctual Lights" checked
-- [?] Spot Light
-- [?] Ambient Light
-- [?] Hemisphere Light
-- [ ] Particle Emitter
-- [.] waypoint
-  - [.] take the first waypoint with canBeSpawnPoint to change cameraRig position and rotation, reset cameraRig to first spawn point when switching scene
-- [ ] Link
-- [ ] Image
-- [ ] Audio
-- [ ] Video
-- [ ] Billboard
-- [ ] Text (with troika)
-- [.] Media Frame
-- [?] Spawner
-- [?] Audio Target
-- [?] Zone Audio Source
-- [ ] Audio Params: sound effects with old audio component or audio+audio-params components
-  - [ ] synced audio with networked id
-- [ ] sound effects with new OMI_audio_emitter from https://github.com/omigroup/three-omi/
-- [?] Audio Zone
-- [ ] shadow (to set receive and cast)
-- [?] Frustum
-- [?] Model
-- [?] trimesh (Is this and old component? We have it on Outdoor_Festival.glb): use three-mesh-bvh? to collide objects with the scene with physx engine
-- [ ] mirror (use @fern-solutions/aframe-mirror)
+- [x] Done
+- [.] Some of it done, see subtasks
+- [?] Probably won't be implemented
 
 ### Animation
 
-- [.] loop-animation ({clip: 'animationName'} and {activeClipIndices: [0]} structs support only)
+- [.] Loop Animation ({clip: 'animationName'} and {activeClipIndices: [0]} structs support only)
   - [ ] use networked id to sync animation between participants
-- [x] uv-scroll
+- [x] UV Scroll
 
 ### Avatar
 
+- [?] Morph Audio Feedback
 - [?] Personal Space Invader
 - [?] Scale Audio Feedback
-- [?] Morph Audio Feedback
 
-### Architecture Kit
+### Elements
 
-- [?] Kit Piece
-- [?] Kit Alt Materials
+- [ ] Link (h-link to not conflict with aframe core link component)
+- [.] Media Frame
+- [ ] Particle Emitter
+- [.] Simple Water (use simple TextureLoader instead of HubsTextureLoader, so no ImageBitmap, only support high quality so MeshStandardMaterial)
+  - [x] simple-water aframe component
+  - [ ] handle simple-water component from glb, reparent to an entity to set the simple-water component
+- [ ] Spawner
+- [ ] Text (with troika)
+- [.] Waypoint
+  - [.] take the first waypoint with canBeSpawnPoint to change cameraRig position and rotation, reset cameraRig to first spawn point when switching scene
+- [ ] Mirror (use @fern-solutions/aframe-mirror) It's not in hubs addons, but you can write a Python module to add it.
+
+### Lights
+
+- [?] Ambient Light
+- [?] Directional Light
+- [?] Hemisphere Light
+- [?] Point Light
+- [?] blender Point light when exporting glb with "Punctual Lights" checked
+- [?] Spot Light
+
+### Media
+
+- [ ] Audio
+- [ ] Audio Params: sound effects with old audio component or audio+audio-params components
+  - [ ] synced audio with networked id
+- [?] Audio Source
+- [?] Audio Target
+- [?] Audio Zone
+- [ ] Image
+- [ ] Model
+- [ ] PDF
+- [ ] Video
+
+## Object
+
+- [ ] Ammo Shape
+- [ ] Shadow (to set receive and cast)
+- [ ] Billboard
+- [?] Frustum
+- [x] Visible (used with nav-mesh component generally)
+
+### Scene
+
+- [x] Navigation Mesh (aframe-extras nav-mesh component is set on it for aframe-extras nav-agent, and also a class navmesh that can be used with simple-navmesh-constraint)
+- [?] Scene Preview Camera
+- [ ] Video Texture Target (set on a material associated to a plane on an avatar or in the scene)
+- [?] Skybox
+- [x] Environment Settings (from Scene icon)
+  - [x] toneMapping with LUTToneMapping support (see how to patch aframe build below) & toneMappingExposure
+- [ ] Fog (from Scene icon)
+- [x] Support of MOZ_lightmap (Node in Shading tab)
+- [x] Reflection Probe
 
 mapping to aframe components:
 https://github.com/mozilla/hubs/blob/f1213d3e8b8a21960f49d1e7f0504825f59ceef8/src/gltf-component-mappings.js
