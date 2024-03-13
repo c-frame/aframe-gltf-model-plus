@@ -37,6 +37,14 @@
           avatarPose: { type: "string", default: "stand", oneOf: ["stand", "sit"] },
           seatRotation: { type: "number", default: 0 },
         },
+        events: {
+          // from movement-controls
+          moved: function () {
+            if (this.el.sceneEl.systems.waypoint.occupyWaypoint) {
+              this.el.sceneEl.systems.waypoint.unoccupyWaypoint();
+            }
+          },
+        },
       });
     </script>
   </head>

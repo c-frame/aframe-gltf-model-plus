@@ -53,26 +53,31 @@ const clientId = genClientId();
 function getClientId() {
   // this.el.setAttribute("waypoint", { isOccupied: true, occupiedBy: NAF.clientId });
   // with NAF.clientId empty string didn't set empty string but kept "scene", we use here clientId that is not empty even if not connected
-  // so the unoccupyWaypoints function works correctly when not connected.
+  // so the unoccupyWaypoint function works correctly when not connected.
   return NAF.clientId || clientId;
 }
 
 export const registeredWaypoints = [];
 
-export const unoccupyWaypoints = () => {
-  registeredWaypoints.forEach((waypoint) => {
-    if (waypoint.components.networked && waypoint.components.waypoint.data.occupiedBy === getClientId()) {
-      waypoint.setAttribute("waypoint", { isOccupied: false, occupiedBy: "scene" });
-      // In case of reconnect, someone else may have the actual ownership
-      // of my seat, so be sure to take ownership.
-      if (NAF.connection.adapter) NAF.utils.takeOwnership(waypoint);
-    }
-  });
+AFRAME.registerSystem("waypoint", {
+  init() {
+    this.occupyWaypoint = false;
+  },
+  unoccupyWaypoint() {
+    registeredWaypoints.forEach((waypoint) => {
+      if (waypoint.components.networked && waypoint.components.waypoint.data.occupiedBy === getClientId()) {
+        waypoint.setAttribute("waypoint", { isOccupied: false, occupiedBy: "scene" });
+        // In case of reconnect, someone else may have the actual ownership
+        // of my seat, so be sure to take ownership.
+        if (NAF.connection.adapter) NAF.utils.takeOwnership(waypoint);
+      }
+    });
 
-  const cameraRig = document.querySelector("#rig,#cameraRig");
-  cameraRig.components["player-info"].occupyWaypoint = false;
-  cameraRig.setAttribute("player-info", "avatarPose", "stand");
-};
+    const cameraRig = document.querySelector("#rig,#cameraRig");
+    this.occupyWaypoint = false;
+    cameraRig.setAttribute("player-info", "avatarPose", "stand");
+  },
+});
 
 AFRAME.registerComponent("waypoint", {
   schema: {
@@ -133,12 +138,13 @@ AFRAME.registerComponent("waypoint", {
       }
     },
     click: function (evt) {
-      unoccupyWaypoints();
+      this.system.unoccupyWaypoint();
       const cameraRig = document.querySelector("#rig,#cameraRig");
       const camera = cameraRig.querySelector("[camera]");
 
-      cameraRig.components["player-info"].occupyWaypoint = true;
-      // Note: there is a check for occupyWaypoint in the movement-controls component
+      // There is a check for occupyWaypoint in the player-info component for the moved event
+      // to call this.el.sceneEl.systems.waypoint.unoccupyWaypoint()
+      this.system.occupyWaypoint = true;
       if (this.el.components.networked) {
         this.el.setAttribute("waypoint", { isOccupied: true, occupiedBy: getClientId() });
         if (NAF.connection.adapter) NAF.utils.takeOwnership(this.el);
