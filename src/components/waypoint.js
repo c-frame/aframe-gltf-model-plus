@@ -204,7 +204,7 @@ AFRAME.registerComponent("waypoint", {
     // false in ownership-gained and sent me back the change when I'm reconnected
     if (!this.data.isOccupied && this.data.occupiedBy === getClientId()) {
       // take back my seat if I didn't choose another seat while I was reconnecting
-      const currentlyOnAnotherSeat = registeredWaypoints.find((waypoint) => {
+      const currentlyOnAnotherSeat = this.el.sceneEl.systems.waypoint.registeredWaypoints.find((waypoint) => {
         return (
           this.el !== waypoint &&
           waypoint.components.networked &&
