@@ -7,7 +7,7 @@ function addMediaFrameTemplate() {
   const refTemplateId = `#${templateOuter.id}`;
   NAF.schemas.schemaDict[refTemplateId] = {
     template: refTemplateId,
-    components: ["video-texture-target"],
+    components: ["position", "rotation", "scale", "video-texture-target"],
   };
   NAF.schemas.templateCache[refTemplateId] = templateOuter;
 }
