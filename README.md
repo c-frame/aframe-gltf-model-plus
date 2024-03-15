@@ -41,6 +41,7 @@ The `gltf-model-plus` component make some assumptions:
 The `waypoint` component make some assumptions:
 
 - You have your camera rig with id="rig" or id="cameraRig", and a child entity with the camera component.
+- For the spawn point to work (a waypoint with canBeSpawnPoint set to true), you need to add the `move-to-spawn-point` component on the camera rig. Be sure to remove any `spawn-in-circle` component that conflicts with it.
 - You have a raycaster component that targets `.clickable`, example `raycaster="far: 100; objects: .clickable;"`
 - You need to call unoccupyWaypoint() for navigation-start and moved events, see the player-info component in index.html
 - Optional: you have a player-info component on the camera rig with avatarPose string property (stand or sit) and seatRotation number property (y angle).
