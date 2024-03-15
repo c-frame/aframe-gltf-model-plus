@@ -190,11 +190,12 @@ AFRAME.registerComponent("waypoint", {
     }
   },
   init() {
-    if (!this.data.canBeClicked) {
-      this.registerWaypoint();
-      // so we have it in the registeredWaypoints array, and it won't be raycastable because we don't have a mesh
+    if (this.data.canBeClicked && this.data.canBeOccupied) {
+      // if canBeClicked, then we added a gltf-model component and it will be registered in model-loaded
+      return;
     }
-    // if canBeClicked, then we added a gltf-model component and it will be registered in model-loaded
+    // so we have it in the registeredWaypoints array, and it won't be raycastable because we don't have a mesh
+    this.registerWaypoint();
   },
   remove() {
     this.unregisterWaypoint();
@@ -252,7 +253,8 @@ AFRAME.registerComponent("move-to-spawn-point", {
     const firstSpawnPoint = spawnPoints.length > 0 ? spawnPoints[0] : null;
 
     if (firstSpawnPoint) {
-      const rotation = firstSpawnPoint.getAttribute("rotation"); // xyz in degrees
+      const euler = new THREE.Euler().setFromQuaternion(firstSpawnPoint.object3D.quaternion, "YXZ");
+      const rotation = { x: 0, y: euler.y * THREE.MathUtils.RAD2DEG + 180, z: 0 };
       waypointSystem.teleportTo(firstSpawnPoint.object3D.position, rotation, false);
     } else {
       waypointSystem.teleportTo({ x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: 0 }, false);
