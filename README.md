@@ -76,8 +76,7 @@ Legend:
   - [ ] handle simple-water component from glb, reparent to an entity to set the simple-water component
 - [ ] Spawner
 - [ ] Text (with troika)
-- [.] Waypoint
-  - [.] take the first waypoint with canBeSpawnPoint to change cameraRig position and rotation, reset cameraRig to first spawn point when switching scene
+- [x] Waypoint (if you add move-to-spawn-point component on your camera rig, it takes the first waypoint with canBeSpawnPoint to change the camera rig position and rotation, and reset camera rig to first spawn point when switching scene)
 - [ ] Mirror (use @fern-solutions/aframe-mirror) It's not in hubs addons, but you can write a Python module to add it.
 
 ### Lights

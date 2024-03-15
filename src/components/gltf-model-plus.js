@@ -346,21 +346,25 @@ export const gltfModelPlus = {
             }
           });
 
-          if (!environmentSettings) {
-            environmentSettings = defaultEnvironmentSettings;
-          }
-
-          // el could be a FakeEntity if we aliased gtlf-model to gtlf-model-plus, so we check classList is not undefined
-          if (el.classList?.contains("environment-settings")) {
-            gltfInflators.get("environment-settings")(el.sceneEl, environmentSettings);
-          }
-
           for (let i = 0; i < finalizers.length; i++) {
             finalizers[i]();
           }
           finalizers.length = 0;
 
+          if (!environmentSettings) {
+            environmentSettings = defaultEnvironmentSettings;
+          }
+
           el.emit("model-loaded", { format: "gltf", model: self.model, environmentSettings });
+
+          // el could be a FakeEntity if we aliased gtlf-model to gtlf-model-plus, so we check classList is not undefined
+          if (el.classList?.contains("environment-settings")) {
+            gltfInflators.get("environment-settings")(el.sceneEl, environmentSettings);
+            queueMicrotask(() => {
+              el.sceneEl.emit("waypoints-ready");
+            });
+          }
+
           setTimeout(() => {
             el.sceneEl.renderer.shadowMap.needsUpdate = true;
           }, 2000);

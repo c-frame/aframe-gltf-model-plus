@@ -23,36 +23,6 @@ function addWaypointTemplate() {
 
 addWaypointTemplate();
 
-export const teleportTo = (position, rotation, withTransition = true) => {
-  const quaternion = new THREE.Quaternion();
-  quaternion.setFromEuler(new THREE.Euler(0, THREE.MathUtils.degToRad(rotation.y), 0));
-  const cameraRig = document.querySelector("#rig,#cameraRig");
-  const camera = cameraRig.querySelector("[camera]");
-  const cursorTeleport = cameraRig?.components["cursor-teleport"];
-  withTransition = withTransition && !cameraRig.sceneEl.is("vr-mode");
-  if (withTransition && cursorTeleport) {
-    cursorTeleport.teleportTo(position, quaternion);
-  } else {
-    if (cameraRig.hasAttribute("simple-navmesh-constraint")) {
-      cameraRig.setAttribute("simple-navmesh-constraint", "enabled", false);
-    }
-    const camForRotation = camera.object3D;
-    const destQuaternion = new THREE.Quaternion();
-    destQuaternion.setFromEuler(new THREE.Euler(0, camForRotation.rotation.y, 0));
-    destQuaternion.invert();
-    destQuaternion.multiply(quaternion);
-    cameraRig.object3D.position.copy(position);
-    cameraRig.object3D.quaternion.copy(destQuaternion);
-    if (cameraRig.hasAttribute("simple-navmesh-constraint")) {
-      cameraRig.setAttribute("simple-navmesh-constraint", "enabled", true);
-    }
-  }
-
-  if (camera) {
-    camera.components["look-controls"].pitchObject.rotation.x = THREE.MathUtils.DEG2RAD * rotation.x;
-  }
-};
-
 function genClientId() {
   return String(crypto.getRandomValues(new Uint32Array(1))[0]);
 }
@@ -66,14 +36,42 @@ function getClientId() {
   return NAF.clientId || clientId;
 }
 
-export const registeredWaypoints = [];
-
 AFRAME.registerSystem("waypoint", {
   init() {
     this.occupyWaypoint = false;
+    this.registeredWaypoints = [];
+  },
+  teleportTo(position, rotation, withTransition = true) {
+    const quaternion = new THREE.Quaternion();
+    quaternion.setFromEuler(new THREE.Euler(0, THREE.MathUtils.degToRad(rotation.y), 0));
+    const cameraRig = document.querySelector("#rig,#cameraRig");
+    const camera = cameraRig.querySelector("[camera]");
+    const cursorTeleport = cameraRig?.components["cursor-teleport"];
+    withTransition = withTransition && !cameraRig.sceneEl.is("vr-mode");
+    if (withTransition && cursorTeleport) {
+      cursorTeleport.teleportTo(position, quaternion);
+    } else {
+      if (cameraRig.hasAttribute("simple-navmesh-constraint")) {
+        cameraRig.setAttribute("simple-navmesh-constraint", "enabled", false);
+      }
+      const camForRotation = camera.object3D;
+      const destQuaternion = new THREE.Quaternion();
+      destQuaternion.setFromEuler(new THREE.Euler(0, camForRotation.rotation.y, 0));
+      destQuaternion.invert();
+      destQuaternion.multiply(quaternion);
+      cameraRig.object3D.position.copy(position);
+      cameraRig.object3D.quaternion.copy(destQuaternion);
+      if (cameraRig.hasAttribute("simple-navmesh-constraint")) {
+        cameraRig.setAttribute("simple-navmesh-constraint", "enabled", true);
+      }
+    }
+
+    if (camera) {
+      camera.components["look-controls"].pitchObject.rotation.x = THREE.MathUtils.DEG2RAD * rotation.x;
+    }
   },
   unoccupyWaypoint() {
-    registeredWaypoints.forEach((waypoint) => {
+    this.registeredWaypoints.forEach((waypoint) => {
       if (waypoint.components.networked && waypoint.components.waypoint.data.occupiedBy === getClientId()) {
         waypoint.setAttribute("waypoint", { isOccupied: false, occupiedBy: "scene" });
         // In case of reconnect, someone else may have the actual ownership
@@ -173,22 +171,22 @@ AFRAME.registerComponent("waypoint", {
 
       const euler = new THREE.Euler().setFromQuaternion(spawnPoint.object3D.quaternion, "YXZ");
       const rotation = { x: 0, y: euler.y * THREE.MathUtils.RAD2DEG + 180, z: 0 };
-      teleportTo(position, rotation, false);
+      this.system.teleportTo(position, rotation, false);
       cameraRig.setAttribute("player-info", { seatRotation: camera.object3D.rotation.y });
     },
   },
   registerWaypoint() {
     // be sure to not add it twice
-    const idx = registeredWaypoints.indexOf(this.el);
+    const idx = this.system.registeredWaypoints.indexOf(this.el);
     if (idx === -1) {
-      registeredWaypoints.push(this.el);
+      this.system.registeredWaypoints.push(this.el);
     }
   },
   unregisterWaypoint() {
     // it may already be removed, so be careful indexOf is not -1 otherwise it will remove the last item of the array
-    const idx = registeredWaypoints.indexOf(this.el);
+    const idx = this.system.registeredWaypoints.indexOf(this.el);
     if (idx > -1) {
-      registeredWaypoints.splice(idx, 1);
+      this.system.registeredWaypoints.splice(idx, 1);
     }
   },
   init() {
@@ -230,5 +228,37 @@ AFRAME.registerComponent("waypoint", {
         this.el.classList.add("clickable");
       }
     }
+  },
+});
+
+AFRAME.registerComponent("move-to-spawn-point", {
+  init() {
+    this.move = this.move.bind(this);
+  },
+
+  play() {
+    this.el.sceneEl.addEventListener("waypoints-ready", this.move);
+  },
+
+  pause() {
+    this.el.sceneEl.removeEventListener("waypoints-ready", this.move);
+  },
+
+  move() {
+    const waypointSystem = this.el.sceneEl.systems.waypoint;
+    const spawnPoints = waypointSystem.registeredWaypoints.filter(
+      (waypoint) => waypoint.components.waypoint.data.canBeSpawnPoint
+    );
+    const firstSpawnPoint = spawnPoints.length > 0 ? spawnPoints[0] : null;
+    console.log("lol", firstSpawnPoint, spawnPoints);
+
+    if (firstSpawnPoint) {
+      const rotation = firstSpawnPoint.getAttribute("rotation"); // xyz in degrees
+      waypointSystem.teleportTo(firstSpawnPoint.object3D.position, rotation, false);
+    } else {
+      waypointSystem.teleportTo({ x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: 0 }, false);
+    }
+    const cameraRig = document.querySelector("#rig,#cameraRig");
+    cameraRig.setAttribute("player-info", "avatarPose", "stand");
   },
 });
