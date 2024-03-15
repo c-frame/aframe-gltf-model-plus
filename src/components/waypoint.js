@@ -250,7 +250,6 @@ AFRAME.registerComponent("move-to-spawn-point", {
       (waypoint) => waypoint.components.waypoint.data.canBeSpawnPoint
     );
     const firstSpawnPoint = spawnPoints.length > 0 ? spawnPoints[0] : null;
-    console.log("lol", firstSpawnPoint, spawnPoints);
 
     if (firstSpawnPoint) {
       const rotation = firstSpawnPoint.getAttribute("rotation"); // xyz in degrees
