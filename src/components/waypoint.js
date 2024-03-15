@@ -1,4 +1,27 @@
 /* global AFRAME, THREE, NAF */
+function addWaypointTemplate() {
+  const templateOuter = document.createElement("template");
+  const templateInner = document.createElement("a-entity");
+  templateOuter.id = `waypoint-template`;
+  templateOuter.appendChild(templateInner);
+  const refTemplateId = `#${templateOuter.id}`;
+  NAF.schemas.schemaDict[refTemplateId] = {
+    template: refTemplateId,
+    components: [
+      {
+        component: "waypoint",
+        property: "isOccupied",
+      },
+      {
+        component: "waypoint",
+        property: "occupiedBy",
+      },
+    ],
+  };
+  NAF.schemas.templateCache[refTemplateId] = templateOuter;
+}
+
+addWaypointTemplate();
 
 export const teleportTo = (position, rotation, withTransition = true) => {
   const quaternion = new THREE.Quaternion();
@@ -28,20 +51,6 @@ export const teleportTo = (position, rotation, withTransition = true) => {
   if (camera) {
     camera.components["look-controls"].pitchObject.rotation.x = THREE.MathUtils.DEG2RAD * rotation.x;
   }
-};
-
-export const waypointSchema = {
-  template: "#waypoint-template",
-  components: [
-    {
-      component: "waypoint",
-      property: "isOccupied",
-    },
-    {
-      component: "waypoint",
-      property: "occupiedBy",
-    },
-  ],
 };
 
 function genClientId() {

@@ -1,4 +1,19 @@
 /* global AFRAME, THREE */
+function addMediaFrameTemplate() {
+  const templateOuter = document.createElement("template");
+  const templateInner = document.createElement("a-entity");
+  templateOuter.id = `media-template`;
+  templateOuter.appendChild(templateInner);
+  const refTemplateId = `#${templateOuter.id}`;
+  NAF.schemas.schemaDict[refTemplateId] = {
+    template: refTemplateId,
+    components: ["video-texture-target"],
+  };
+  NAF.schemas.templateCache[refTemplateId] = templateOuter;
+}
+
+addMediaFrameTemplate();
+
 const registeredMediaframes = [];
 const mediaFramesById = new Map();
 
