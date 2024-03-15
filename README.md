@@ -114,7 +114,7 @@ Legend:
 
 - [x] Navigation Mesh (aframe-extras nav-mesh component is set on it for aframe-extras nav-agent, and also a class navmesh that can be used with simple-navmesh-constraint)
 - [?] Scene Preview Camera
-- [ ] Video Texture Target (set on a material associated to a plane on an avatar or in the scene)
+- [x] Video Texture Target (set on a material associated to a plane on an avatar or in the scene)
 - [?] Skybox
 - [x] Environment Settings (from Scene icon)
   - [x] toneMapping with LUTToneMapping support (see how to patch aframe build below) & toneMappingExposure

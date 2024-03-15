@@ -13,14 +13,7 @@ export function inflateMediaFrame(node, componentProps, otherComponents) {
     persistent: true,
     owner: "scene",
   });
-  if (NAF.connection.adapter) {
-    el.setAttribute("networked-video-source", {});
-  } else {
-    const listener = () => {
-      el.setAttribute("networked-video-source", {});
-    };
-    document.body.addEventListener("connected", listener);
-  }
+  el.setAttribute("video-texture-target", {});
   el.setAttribute("media-frame", componentProps);
 
   return el;

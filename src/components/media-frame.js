@@ -1,4 +1,4 @@
-/* global AFRAME, THREE */
+/* global AFRAME, NAF, THREE */
 function addMediaFrameTemplate() {
   const templateOuter = document.createElement("template");
   const templateInner = document.createElement("a-entity");
