@@ -7,8 +7,8 @@
     <!-- <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script> -->
     <script src="../../dist/aframe-1.4.2-custom.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.slim.js"></script> -->
-    <!-- <script src="/easyrtc/easyrtc.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.slim.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/open-easyrtc@2.0.20/api/easyrtc.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/networked-aframe@^0.12.0/dist/networked-aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@fern-solutions/aframe-mirror@1.0.3/dist/mirror.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-cursor-teleport@1.5.0/dist/aframe-cursor-teleport-component.min.js"></script>
@@ -45,6 +45,9 @@
             }
           },
         },
+        update(oldData) {
+          // Do whatever you want with the data
+        },
       });
     </script>
   </head>
@@ -52,12 +55,20 @@
     <template id="avatar-template">
       <a-entity player-info>
         <a-entity class="model">
-          <!-- here we add a text component for a nametag; the value will be updated by the player-info component -->
-          <a-text class="nametag" align="center" value="?" position="0 2.1 0" scale=".5 .5 .5"></a-text>
+          <a-text class="nametag" align="center" value="anonymous" position="0 2.1 0" scale=".5 .5 .5"></a-text>
+          <!-- remove the sphere and set a gltf model on the model entity above in a real experience -->
+          <a-sphere class="head" color="green" scale="0.2 0.2 0.2" position="0 1.6 0"></a-sphere>
         </a-entity>
         <a-entity class="camera" position="0 1.6 0" networked-audio-source></a-entity>
       </a-entity>
     </template>
+
+    <button
+      style="z-index: 1; position: absolute; top: 0.5rem; right: 0.5rem"
+      onClick="javascript:AFRAME.scenes[0].emit('connect');this.style.display='none'"
+    >
+      click to connect to test multi-users if you used `npm run start:easyrtc`
+    </button>
 
     <a-scene
       light="defaultLightsEnabled:false"
@@ -66,7 +77,7 @@
         connectOnLoad: false;
         room: hub;
         debug: true;
-        adapter: wseasyrtc;
+        adapter: easyrtc;
     "
       shadow="type: pcfsoft"
       gltf-model="meshoptDecoderPath:https://unpkg.com/meshoptimizer@0.19.0/meshopt_decoder.js"

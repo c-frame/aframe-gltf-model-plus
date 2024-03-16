@@ -16,7 +16,8 @@
   "scripts": {
     "dist": "cross-env NODE_ENV=production webpack",
     "prepublish": "npm run dist",
-    "start": "webpack serve"
+    "start": "webpack serve",
+    "start:easyrtc": "cross-env NODE_ENV=development node server.js"
   },
   "repository": {
     "type": "git",
@@ -38,6 +39,7 @@
   "homepage": "https://github.com/c-frame/aframe-gltf-model-plus#readme",
   "devDependencies": {
     "cross-env": "^7.0.3",
+    "networked-aframe": "^0.12.1",
     "webpack": "^5.90.3",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.0.2"
