@@ -39,7 +39,17 @@ function getClientId() {
 AFRAME.registerSystem("waypoint", {
   init() {
     this.occupyWaypoint = false;
+    this.showClickableWaypoints = false;
     this.registeredWaypoints = [];
+  },
+  toggleClickableWaypoints() {
+    this.showClickableWaypoints = !this.showClickableWaypoints;
+    for (const waypoint of this.registeredWaypoints) {
+      const waypointComponent = waypoint.components.waypoint;
+      if (waypointComponent.mesh) {
+        waypointComponent.mesh.material.visible = !waypointComponent.data.isOccupied && this.showClickableWaypoints;
+      }
+    }
   },
   teleportTo(position, rotation, withTransition = true) {
     const quaternion = new THREE.Quaternion();
@@ -71,14 +81,18 @@ AFRAME.registerSystem("waypoint", {
     }
   },
   unoccupyWaypoint() {
-    this.registeredWaypoints.forEach((waypoint) => {
+    for (const waypoint of this.registeredWaypoints) {
       if (waypoint.components.waypoint.data.occupiedBy === getClientId()) {
         waypoint.setAttribute("waypoint", { isOccupied: false, occupiedBy: "scene" });
+        const waypointComponent = waypoint.components.waypoint;
+        if (waypointComponent.mesh) {
+          waypointComponent.mesh.material.visible = !waypointComponent.data.isOccupied && this.showClickableWaypoints;
+        }
         // In case of reconnect, someone else may have the actual ownership
         // of my seat, so be sure to take ownership.
         if (waypoint.components.networked && NAF.connection.adapter) NAF.utils.takeOwnership(waypoint);
       }
-    });
+    }
 
     const cameraRig = document.querySelector("#rig,#cameraRig");
     this.occupyWaypoint = false;
@@ -112,7 +126,7 @@ AFRAME.registerComponent("waypoint", {
         if (!this.originalColor) {
           this.originalColor = this.mesh.material.color.clone();
         }
-        this.mesh.material.visible = false;
+        this.mesh.material.visible = !this.data.isOccupied && this.system.showClickableWaypoints;
         this.mesh.material.side = THREE.FrontSide;
       }
     },
@@ -125,7 +139,7 @@ AFRAME.registerComponent("waypoint", {
     mouseleave: function (evt) {
       if (this.mesh) {
         this.mesh.material.color.set(this.originalColor);
-        this.mesh.material.visible = false;
+        this.mesh.material.visible = !this.data.isOccupied && this.system.showClickableWaypoints;
       }
     },
     "ownership-gained": function (evt) {
