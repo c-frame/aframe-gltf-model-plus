@@ -72,11 +72,11 @@ AFRAME.registerSystem("waypoint", {
   },
   unoccupyWaypoint() {
     this.registeredWaypoints.forEach((waypoint) => {
-      if (waypoint.components.networked && waypoint.components.waypoint.data.occupiedBy === getClientId()) {
+      if (waypoint.components.waypoint.data.occupiedBy === getClientId()) {
         waypoint.setAttribute("waypoint", { isOccupied: false, occupiedBy: "scene" });
         // In case of reconnect, someone else may have the actual ownership
         // of my seat, so be sure to take ownership.
-        if (NAF.connection.adapter) NAF.utils.takeOwnership(waypoint);
+        if (waypoint.components.networked && NAF.connection.adapter) NAF.utils.takeOwnership(waypoint);
       }
     });
 
@@ -100,7 +100,6 @@ AFRAME.registerComponent("waypoint", {
   },
   events: {
     "model-loaded": function (evt) {
-      this.registerWaypoint();
       this.el.classList.add("clickable");
       let rootNode = this.el.object3D.getObjectByName("RootNode");
       if (!rootNode.material && rootNode.children.length > 0) {
@@ -151,11 +150,10 @@ AFRAME.registerComponent("waypoint", {
 
       // There is a check for occupyWaypoint in the player-info component for the moved event
       // to call this.el.sceneEl.systems.waypoint.unoccupyWaypoint()
+      // We set isOccupied here even for waypoint canBeClicked && !canBeOccupied on purpose to not show the figure if we're on it
       this.system.occupyWaypoint = true;
-      if (this.el.components.networked) {
-        this.el.setAttribute("waypoint", { isOccupied: true, occupiedBy: getClientId() });
-        if (NAF.connection.adapter) NAF.utils.takeOwnership(this.el);
-      }
+      this.el.setAttribute("waypoint", { isOccupied: true, occupiedBy: getClientId() });
+      if (this.el.components.networked && NAF.connection.adapter) NAF.utils.takeOwnership(this.el);
 
       const spawnPoint = this.el;
       const avatarPose = this.data.canBeOccupied && this.data.willDisableMotion ? "sit" : "stand";
@@ -190,11 +188,6 @@ AFRAME.registerComponent("waypoint", {
     }
   },
   init() {
-    if (this.data.canBeClicked) {
-      // if canBeClicked, then we added a gltf-model component and it will be registered in model-loaded
-      return;
-    }
-    // so we have it in the registeredWaypoints array, and it won't be raycastable because we don't have a mesh
     this.registerWaypoint();
   },
   remove() {
@@ -253,9 +246,7 @@ AFRAME.registerComponent("move-to-spawn-point", {
     const firstSpawnPoint = spawnPoints.length > 0 ? spawnPoints[0] : null;
 
     if (firstSpawnPoint) {
-      const euler = new THREE.Euler().setFromQuaternion(firstSpawnPoint.object3D.quaternion, "YXZ");
-      const rotation = { x: 0, y: euler.y * THREE.MathUtils.RAD2DEG + 180, z: 0 };
-      waypointSystem.teleportTo(firstSpawnPoint.object3D.position, rotation, false);
+      firstSpawnPoint.emit("click"); // even if waypoint is not canBeClickable, this is to share the logic
     } else {
       waypointSystem.teleportTo({ x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: 0 }, false);
     }
