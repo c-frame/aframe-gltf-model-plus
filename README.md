@@ -72,9 +72,7 @@ Legend:
 - [ ] Link (h-link to not conflict with aframe core link component)
 - [.] Media Frame
 - [ ] Particle Emitter
-- [.] Simple Water (use simple TextureLoader instead of HubsTextureLoader, so no ImageBitmap, only support high quality so MeshStandardMaterial)
-  - [x] simple-water aframe component
-  - [ ] handle simple-water component from glb, reparent to an entity to set the simple-water component
+- [x] Simple Water (use simple TextureLoader instead of HubsTextureLoader so no ImageBitmap, only support high quality so MeshStandardMaterial)
 - [ ] Spawner
 - [ ] Text (with troika)
 - [x] Waypoint (if you add move-to-spawn-point component on your camera rig, it takes the first waypoint with canBeSpawnPoint to change the camera rig position and rotation, and reset camera rig to first spawn point when switching scene)
