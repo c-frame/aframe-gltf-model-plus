@@ -100,7 +100,9 @@ AFRAME.registerComponent("waypoint", {
   },
   events: {
     "model-loaded": function (evt) {
-      this.el.classList.add("clickable");
+      if (this.el.object3D.visible) {
+        this.el.classList.add("clickable");
+      }
       let rootNode = this.el.object3D.getObjectByName("RootNode");
       if (!rootNode.material && rootNode.children.length > 0) {
         rootNode = rootNode.children[0];
@@ -111,6 +113,7 @@ AFRAME.registerComponent("waypoint", {
           this.originalColor = this.mesh.material.color.clone();
         }
         this.mesh.material.visible = false;
+        this.mesh.material.side = THREE.FrontSide;
       }
     },
     mouseenter: function (evt) {
