@@ -15,7 +15,7 @@ export function inflateWaypoint(node, componentProps, otherComponents) {
 
   el.setAttribute("waypoint", componentProps);
 
-  if (componentProps.canBeClicked && componentProps.canBeOccupied) {
+  if (componentProps.canBeClicked) {
     if (componentProps.willDisableMotion) {
       el.setAttribute("gltf-model", new URL("../assets/models/waypoint_sit.glb", import.meta.url).href);
     } else {

@@ -190,7 +190,7 @@ AFRAME.registerComponent("waypoint", {
     }
   },
   init() {
-    if (this.data.canBeClicked && this.data.canBeOccupied) {
+    if (this.data.canBeClicked) {
       // if canBeClicked, then we added a gltf-model component and it will be registered in model-loaded
       return;
     }
