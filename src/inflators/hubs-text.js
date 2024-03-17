@@ -1,6 +1,13 @@
 import { createEntityAndReparent } from "./utils";
 
 export function inflateText(node, componentProps, otherComponents) {
+  let hasTroika = false;
+  if ('troika-text' in AFRAME.components) {
+    hasTroika = true;
+  } else {
+    return;
+  }
+
   const el = createEntityAndReparent(node);
 
   // Rename the Hubs properties for the baseline settings.
@@ -21,21 +28,21 @@ export function inflateText(node, componentProps, otherComponents) {
   }
 
   // Set different property names.
-  let troikaProps = Object.assign({
+  let textProps = Object.assign({
     align: componentProps.textAlign,
     anchor: componentProps.anchorX,
     baseline: componentProps.anchorY,
   }, componentProps);
 
-  // Remove properties not handled or different in the A-Frame troika-text.
-  delete troikaProps.textAlign;
-  delete troikaProps.anchorX;
-  delete troikaProps.anchorY;
-  delete troikaProps.anchorY;
-  delete troikaProps.opacity;
-  delete troikaProps.side;
+  // Remove properties not handled or different in A-Frame troika-text.
+  delete textProps.textAlign;
+  delete textProps.anchorX;
+  delete textProps.anchorY;
+  delete textProps.anchorY;
+  delete textProps.opacity;
+  delete textProps.side;
 
-  el.setAttribute("troika-text", troikaProps);
+  el.setAttribute("troika-text", textProps);
 
   // Set opacity if the value is not »1.0«.
   let opacityProp = '';
