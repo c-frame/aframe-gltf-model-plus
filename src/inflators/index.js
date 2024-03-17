@@ -6,7 +6,7 @@ import { inflateSimpleWater } from "./simple-water";
 import { inflateSpawnPoint } from "./spawn-point";
 import { inflateUVScroll } from "./uv-scroll";
 import { inflateWaypoint } from "./waypoint";
-import { inflateText } from "./hubs-text";
+import { inflateText } from "./text";
 
 export const gltfInflators = new Map();
 gltfInflators.set("environment-settings", inflateEnvironmentSettings);

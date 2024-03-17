@@ -1,10 +1,9 @@
 import { createEntityAndReparent } from "./utils";
 
 export function inflateText(node, componentProps, otherComponents) {
-  let hasTroika = false;
-  if ('troika-text' in AFRAME.components) {
-    hasTroika = true;
-  } else {
+  const componentName = "troika-text";
+  if (!AFRAME.components[componentName]) {
+    console.error(`Component ${componentName} not registered`);
     return;
   }
 
@@ -45,14 +44,26 @@ export function inflateText(node, componentProps, otherComponents) {
   el.setAttribute("troika-text", textProps);
 
   // Set opacity if the value is not »1.0«.
+  // The "troika-text-material" setAttribute only works
+  // when the attribute is a string. The object creates an error.
   let opacityProp = '';
   if (componentProps.opacity !== 1.0) {
     opacityProp = "opacity: " + componentProps.opacity + "; transparent: true;";
   }
 
-  if (componentProps.opacity !== 1.0) {
-    el.setAttribute("troika-text-material",
-      "side: " + componentProps.side + "; " +
-      opacityProp);
-  }
+  el.setAttribute("troika-text-material",
+    "side: " + componentProps.side + "; " +
+    opacityProp);
+
+  // This code throws an error.
+  // const materialProps = {side: componentProps.side};
+  // if (componentProps.opacity !== 1.0) {
+  //   materialProps.opacity = componentProps.opacity
+  //   materialProps.transparent = true
+  // }
+
+  // el.setAttribute("troika-text-material", materialProps);
+  // el.setAttribute("material", materialProps);
+
+  return el;
 }
