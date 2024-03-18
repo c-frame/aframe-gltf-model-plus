@@ -2,12 +2,17 @@ import { createEntityAndReparent } from "./utils";
 
 export function inflateWaypoint(node, componentProps, otherComponents) {
   const el = createEntityAndReparent(node);
+  inflateWaypointFromJSON(el, componentProps, otherComponents);
+  return el;
+}
 
+export function inflateWaypointFromJSON(el, componentProps, otherComponents) {
+  const networkId = otherComponents?.networked?.id ?? el.id ?? "";
   if (componentProps.canBeOccupied) {
     el.setAttribute("networked", {
       template: "#waypoint-template",
       attachTemplateToLocal: false,
-      networkId: otherComponents.networked.id,
+      networkId: networkId,
       persistent: true,
       owner: "scene",
     });
@@ -22,6 +27,4 @@ export function inflateWaypoint(node, componentProps, otherComponents) {
       el.setAttribute("gltf-model", new URL("../assets/models/waypoint_stand.glb", import.meta.url).href);
     }
   }
-
-  return el;
 }
