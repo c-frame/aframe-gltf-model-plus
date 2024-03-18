@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Playground</title>
+    <meta name="description" content="This scene is an example using every possible hubs components we support." />
+    <!-- <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script> -->
+    <script src="../../dist/aframe-1.4.2-custom.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.2.0/dist/aframe-extras.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.slim.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/open-easyrtc@2.0.20/api/easyrtc.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/networked-aframe@^0.12.0/dist/networked-aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fern-solutions/aframe-mirror@1.0.3/dist/mirror.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-cursor-teleport@1.5.0/dist/aframe-cursor-teleport-component.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AdaRoseCannon/aframe-xr-boilerplate@f34468b9503d0c7326b9af0f1f09959004916875/simple-navmesh-constraint.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-troika-text@0.11.0/dist/aframe-troika-text.min.js"></script>
+    <script src="../../dist/gltf-model-plus.min.js"></script>
+    <script>
+      // Replace this by your own player-info component
+      AFRAME.registerComponent("player-info", {
+        schema: {
+          name: { type: "string", default: "anonymous" },
+          avatarPose: { type: "string", default: "stand", oneOf: ["stand", "sit"] },
+          seatRotation: { type: "number", default: 0 },
+        },
+        events: {
+          // from movement-controls
+          moved: function () {
+            if (this.el.sceneEl.systems.waypoint.occupyWaypoint) {
+              this.el.sceneEl.systems.waypoint.unoccupyWaypoint();
+            }
+          },
+          // integration between cursor-teleport and simple-navmesh-constraint
+          "navigation-start": function () {
+            if (this.el.sceneEl.systems.waypoint.occupyWaypoint) {
+              this.el.sceneEl.systems.waypoint.unoccupyWaypoint();
+            }
+
+            if (this.el.hasAttribute("simple-navmesh-constraint")) {
+              this.el.setAttribute("simple-navmesh-constraint", "enabled", false);
+            }
+          },
+          "navigation-end": function () {
+            if (this.el.hasAttribute("simple-navmesh-constraint")) {
+              this.el.setAttribute("simple-navmesh-constraint", "enabled", true);
+            }
+          },
+        },
+        update(oldData) {
+          // Do whatever you want with the data
+        },
+      });
+    </script>
+  </head>
+  <body>
+    <template id="avatar-template">
+      <a-entity player-info>
+        <a-entity class="model">
+          <a-text class="nametag" align="center" value="anonymous" position="0 2.1 0" scale=".5 .5 .5"></a-text>
+          <!-- remove the sphere and set a gltf model on the model entity above in a real experience -->
+          <a-sphere class="head" color="green" scale="0.2 0.2 0.2" position="0 1.6 0"></a-sphere>
+        </a-entity>
+        <a-entity class="camera" position="0 1.6 0" networked-audio-source></a-entity>
+      </a-entity>
+    </template>
+
+    <button
+      style="z-index: 1; position: absolute; top: 0.5rem; right: 0.5rem"
+      onClick="javascript:AFRAME.scenes[0].emit('connect');this.style.display='none'"
+    >
+      click to connect to test multi-users if you used `npm run start:easyrtc`
+    </button>
+    <button
+      style="z-index: 1; position: absolute; top: 0.5rem; left: 0.5rem"
+      onClick="javascript:AFRAME.scenes[0].systems.waypoint.toggleClickableWaypoints()"
+      accesskey="w"
+    >
+      hide/show clickable waypoints (alt+w)
+    </button>
+
+    <a-scene
+      light="defaultLightsEnabled:false"
+      renderer="physicallyCorrectLights:true;colorManagement:true"
+      networked-scene="
+        connectOnLoad: false;
+        room: hub;
+        debug: true;
+        adapter: easyrtc;
+    "
+      shadow="type: pcfsoft"
+      gltf-model="meshoptDecoderPath:https://unpkg.com/meshoptimizer@0.19.0/meshopt_decoder.js"
+      raycaster="far: 100; objects: .clickable;"
+      cursor="rayOrigin: mouse"
+    >
+      <a-assets timeout="30000">
+        <a-asset-item id="sceneGLB" src="./hubs_components_example_001.glb"></a-asset-item>
+      </a-assets>
+      <a-entity
+        id="rig"
+        cursor-teleport="cameraRig: #rig; cameraHead: #player; collisionEntities: .navmesh; ignoreEntities: .clickable"
+        movement-controls="fly:false;controls: gamepad, trackpad, keyboard, nipple;"
+        move-to-spawn-point
+        networked="template:#avatar-template;attachTemplateToLocal:false"
+        player-info
+      >
+        <a-entity id="player" class="camera" camera position="0 1.6 0" look-controls></a-entity>
+      </a-entity>
+
+      <a-entity class="environment-settings" gltf-model-plus="#sceneGLB"></a-entity>
+
+      <a-entity light="type: point; color: #f4f4f4; intensity: 0.4; distance: 0" position="0 2 0"></a-entity>
+    </a-scene>
+  </body>
+</html>
