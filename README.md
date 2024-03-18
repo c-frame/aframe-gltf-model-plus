@@ -73,7 +73,7 @@ Legend:
 - [ ] Particle Emitter
 - [x] Simple Water (use simple TextureLoader instead of HubsTextureLoader so no ImageBitmap, only support high quality so MeshStandardMaterial)
 - [ ] Spawner
-- [ ] Text (with troika)
+- [x] Text (with [aframe-troika-text](https://github.com/lojjic/aframe-troika-text))
 - [x] Waypoint (if you add move-to-spawn-point component on your camera rig, it takes the first waypoint with canBeSpawnPoint to change the camera rig position and rotation, and reset camera rig to first spawn point when switching scene)
 - [ ] Mirror (use @fern-solutions/aframe-mirror) It's not in hubs addons, but you can write a Python module to add it.
 
