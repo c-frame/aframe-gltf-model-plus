@@ -57,8 +57,7 @@ Legend:
 
 ### Animation
 
-- [.] Loop Animation ({clip: 'animationName'} and {activeClipIndices: [0]} structs support only)
-  - [ ] use networked id to sync animation between participants
+- [x] Loop Animation ({clip: 'animationName'} and {activeClipIndices: [0]} structs support only)
 - [x] UV Scroll
 
 ### Avatar
