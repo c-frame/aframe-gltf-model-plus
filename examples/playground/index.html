@@ -121,6 +121,10 @@
       cursor="rayOrigin: mouse"
       shortcuts
     >
+      <!-- We use above raycaster far: 5 instead of far: 100 to avoid issues when clicking on a waypoint of
+        a different level because this conflicts with cursor-teleport and navmesh.
+        For another scene, you probably want to set it to a higher value.
+      -->
       <a-assets timeout="30000">
         <a-asset-item id="sceneGLB" src="./hubs_components_example_001.glb"></a-asset-item>
       </a-assets>

@@ -30,8 +30,9 @@ This is an alternate implementation of how Hubs imported the scene glb with afra
 </body>
 ```
 
-See the [index.html](https://github.com/c-frame/aframe-gltf-model-plus/blob/main/index.html) file for the full example, some additional scripts and templates are required.
-This example is really simple, demonstrating how to load a hubs scene. If you need a multi-users experience with avatars, chat, audio and screen share, look at the [naf-valid-avatars](https://github.com/networked-aframe/naf-valid-avatars) example.
+See the [index.html](https://github.com/c-frame/aframe-gltf-model-plus/blob/main/examples/playground/index.html) file for the full example, some additional scripts and templates are required.
+This example is really just demonstrating how to load a hubs scene and has no UI.
+If you need a multi-users experience with avatars, chat, audio and screen share, look at the [naf-valid-avatars](https://github.com/networked-aframe/naf-valid-avatars) example.
 
 The `gltf-model-plus` component make some assumptions:
 
