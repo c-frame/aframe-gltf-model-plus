@@ -15,9 +15,7 @@
   },
   "scripts": {
     "dist": "cross-env NODE_ENV=production webpack",
-    "prepublish": "npm run dist",
-    "start": "webpack serve",
-    "start:easyrtc": "cross-env NODE_ENV=development node server.js"
+    "start": "cross-env NODE_ENV=development node server.js"
   },
   "repository": {
     "type": "git",
