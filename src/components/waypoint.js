@@ -37,6 +37,9 @@ function getClientId() {
 }
 
 AFRAME.registerSystem("waypoint", {
+  schema: {
+    hideWaypointsAfterClick: { type: "boolean", default: true },
+  },
   init() {
     this.occupyWaypoint = false;
     this.showClickableWaypoints = false;
@@ -161,6 +164,9 @@ AFRAME.registerComponent("waypoint", {
       }
     },
     click: function (evt) {
+      if (this.system.data.hideWaypointsAfterClick && this.system.showClickableWaypoints) {
+        this.system.toggleClickableWaypoints();
+      }
       const withTransition = evt.detail?.withTransition ?? true;
       this.system.unoccupyWaypoint();
       const cameraRig = document.querySelector("#rig,#cameraRig");
