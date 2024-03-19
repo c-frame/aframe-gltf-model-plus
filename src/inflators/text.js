@@ -9,6 +9,7 @@ export function inflateText(node, componentProps, otherComponents) {
   }
 
   const el = createEntityAndReparent(node);
+  el.classList.add(node.name);
 
   // Rename the Hubs properties for the baseline settings.
   switch (componentProps.anchorY) {
