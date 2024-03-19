@@ -50,6 +50,27 @@
           // Do whatever you want with the data
         },
       });
+
+      AFRAME.registerComponent("shortcuts", {
+        init() {
+          this.onKeyup = this.onKeyup.bind(this);
+        },
+        play() {
+          window.addEventListener("keyup", this.onKeyup, false);
+        },
+        pause() {
+          window.removeEventListener("keyup", this.onKeyup);
+        },
+        onKeyup(evt) {
+          if (!AFRAME.utils.shouldCaptureKeyEvent(evt)) {
+            return;
+          }
+
+          if (evt.code === "Space") {
+            this.el.sceneEl.systems.waypoint.toggleClickableWaypoints();
+          }
+        },
+      });
     </script>
   </head>
   <body>
@@ -73,9 +94,8 @@
     <button
       style="z-index: 1; position: absolute; top: 0.5rem; left: 0.5rem"
       onClick="javascript:AFRAME.scenes[0].systems.waypoint.toggleClickableWaypoints()"
-      accesskey="w"
     >
-      hide/show clickable waypoints (alt+w)
+      hide/show clickable waypoints (space key)
     </button>
 
     <a-scene
@@ -91,6 +111,7 @@
       gltf-model="meshoptDecoderPath:https://unpkg.com/meshoptimizer@0.19.0/meshopt_decoder.js"
       raycaster="far: 100; objects: .clickable;"
       cursor="rayOrigin: mouse"
+      shortcuts
     >
       <a-assets timeout="30000">
         <a-asset-item id="sceneGLB" src="./hubs_components_example_001.glb"></a-asset-item>
