@@ -2,6 +2,7 @@ import { createEntityAndReparent } from "./utils";
 
 export function inflateWaypoint(node, componentProps, otherComponents) {
   const el = createEntityAndReparent(node);
+  el.id = node.name;
   inflateWaypointFromJSON(el, componentProps, otherComponents);
   return el;
 }
