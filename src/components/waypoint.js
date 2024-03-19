@@ -276,8 +276,8 @@ AFRAME.registerComponent("move-to-spawn-point", {
       firstSpawnPoint.emit("click", { withTransition: false }); // even if waypoint is not canBeClickable, this is to share the logic
     } else {
       waypointSystem.teleportTo({ x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: 0 }, false);
+      const cameraRig = document.querySelector("#rig,#cameraRig");
+      cameraRig.setAttribute("player-info", "avatarPose", "stand");
     }
-    const cameraRig = document.querySelector("#rig,#cameraRig");
-    cameraRig.setAttribute("player-info", "avatarPose", "stand");
   },
 });
