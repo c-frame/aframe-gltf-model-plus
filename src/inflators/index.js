@@ -1,3 +1,4 @@
+import { inflateBillboard } from "./billboard";
 import { inflateEnvironmentSettings } from "./environment-settings";
 import { inflateMediaFrame } from "./media-frame";
 import { inflateNavMesh } from "./nav-mesh";
@@ -9,6 +10,7 @@ import { inflateUVScroll } from "./uv-scroll";
 import { inflateWaypoint, inflateWaypointFromJSON } from "./waypoint";
 
 export const gltfInflators = new Map();
+gltfInflators.set("billboard", inflateBillboard);
 gltfInflators.set("environment-settings", inflateEnvironmentSettings);
 gltfInflators.set("media-frame", inflateMediaFrame);
 gltfInflators.set("nav-mesh", inflateNavMesh);

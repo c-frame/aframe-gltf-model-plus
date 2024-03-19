@@ -104,7 +104,7 @@ Legend:
 
 - [ ] Ammo Shape
 - [ ] Shadow (to set receive and cast)
-- [ ] Billboard
+- [x] Billboard
 - [?] Frustum
 - [x] Visible (used with nav-mesh component generally)
 

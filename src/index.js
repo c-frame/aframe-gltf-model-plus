@@ -1,3 +1,4 @@
+import "./components/billboard";
 import "./components/environment-settings";
 import "./components/gltf-model-plus";
 import "./components/media-frame";
