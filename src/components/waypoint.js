@@ -193,6 +193,9 @@ AFRAME.registerComponent("waypoint", {
 
       const euler = new THREE.Euler().setFromQuaternion(spawnPoint.object3D.quaternion, "YXZ");
       const rotation = { x: 0, y: euler.y * THREE.MathUtils.RAD2DEG + 180, z: 0 };
+      // Force withTransition=false for now, using cursorTeleport.teleportTo(position, quaternion) emits the navigation-start event
+      // that triggers unoccupyWaypoint because of the listener in player-info.
+      withTransition = false;
       this.system.teleportTo(position, rotation, withTransition);
       cameraRig.setAttribute("player-info", { seatRotation: camera.object3D.rotation.y });
     },
