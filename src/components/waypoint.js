@@ -161,6 +161,7 @@ AFRAME.registerComponent("waypoint", {
       }
     },
     click: function (evt) {
+      const withTransition = evt.detail?.withTransition ?? true;
       this.system.unoccupyWaypoint();
       const cameraRig = document.querySelector("#rig,#cameraRig");
       const camera = cameraRig.querySelector("[camera]");
@@ -186,7 +187,7 @@ AFRAME.registerComponent("waypoint", {
 
       const euler = new THREE.Euler().setFromQuaternion(spawnPoint.object3D.quaternion, "YXZ");
       const rotation = { x: 0, y: euler.y * THREE.MathUtils.RAD2DEG + 180, z: 0 };
-      this.system.teleportTo(position, rotation, false);
+      this.system.teleportTo(position, rotation, withTransition);
       cameraRig.setAttribute("player-info", { seatRotation: camera.object3D.rotation.y });
     },
   },
@@ -263,7 +264,7 @@ AFRAME.registerComponent("move-to-spawn-point", {
     const firstSpawnPoint = spawnPoints.length > 0 ? spawnPoints[0] : null;
 
     if (firstSpawnPoint) {
-      firstSpawnPoint.emit("click"); // even if waypoint is not canBeClickable, this is to share the logic
+      firstSpawnPoint.emit("click", { withTransition: false }); // even if waypoint is not canBeClickable, this is to share the logic
     } else {
       waypointSystem.teleportTo({ x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: 0 }, false);
     }
