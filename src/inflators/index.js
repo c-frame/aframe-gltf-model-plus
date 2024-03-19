@@ -1,5 +1,6 @@
 import { inflateBillboard } from "./billboard";
 import { inflateEnvironmentSettings } from "./environment-settings";
+import { inflateLink } from "./link";
 import { inflateMediaFrame } from "./media-frame";
 import { inflateNavMesh } from "./nav-mesh";
 import { inflateReflectionProbe } from "./reflection-probe";
@@ -12,6 +13,7 @@ import { inflateWaypoint, inflateWaypointFromJSON } from "./waypoint";
 export const gltfInflators = new Map();
 gltfInflators.set("billboard", inflateBillboard);
 gltfInflators.set("environment-settings", inflateEnvironmentSettings);
+gltfInflators.set("link", inflateLink);
 gltfInflators.set("media-frame", inflateMediaFrame);
 gltfInflators.set("nav-mesh", inflateNavMesh);
 gltfInflators.set("reflection-probe", inflateReflectionProbe);

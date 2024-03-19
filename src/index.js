@@ -1,5 +1,6 @@
 import "./components/billboard";
 import "./components/environment-settings";
+import "./components/open-link";
 import "./components/gltf-model-plus";
 import "./components/media-frame";
 import "./components/reflection-probe";

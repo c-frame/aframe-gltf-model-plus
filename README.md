@@ -53,7 +53,6 @@ The `waypoint` component make some assumptions:
 Legend:
 
 - [x] Done
-- [.] Some of it done, see subtasks
 - [?] Probably won't be implemented
 
 ### Animation
@@ -69,8 +68,8 @@ Legend:
 
 ### Elements
 
-- [ ] Link (h-link to not conflict with aframe core link component)
-- [.] Media Frame
+- [x] Link (open-link to not conflict with aframe link component)
+- [x] Media Frame
 - [ ] Particle Emitter
 - [x] Simple Water (use simple TextureLoader instead of HubsTextureLoader so no ImageBitmap, only support high quality so MeshStandardMaterial)
 - [ ] Spawner
