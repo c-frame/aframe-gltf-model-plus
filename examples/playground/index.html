@@ -14,6 +14,7 @@
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-cursor-teleport@1.5.0/dist/aframe-cursor-teleport-component.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/AdaRoseCannon/aframe-xr-boilerplate@f34468b9503d0c7326b9af0f1f09959004916875/simple-navmesh-constraint.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aframe-troika-text@0.11.0/dist/aframe-troika-text.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-look-at-component@1.0.0/dist/aframe-look-at-component.min.js"></script>
     <script src="../../dist/gltf-model-plus.min.js"></script>
     <script>
       // Replace this by your own player-info component
@@ -77,7 +78,14 @@
     <template id="avatar-template">
       <a-entity player-info>
         <a-entity class="model">
-          <a-text class="nametag" align="center" value="anonymous" position="0 2.1 0" scale=".5 .5 .5"></a-text>
+          <a-text
+            class="nametag"
+            align="center"
+            value="anonymous"
+            position="0 2.1 0"
+            scale=".5 .5 .5"
+            look-at="#player"
+          ></a-text>
           <!-- remove the sphere and set a gltf model on the model entity above in a real experience -->
           <a-sphere class="head" color="green" scale="0.2 0.2 0.2" position="0 1.6 0"></a-sphere>
         </a-entity>
