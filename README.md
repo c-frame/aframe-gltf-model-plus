@@ -78,12 +78,11 @@ Legend:
 
 ### Lights
 
-- [?] Ambient Light
-- [?] Directional Light
-- [?] Hemisphere Light
-- [?] Point Light
-- [?] blender Point light when exporting glb with "Punctual Lights" checked
-- [?] Spot Light
+- [ ] Ambient Light
+- [ ] Directional Light
+- [ ] Hemisphere Light
+- [ ] Point Light
+- [ ] Spot Light
 
 ### Media
 
