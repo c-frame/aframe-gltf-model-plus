@@ -47,6 +47,42 @@ The `waypoint` component make some assumptions:
 - You need to call unoccupyWaypoint() for navigation-start and moved events, see the player-info component in index.html
 - Optional: you have a player-info component on the camera rig with avatarPose string property (stand or sit) and seatRotation number property (y angle).
 
+## Run the examples locally
+
+Clone the repo, install the dev dependencies and start the dev server:
+
+```sh
+git clone https://github.com/c-frame/aframe-gltf-model-plus.git
+cd aframe-gltf-model-plus
+npm install
+npm start
+```
+
+Then go to http://localhost:8080
+
+To test your scene, you can copy `your_scene.glb` in the `examples/playground` folder,
+edit `examples/playground/index.html` and modify the line that references the scene to
+`<a-asset-item id="sceneGLB" src="./your_scene.glb"></a-asset-item>`
+and refresh the page.
+
+## Deployment
+
+You can deploy the content of the `examples/playground` folder to any server with static hosting but be sure to replace those two script tags:
+
+```
+<script src="../../dist/aframe-1.4.2-custom.min.js"></script>
+<script src="../../dist/gltf-model-plus.min.js"></script>
+```
+
+by
+
+```
+<script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@main/dist/aframe-1.4.2-custom.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@main/dist/gltf-model-plus.min.js"></script>
+```
+
+One solution to freely host it is to push the folder content on a public GitHub repository and enable GitHub Pages in the repository settings.
+
 ## Blender hubs components compatibility
 
 Legend:
