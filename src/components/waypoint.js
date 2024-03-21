@@ -84,6 +84,9 @@ AFRAME.registerSystem("waypoint", {
     }
   },
   unoccupyWaypoint() {
+    const cameraRig = document.querySelector("#rig,#cameraRig");
+    const camera = cameraRig.querySelector("[camera]");
+
     for (const waypoint of this.registeredWaypoints) {
       if (waypoint.components.waypoint.data.occupiedBy === getClientId()) {
         waypoint.setAttribute("waypoint", { isOccupied: false, occupiedBy: "scene" });
@@ -97,9 +100,9 @@ AFRAME.registerSystem("waypoint", {
       }
     }
 
-    const cameraRig = document.querySelector("#rig,#cameraRig");
     this.occupyWaypoint = false;
     cameraRig.setAttribute("player-info", "avatarPose", "stand");
+    camera.object3D.position.y = 1.6;
   },
 });
 
@@ -190,8 +193,9 @@ AFRAME.registerComponent("waypoint", {
       position.copy(spawnPoint.object3D.position);
       const playerInfo = cameraRig.components["player-info"];
       const avatarSitOffset = playerInfo.avatarSitOffset ?? 0.45;
-      if (playerInfo.data.avatarPose === "sit") {
+      if (avatarPose === "sit") {
         position.y -= avatarSitOffset;
+        camera.object3D.position.y = 1.15;
       }
 
       const euler = new THREE.Euler().setFromQuaternion(spawnPoint.object3D.quaternion, "YXZ");
@@ -275,9 +279,11 @@ AFRAME.registerComponent("move-to-spawn-point", {
     if (firstSpawnPoint) {
       firstSpawnPoint.emit("click", { withTransition: false }); // even if waypoint is not canBeClickable, this is to share the logic
     } else {
-      waypointSystem.teleportTo({ x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: 0 }, false);
       const cameraRig = document.querySelector("#rig,#cameraRig");
+      const camera = cameraRig.querySelector("[camera]");
+      waypointSystem.teleportTo({ x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: 0 }, false);
       cameraRig.setAttribute("player-info", "avatarPose", "stand");
+      camera.object3D.position.y = 1.6;
     }
   },
 });
