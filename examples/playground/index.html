@@ -67,6 +67,22 @@
             return;
           }
 
+          if (evt.keyCode === 71) {
+            // g
+            this.cameraRig = document.querySelector("#rig");
+            if (this.cameraRig.getAttribute("movement-controls").fly) {
+              this.cameraRig.setAttribute("movement-controls", "fly", false);
+              if (this.cameraRig.hasAttribute("simple-navmesh-constraint")) {
+                this.cameraRig.setAttribute("simple-navmesh-constraint", "enabled", true);
+              }
+            } else {
+              this.cameraRig.setAttribute("movement-controls", "fly", true);
+              if (this.cameraRig.hasAttribute("simple-navmesh-constraint")) {
+                this.cameraRig.setAttribute("simple-navmesh-constraint", "enabled", false);
+              }
+            }
+          }
+
           if (evt.code === "Space") {
             this.el.sceneEl.systems.waypoint.toggleClickableWaypoints();
           }
@@ -99,12 +115,26 @@
     >
       connect to test multi-users if you used `npm start` locally
     </button>
-    <button
-      style="z-index: 1; position: absolute; top: 0.5rem; left: 0.5rem"
-      onClick="javascript:AFRAME.scenes[0].systems.waypoint.toggleClickableWaypoints()"
+    <div
+      style="
+        z-index: 1;
+        position: absolute;
+        top: 0.5rem;
+        left: 0.5rem;
+        background: rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(4px);
+        color: #ffffff;
+        padding: 1rem;
+      "
     >
-      hide/show clickable waypoints (space key)
-    </button>
+      <ul style="margin: 0; padding: 0 0 0 1rem">
+        <li>[wasd or arrows] move</li>
+        <li>[mouse left click drag] rotate camera</li>
+        <li>[left click on floor] teleport</li>
+        <li>[g] toggle fly mode</li>
+        <li>[space] toggle visibility of clickable waypoints</li>
+      </ul>
+    </div>
 
     <a-scene
       light="defaultLightsEnabled:false"
