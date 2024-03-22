@@ -149,7 +149,7 @@ Legend:
 
 ### Scene
 
-Some features require a [custom aframe build](custom_aframe_build.md).
+Some features require a [custom aframe build](https://github.com/c-frame/aframe-gltf-model-plus/blob/main/docs/custom_aframe_build.md).
 
 - [x] Navigation Mesh (aframe-extras nav-mesh component is set on it for aframe-extras nav-agent, and also a class navmesh that can be used with simple-navmesh-constraint)
 - [?] Scene Preview Camera
