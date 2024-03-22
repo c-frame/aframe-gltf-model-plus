@@ -81,7 +81,13 @@ by
 <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@main/dist/gltf-model-plus.min.js"></script>
 ```
 
-One solution to freely host it is to push the folder content on a public GitHub repository and enable GitHub Pages in the repository settings.
+Depending on your needs, if your experience doesn't require multi-users, you can run it on GitHub Pages for free. For this you need to push the folder content on a public GitHub repository and enable GitHub Pages in the repository settings.
+
+If your experience only needs users without audio you can use the networked-aframe wseasyrtc or socketio adapters (see list of [naf adapters](https://github.com/networked-aframe/networked-aframe?tab=readme-ov-file#adapters)).
+
+For 3-4 users with audio and video with the easyrtc adapter (peer to peer), you can host it for free (the server will need to wake up on first access) or using a paid subscription on [Glitch](https://glitch.com).
+
+If you need more users with audio and video, you can subscribe to a VPS and have up to 30 users in a room with the janus adapter (SFU).
 
 ## Blender hubs components compatibility
 
