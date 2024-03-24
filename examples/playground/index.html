@@ -204,34 +204,40 @@
 
     <script>
       // Add the drag and drop event listeners to the document and process a dragged GLB file.
-      document.addEventListener("dragover", function(e) {
+      document.addEventListener(
+        "dragover",
+        function (e) {
           e.stopPropagation();
           e.preventDefault();
           e.dataTransfer.dropEffect = "copy";
-      }, false);
+        },
+        false
+      );
 
-      document.addEventListener("drop", function(e) {
+      document.addEventListener(
+        "drop",
+        function (e) {
           e.stopPropagation();
           e.preventDefault();
 
           const files = e.dataTransfer.files; // Array of all files.
 
           for (const file of files) {
-              // Process only GLB files.
-              if (file.name.endsWith(".glb")) {
-                  const reader = new FileReader();
+            // Process only GLB files.
+            if (file.name.endsWith(".glb")) {
+              const reader = new FileReader();
 
-                  reader.onload = (function(theFile) {
-                      return function(e) {
-                          // Set the gltf-model-plus attribute of the gltf-model-plus component to the dropped file.
-                          document.querySelector("[gltf-model-plus]").setAttribute("gltf-model-plus", e.target.result);
-                      };
-                  })(file);
+              reader.onload = function (e) {
+                // Set the gltf-model-plus attribute of the gltf-model-plus component to the dropped file.
+                document.querySelector("[gltf-model-plus]").setAttribute("gltf-model-plus", e.target.result);
+              };
 
-                  reader.readAsDataURL(file);
-              }
+              reader.readAsDataURL(file);
+            }
           }
-      }, false);
-  </script>
+        },
+        false
+      );
+    </script>
   </body>
 </html>
