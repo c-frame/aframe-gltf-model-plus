@@ -115,26 +115,54 @@
     >
       connect to test multi-users if you used `npm start` locally
     </button>
+
     <div
+      id="help-box"
       style="
-        z-index: 1;
+        backdrop-filter: blur(4px);
+        background: rgba(0, 0, 0, 0.3);
+        color: #ffffff;
+        left: 0.5rem;
+        padding: 1rem;
         position: absolute;
         top: 0.5rem;
-        left: 0.5rem;
-        background: rgba(0, 0, 0, 0.3);
-        backdrop-filter: blur(4px);
-        color: #ffffff;
-        padding: 1rem;
+        width: 22em;
+        z-index: 1;
       "
     >
-      <ul style="margin: 0; padding: 0 0 0 1rem">
-        <li>[wasd or arrows] move</li>
-        <li>[mouse left click drag] rotate camera</li>
-        <li>[left click on floor] teleport</li>
-        <li>[g] toggle fly mode</li>
-        <li>[space] toggle visibility of clickable waypoints</li>
-      </ul>
+      <div class="help-header" style="display: flex; flex: row; justify-content: space-between">
+        <h5 style="margin-top: 0.1rem; margin-bottom: 0.2rem">Help</h5>
+        <span></span>
+        <button class="close" style="background: rgba(255, 255, 255, 0.3)">x</button>
+      </div>
+      <div id="help-content">
+        <ul style="margin: 0; padding: 0; list-style: none">
+          <li>[wasd or arrows] move</li>
+          <li>[mouse left click drag] rotate camera</li>
+          <li>[left click on floor] teleport</li>
+          <li>[g] toggle fly mode</li>
+          <li>[shift down] move fast</li>
+          <li>[space] toggle visibility of clickable waypoints</li>
+        </ul>
+      </div>
     </div>
+
+    <script>
+      const helpbox = document.querySelector("#help-box");
+      const btn = helpbox.querySelector("button.close");
+      const content = helpbox.querySelector("#help-content");
+      btn.addEventListener("click", () => {
+        if (content.hasAttribute("hidden")) {
+          content.style = "display:block;";
+          btn.innerHTML = "x";
+          content.removeAttribute("hidden");
+        } else {
+          content.style = "display:none;";
+          content.setAttribute("hidden", true);
+          btn.innerHTML = "v";
+        }
+      });
+    </script>
 
     <a-scene
       light="defaultLightsEnabled:false"
