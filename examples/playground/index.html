@@ -188,9 +188,9 @@
 
           const files = e.dataTransfer.files; // Array of all files.
 
-          for (let i = 0, file; file = files[i]; i++) {
+          for (const file of files) {
               // Process only GLB files.
-              if (file.name.match(/\.(glb)$/)) {
+              if (file.name.endsWith(".glb")) {
                   const reader = new FileReader();
 
                   reader.onload = (function(theFile) {
