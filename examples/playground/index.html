@@ -121,6 +121,7 @@
       style="
         backdrop-filter: blur(4px);
         background: rgba(0, 0, 0, 0.3);
+        border-radius: 0.5rem;
         color: #ffffff;
         left: 0.5rem;
         padding: 1rem;
@@ -131,12 +132,16 @@
       "
     >
       <div class="help-header" style="display: flex; flex: row; justify-content: space-between">
-        <h5 style="margin-top: 0.1rem; margin-bottom: 0.2rem">Help</h5>
-        <span></span>
-        <button class="close" style="background: rgba(255, 255, 255, 0.3)">x</button>
+        <h2 style="margin: 0; font-size: 1.2rem">Help</h2>
+        <button
+          class="close"
+          style="background: rgba(255, 255, 255, 0.3); width: 1.5rem; height: 1.5rem; border-radius: 0.5rem"
+        >
+          x
+        </button>
       </div>
       <div id="help-content">
-        <ul style="margin: 0; padding: 0; list-style: none">
+        <ul style="margin: 0; padding: 0.5rem 0 0 0; list-style: none; font-size: 0.9rem">
           <li>[wasd or arrows] move</li>
           <li>[mouse left click drag] rotate camera</li>
           <li>[left click on floor] teleport</li>
