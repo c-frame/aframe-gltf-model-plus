@@ -109,18 +109,12 @@
       </a-entity>
     </template>
 
-    <button
-      style="z-index: 1; position: absolute; top: 0.5rem; right: 0.5rem"
-      onClick="javascript:AFRAME.scenes[0].emit('connect');this.style.display='none'"
-    >
-      connect to test multi-users if you used `npm start` locally
-    </button>
     <div
       style="
         z-index: 1;
         position: absolute;
-        top: 0.5rem;
-        left: 0.5rem;
+        top: 1.5rem;
+        left: 1.5rem;
         background: rgba(0, 0, 0, 0.3);
         backdrop-filter: blur(4px);
         color: #ffffff;
@@ -144,6 +138,7 @@
         room: hub;
         debug: true;
         adapter: easyrtc;
+        audio: true;
     "
       shadow="type: pcfsoft"
       gltf-model="meshoptDecoderPath:https://unpkg.com/meshoptimizer@0.19.0/meshopt_decoder.js"
@@ -173,5 +168,41 @@
 
       <a-entity light="type: point; color: #f4f4f4; intensity: 0.4; distance: 0" position="0 2 0"></a-entity>
     </a-scene>
+
+    <!--
+      See https://github.com/networked-aframe/naf-nametag-solidjs/blob/main/public/ui-components.html
+      for more details on how to use the web components.
+    -->
+    <script src="https://cdn.jsdelivr.net/gh/networked-aframe/naf-nametag-solidjs@e2884cb/public/dist/ui-components.js"></script>
+
+    <div style="z-index: 1; position: absolute; top: 1.5rem; right: 1.5rem">
+      <button
+        class="btn"
+        onclick="javascript:this.parentNode.remove();document.getElementById('enterScreen').removeAttribute('style')"
+      >
+        connect to test multi-users if you used `npm start` locally
+      </button>
+    </div>
+
+    <div class="naf-centered-fullscreen" style="display: none" id="enterScreen">
+      <div style="display: flex; flex-direction: column; gap: 0.5rem">
+        <label for="username">Your name</label>
+        <naf-username-input entity="#player" enable-color-picker="false"></naf-username-input>
+      </div>
+      <button
+        type="button"
+        class="btn"
+        style="min-width: 100px"
+        onclick="javascript:AFRAME.scenes[0].emit('connect');this.parentNode.remove();document.getElementById('uiInRoom').removeAttribute('style')"
+      >
+        Enter
+      </button>
+    </div>
+
+    <div class="naf-bottom-bar-center" style="display: none" id="uiInRoom">
+      <naf-mic-button></naf-mic-button>
+      <naf-chat-button></naf-chat-button>
+    </div>
+    <naf-chat-panel></naf-chat-panel>
   </body>
 </html>
