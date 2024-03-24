@@ -15,43 +15,9 @@
     <script src="https://cdn.jsdelivr.net/gh/AdaRoseCannon/aframe-xr-boilerplate@f34468b9503d0c7326b9af0f1f09959004916875/simple-navmesh-constraint.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aframe-troika-text@0.11.0/dist/aframe-troika-text.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aframe-look-at-component@1.0.0/dist/aframe-look-at-component.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/networked-aframe/naf-valid-avatars@main/src/player-info.js"></script>
     <script src="../../dist/gltf-model-plus.min.js"></script>
     <script>
-      // Replace this by your own player-info component
-      AFRAME.registerComponent("player-info", {
-        schema: {
-          name: { type: "string", default: "anonymous" },
-          avatarPose: { type: "string", default: "stand", oneOf: ["stand", "sit"] },
-          seatRotation: { type: "number", default: 0 },
-        },
-        events: {
-          // from movement-controls
-          moved: function () {
-            if (this.el.sceneEl.systems.waypoint.occupyWaypoint) {
-              this.el.sceneEl.systems.waypoint.unoccupyWaypoint();
-            }
-          },
-          // integration between cursor-teleport and simple-navmesh-constraint
-          "navigation-start": function () {
-            if (this.el.sceneEl.systems.waypoint.occupyWaypoint) {
-              this.el.sceneEl.systems.waypoint.unoccupyWaypoint();
-            }
-
-            if (this.el.hasAttribute("simple-navmesh-constraint")) {
-              this.el.setAttribute("simple-navmesh-constraint", "enabled", false);
-            }
-          },
-          "navigation-end": function () {
-            if (this.el.hasAttribute("simple-navmesh-constraint")) {
-              this.el.setAttribute("simple-navmesh-constraint", "enabled", true);
-            }
-          },
-        },
-        update(oldData) {
-          // Do whatever you want with the data
-        },
-      });
-
       AFRAME.registerComponent("shortcuts", {
         init() {
           this.onKeyup = this.onKeyup.bind(this);
@@ -102,8 +68,6 @@
             scale=".5 .5 .5"
             look-at="#player"
           ></a-text>
-          <!-- remove the sphere and set a gltf model on the model entity above in a real experience -->
-          <a-sphere class="head" color="green" scale="0.2 0.2 0.2" position="0 1.6 0"></a-sphere>
         </a-entity>
         <a-entity class="camera" position="0 1.6 0" networked-audio-source></a-entity>
       </a-entity>
@@ -191,7 +155,7 @@
         movement-controls="fly:false;controls: gamepad, trackpad, keyboard, nipple;"
         move-to-spawn-point
         networked="template:#avatar-template;attachTemplateToLocal:false"
-        player-info
+        player-info="avatarSrc: https://cdn.jsdelivr.net/gh/c-frame/valid-avatars-glb@c539a28/avatars/Asian/Asian_F_2_Casual.glb"
       >
         <a-entity id="player" class="camera" camera position="0 1.6 0" look-controls></a-entity>
       </a-entity>
@@ -219,7 +183,7 @@
     <div class="naf-centered-fullscreen" style="display: none" id="enterScreen">
       <div style="display: flex; flex-direction: column; gap: 0.5rem">
         <label for="username">Your name</label>
-        <naf-username-input entity="#player" enable-color-picker="false"></naf-username-input>
+        <naf-username-input entity="#rig" enable-color-picker="false"></naf-username-input>
       </div>
       <button
         type="button"
