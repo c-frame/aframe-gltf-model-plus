@@ -173,5 +173,37 @@
 
       <a-entity light="type: point; color: #f4f4f4; intensity: 0.4; distance: 0" position="0 2 0"></a-entity>
     </a-scene>
+
+    <script>
+      // Add the drag and drop event listeners to the document and process a dragged GLB file.
+      document.addEventListener("dragover", function(e) {
+          e.stopPropagation();
+          e.preventDefault();
+          e.dataTransfer.dropEffect = "copy";
+      }, false);
+
+      document.addEventListener("drop", function(e) {
+          e.stopPropagation();
+          e.preventDefault();
+
+          const files = e.dataTransfer.files; // Array of all files.
+
+          for (let i = 0, file; file = files[i]; i++) {
+              // Process only GLB files.
+              if (file.name.match(/\.(glb)$/)) {
+                  const reader = new FileReader();
+
+                  reader.onload = (function(theFile) {
+                      return function(e) {
+                          // Set the gltf-model-plus attribute of the gltf-model-plus component to the dropped file.
+                          document.querySelector("[gltf-model-plus]").setAttribute("gltf-model-plus", e.target.result);
+                      };
+                  })(file);
+
+                  reader.readAsDataURL(file);
+              }
+          }
+      }, false);
+  </script>
   </body>
 </html>
