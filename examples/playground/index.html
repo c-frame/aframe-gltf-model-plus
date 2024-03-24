@@ -55,15 +55,12 @@
       AFRAME.registerComponent("shortcuts", {
         init() {
           this.onKeyup = this.onKeyup.bind(this);
-          this.onKeydown = this.onKeydown.bind(this);
         },
         play() {
           window.addEventListener("keyup", this.onKeyup, false);
-          window.addEventListener("keydown", this.onKeydown, false);
         },
         pause() {
           window.removeEventListener("keyup", this.onKeyup);
-          window.removeEventListener("keydown", this.onKeydown);
         },
         onKeyup(evt) {
           if (!AFRAME.utils.shouldCaptureKeyEvent(evt)) {
@@ -89,22 +86,7 @@
           if (evt.code === "Space") {
             this.el.sceneEl.systems.waypoint.toggleClickableWaypoints();
           }
-
-          if (evt.key === "Shift") {
-            this.cameraRig = document.querySelector("#rig");
-            this.cameraRig.setAttribute("movement-controls", "speed", 0.3);
-          }
         },
-        onKeydown(evt) {
-          if (!AFRAME.utils.shouldCaptureKeyEvent(evt)) {
-            return;
-          }
-
-          if (evt.key === "Shift") {
-            this.cameraRig = document.querySelector("#rig");
-            this.cameraRig.setAttribute("movement-controls", "speed", 0.6);
-          }
-        }
       });
     </script>
   </head>
@@ -133,8 +115,9 @@
     >
       connect to test multi-users if you used `npm start` locally
     </button>
+
     <div
-id="help-box"
+      id="help-box"
       style="
         backdrop-filter: blur(4px);
         background: rgba(0, 0, 0, 0.3);
@@ -147,35 +130,34 @@ id="help-box"
         z-index: 1;
       "
     >
-      <div class="help-header" style="display: flex; flex: row; justify-content: space-between;">
-        <h5 style="margin-top: 0.1rem; margin-bottom: 0.2rem;">Help</h5>
+      <div class="help-header" style="display: flex; flex: row; justify-content: space-between">
+        <h5 style="margin-top: 0.1rem; margin-bottom: 0.2rem">Help</h5>
         <span></span>
-        <button class="close" style="background: rgba(255, 255, 255, 0.3);">x</button>
+        <button class="close" style="background: rgba(255, 255, 255, 0.3)">x</button>
       </div>
       <div id="help-content">
-        <ul style="margin: 0; padding: 0; list-style: none;">
-        <li>[wasd or arrows] move</li>
-        <li>[mouse left click drag] rotate camera</li>
-        <li>[left click on floor] teleport</li>
-        <li>[g] toggle fly mode</li>
-        <li>[shift down] move fast</li>
-        <li>[space] toggle visibility of clickable waypoints</li>
-      </ul>
-    </div>
+        <ul style="margin: 0; padding: 0; list-style: none">
+          <li>[wasd or arrows] move</li>
+          <li>[mouse left click drag] rotate camera</li>
+          <li>[left click on floor] teleport</li>
+          <li>[g] toggle fly mode</li>
+          <li>[shift down] move fast</li>
+          <li>[space] toggle visibility of clickable waypoints</li>
+        </ul>
+      </div>
     </div>
 
     <script>
       const helpbox = document.querySelector("#help-box");
       const btn = helpbox.querySelector("button.close");
-      const content = helpbox.querySelector('#help-content');
+      const content = helpbox.querySelector("#help-content");
       btn.addEventListener("click", () => {
         if (content.hasAttribute("hidden")) {
-          content.style="display:block;";
+          content.style = "display:block;";
           btn.innerHTML = "x";
           content.removeAttribute("hidden");
-        }
-        else {
-          content.style="display:none;";
+        } else {
+          content.style = "display:none;";
           content.setAttribute("hidden", true);
           btn.innerHTML = "v";
         }
