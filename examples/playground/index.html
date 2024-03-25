@@ -15,7 +15,7 @@
     <script src="https://cdn.jsdelivr.net/gh/AdaRoseCannon/aframe-xr-boilerplate@f34468b9503d0c7326b9af0f1f09959004916875/simple-navmesh-constraint.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aframe-troika-text@0.11.0/dist/aframe-troika-text.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aframe-look-at-component@1.0.0/dist/aframe-look-at-component.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/networked-aframe/naf-valid-avatars@main/src/player-info.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/networked-aframe/naf-valid-avatars@97109b2/src/player-info.js"></script>
     <script src="../../dist/gltf-model-plus.min.js"></script>
     <script>
       AFRAME.registerComponent("shortcuts", {
@@ -169,7 +169,7 @@
       See https://github.com/networked-aframe/naf-nametag-solidjs/blob/main/public/ui-components.html
       for more details on how to use the web components.
     -->
-    <script src="https://cdn.jsdelivr.net/gh/networked-aframe/naf-nametag-solidjs@e2884cb/public/dist/ui-components.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/networked-aframe/naf-nametag-solidjs@155223b/public/dist/ui-components.js"></script>
 
     <div style="z-index: 1; position: absolute; top: 1.5rem; right: 1.5rem">
       <button
@@ -197,9 +197,9 @@
 
     <div class="naf-bottom-bar-center" style="display: none" id="uiInRoom">
       <naf-mic-button></naf-mic-button>
+      <naf-users-button></naf-users-button>
       <naf-chat-button></naf-chat-button>
     </div>
-    <naf-chat-panel></naf-chat-panel>
     <script>
       // Add the drag and drop event listeners to the document and process a dragged GLB file.
       document.addEventListener(
