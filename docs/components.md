@@ -5,10 +5,7 @@
 Move camera rig to the first spawn point after the scene glb is loaded.
 
 ```html
-<a-entity
-  id="rig"
-  move-to-spawn-point
-></a-entity>
+<a-entity id="rig" move-to-spawn-point></a-entity>
 ```
 
 ## move-to-unoccupied-waypoint
@@ -16,10 +13,7 @@ Move camera rig to the first spawn point after the scene glb is loaded.
 After 3s delay on naf connected event:
 
 ```html
-<a-entity
-  id="rig"
-  move-to-unoccupied-waypoint="on: connected; delay: 3"
-></a-entity>
+<a-entity id="rig" move-to-unoccupied-waypoint="on: connected; delay: 3"></a-entity>
 ```
 
 A delay is needed so we have the waypoints isOccupied information from the other participants.
@@ -38,4 +32,3 @@ or on a plane on click (default):
   move-to-unoccupied-waypoint
 ></a-plane>
 ```
-
