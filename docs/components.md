@@ -50,3 +50,19 @@ or on a plane on click (default):
   move-to-unoccupied-waypoint
 ></a-plane>
 ```
+
+## a-waypoint primitive
+
+Seated waypoint:
+
+```html
+<a-cylinder radius="0.25" height="0.5" position="-3.5 -4.74 -3" rotation="0 -150 0">
+  <a-waypoint
+    id="seat1"
+    position="0 0.2 0"
+    can-be-clicked="true"
+    can-be-occupied="true"
+    will-disable-motion="true"
+  ></a-waypoint>
+</a-cylinder>
+```
