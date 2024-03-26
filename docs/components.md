@@ -1,5 +1,23 @@
 # Components
 
+## billboard
+
+Rotate plane towards the camera:
+
+```html
+<a-plane
+  width="1.5"
+  height="0.5"
+  material="color: black"
+  text="value: hello world; width: 4; align: center"
+  position="-2.5 -3.5 -1"
+  billboard
+></a-plane>
+```
+
+By default it rotates only on the vertical axis (`onlyY: true`).
+To rotate on all axes: `billboard="onlyY: false"`
+
 ## move-to-spawn-point
 
 Move camera rig to the first spawn point after the scene glb is loaded.
@@ -25,10 +43,10 @@ or on a plane on click (default):
   class="clickable"
   width="1.5"
   height="0.5"
-  material="color:black"
+  material="color: black"
   text="value: sit on a\nnearby seat; width: 4; align: center"
   position="-2.5 -3.5 -1"
-  rotation="0 180 0"
+  billboard
   move-to-unoccupied-waypoint
 ></a-plane>
 ```
