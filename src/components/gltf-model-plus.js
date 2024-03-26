@@ -1,4 +1,4 @@
-/* global AFRAME, NAF, THREE */
+/* global AFRAME, THREE */
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 import { defaultEnvironmentSettings } from "../inflators/environment-settings";
 import { gltfInflators } from "../inflators";
