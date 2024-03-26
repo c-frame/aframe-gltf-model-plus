@@ -163,6 +163,17 @@
       <a-entity class="environment-settings" gltf-model-plus="#sceneGLB"></a-entity>
 
       <a-entity light="type: point; color: #f4f4f4; intensity: 0.4; distance: 0" position="0 2 0"></a-entity>
+
+      <a-plane
+        class="clickable"
+        width="1.5"
+        height="0.5"
+        material="color:black"
+        text="value: sit on a\nnearby seat; width: 4; align: center"
+        position="-2.5 -3.5 -1"
+        rotation="0 180 0"
+        move-to-unoccupied-waypoint
+      ></a-plane>
     </a-scene>
 
     <!--

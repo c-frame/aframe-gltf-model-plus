@@ -287,3 +287,65 @@ AFRAME.registerComponent("move-to-spawn-point", {
     }
   },
 });
+
+AFRAME.registerComponent("move-to-unoccupied-waypoint", {
+  schema: {
+    on: { type: "string", default: "click" },
+    delay: { type: "number", default: 0 },
+  },
+  init() {
+    this.move = this.move.bind(this);
+    this.listenerTrigger = this.listenerTrigger.bind(this);
+    this.listenerWaypointsReady = this.listenerWaypointsReady.bind(this);
+    this.waypointsReady = false;
+    this.triggered = false;
+  },
+
+  play() {
+    this.el.sceneEl.addEventListener("waypoints-ready", this.listenerWaypointsReady);
+    if (this.data.on === "connected") {
+      document.body.addEventListener("connected", this.listenerTrigger);
+    } else {
+      this.el.addEventListener(this.data.on, this.listenerTrigger);
+    }
+  },
+
+  pause() {
+    this.el.sceneEl.removeEventListener("waypoints-ready", this.listenerWaypointsReady);
+    if (this.data.on === "connected") {
+      document.body.removeEventListener("connected", this.listenerTrigger);
+    } else {
+      this.el.removeEventListener(this.data.on, this.listenerTrigger);
+    }
+  },
+
+  listenerTrigger() {
+    this.triggered = true;
+    if (this.triggered && this.waypointsReady) {
+      setTimeout(this.move, this.data.delay * 1000);
+    }
+  },
+
+  listenerWaypointsReady() {
+    this.waypointsReady = true;
+    if (this.triggered && this.waypointsReady) {
+      if (this.data.delay === 0) {
+        this.move();
+      } else {
+        setTimeout(this.move, this.data.delay * 1000);
+      }
+    }
+  },
+
+  move() {
+    const waypointSystem = this.el.sceneEl.systems.waypoint;
+    const waypoints = waypointSystem.registeredWaypoints.filter(
+      (waypoint) => waypoint.components.waypoint.data.canBeOccupied && !waypoint.components.waypoint.data.isOccupied
+    );
+    const firstUnoccupiedWaypoint = waypoints.length > 0 ? waypoints[0] : null;
+
+    if (firstUnoccupiedWaypoint) {
+      firstUnoccupiedWaypoint.emit("click", { withTransition: false });
+    }
+  },
+});
