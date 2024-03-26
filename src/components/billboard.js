@@ -1,4 +1,4 @@
-/* global AFRAME */
+/* global AFRAME THREE */
 AFRAME.registerComponent("billboard", {
   schema: {
     onlyY: { type: "boolean", default: true },
