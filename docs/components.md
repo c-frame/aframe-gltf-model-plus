@@ -66,3 +66,9 @@ Seated waypoint:
   ></a-waypoint>
 </a-cylinder>
 ```
+
+Spawn point:
+
+```html
+<a-waypoint id="spawnpoint" can-be-spawn-point="true" position="-25 0 0" rotation="0 90 0"></a-waypoint>
+```
