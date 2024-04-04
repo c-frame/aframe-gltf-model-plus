@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <meta charset="utf-8" />
@@ -15,7 +15,7 @@
     <script src="https://cdn.jsdelivr.net/gh/AdaRoseCannon/aframe-xr-boilerplate@f34468b9503d0c7326b9af0f1f09959004916875/simple-navmesh-constraint.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aframe-troika-text@0.11.0/dist/aframe-troika-text.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aframe-look-at-component@1.0.0/dist/aframe-look-at-component.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/networked-aframe/naf-valid-avatars@main/src/player-info.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/networked-aframe/naf-valid-avatars@4b116a4/src/player-info.js"></script>
     <script src="../../dist/gltf-model-plus.min.js"></script>
     <script>
       AFRAME.registerComponent("shortcuts", {
@@ -147,7 +147,7 @@
         For another scene, you probably want to set it to a higher value.
       -->
       <a-assets timeout="30000">
-        <a-asset-item id="sceneGLB" src="./hubs_components_example_001.glb"></a-asset-item>
+        <a-asset-item id="sceneGLB" src="./hubs_components_example_002.glb"></a-asset-item>
       </a-assets>
       <a-entity
         id="rig"
@@ -163,15 +163,44 @@
       <a-entity class="environment-settings" gltf-model-plus="#sceneGLB"></a-entity>
 
       <a-entity light="type: point; color: #f4f4f4; intensity: 0.4; distance: 0" position="0 2 0"></a-entity>
+
+      <a-plane
+        class="clickable"
+        width="1.5"
+        height="0.5"
+        material="color:black"
+        text="value: sit on a\nnearby seat; width: 4; align: center"
+        position="-2.5 -3.5 -1"
+        billboard
+        move-to-unoccupied-waypoint
+      ></a-plane>
+
+      <a-cylinder radius="0.25" height="0.5" position="-3.5 -4.74 -3" rotation="0 -150 0">
+        <a-waypoint
+          id="seat1"
+          position="0 0.27 0"
+          can-be-clicked="true"
+          can-be-occupied="true"
+          will-disable-motion="true"
+        ></a-waypoint>
+      </a-cylinder>
+
+      <!-- <a-waypoint
+        id="seat1"
+        position="-4 -4.5 -2"
+        can-be-clicked="true"
+        can-be-occupied="true"
+        will-disable-motion="true"
+      ></a-waypoint> -->
     </a-scene>
 
     <!--
       See https://github.com/networked-aframe/naf-nametag-solidjs/blob/main/public/ui-components.html
       for more details on how to use the web components.
     -->
-    <script src="https://cdn.jsdelivr.net/gh/networked-aframe/naf-nametag-solidjs@e2884cb/public/dist/ui-components.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/networked-aframe/naf-nametag-solidjs@31cffe9/public/dist/ui-components.js"></script>
 
-    <div style="z-index: 1; position: absolute; top: 1.5rem; right: 1.5rem">
+    <div class="naf-top-bar-right">
       <button
         class="btn"
         onclick="javascript:this.parentNode.remove();document.getElementById('enterScreen').removeAttribute('style')"
@@ -196,10 +225,10 @@
     </div>
 
     <div class="naf-bottom-bar-center" style="display: none" id="uiInRoom">
-      <naf-mic-button></naf-mic-button>
+      <naf-mic-button entity="#rig"></naf-mic-button>
+      <naf-users-button></naf-users-button>
       <naf-chat-button></naf-chat-button>
     </div>
-    <naf-chat-panel></naf-chat-panel>
     <script>
       // Add the drag and drop event listeners to the document and process a dragged GLB file.
       document.addEventListener(

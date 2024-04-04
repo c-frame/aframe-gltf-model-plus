@@ -190,7 +190,7 @@ AFRAME.registerComponent("waypoint", {
       cameraRig.setAttribute("player-info", "avatarPose", avatarPose);
 
       const position = new THREE.Vector3();
-      position.copy(spawnPoint.object3D.position);
+      spawnPoint.object3D.getWorldPosition(position);
       const playerInfo = cameraRig.components["player-info"];
       const avatarSitOffset = playerInfo.avatarSitOffset ?? 0.45;
       if (avatarPose === "sit") {
@@ -198,7 +198,9 @@ AFRAME.registerComponent("waypoint", {
         camera.object3D.position.y = 1.15;
       }
 
-      const euler = new THREE.Euler().setFromQuaternion(spawnPoint.object3D.quaternion, "YXZ");
+      const quaternion = new THREE.Quaternion();
+      spawnPoint.object3D.getWorldQuaternion(quaternion);
+      const euler = new THREE.Euler().setFromQuaternion(quaternion, "YXZ");
       const rotation = { x: 0, y: euler.y * THREE.MathUtils.RAD2DEG + 180, z: 0 };
       this.system.teleportTo(position, rotation, withTransition);
       cameraRig.setAttribute("player-info", { seatRotation: camera.object3D.rotation.y });
@@ -220,6 +222,17 @@ AFRAME.registerComponent("waypoint", {
   },
   init() {
     this.registerWaypoint();
+    if (this.data.canBeClicked) {
+      if (this.data.willDisableMotion) {
+        this.el.setAttribute("gltf-model", new URL("../assets/models/waypoint_sit.glb", import.meta.url).href);
+      } else {
+        this.el.setAttribute("gltf-model", new URL("../assets/models/waypoint_stand.glb", import.meta.url).href);
+      }
+    }
+    if (!this.data.canBeOccupied && this.el.hasAttribute("networked")) {
+      // waypoint created from a-waypoint primitive
+      this.el.removeAttribute("networked");
+    }
   },
   remove() {
     this.unregisterWaypoint();
@@ -285,5 +298,88 @@ AFRAME.registerComponent("move-to-spawn-point", {
       cameraRig.setAttribute("player-info", "avatarPose", "stand");
       camera.object3D.position.y = 1.6;
     }
+  },
+});
+
+AFRAME.registerComponent("move-to-unoccupied-waypoint", {
+  schema: {
+    on: { type: "string", default: "click" },
+    delay: { type: "number", default: 0 },
+  },
+  init() {
+    this.move = this.move.bind(this);
+    this.listenerTrigger = this.listenerTrigger.bind(this);
+    this.listenerWaypointsReady = this.listenerWaypointsReady.bind(this);
+    this.waypointsReady = false;
+    this.triggered = false;
+  },
+
+  play() {
+    this.el.sceneEl.addEventListener("waypoints-ready", this.listenerWaypointsReady);
+    if (this.data.on === "connected") {
+      document.body.addEventListener("connected", this.listenerTrigger);
+    } else {
+      this.el.addEventListener(this.data.on, this.listenerTrigger);
+    }
+  },
+
+  pause() {
+    this.el.sceneEl.removeEventListener("waypoints-ready", this.listenerWaypointsReady);
+    if (this.data.on === "connected") {
+      document.body.removeEventListener("connected", this.listenerTrigger);
+    } else {
+      this.el.removeEventListener(this.data.on, this.listenerTrigger);
+    }
+  },
+
+  listenerTrigger() {
+    this.triggered = true;
+    if (this.triggered && this.waypointsReady) {
+      setTimeout(this.move, this.data.delay * 1000);
+    }
+  },
+
+  listenerWaypointsReady() {
+    this.waypointsReady = true;
+    if (this.triggered && this.waypointsReady) {
+      if (this.data.delay === 0) {
+        this.move();
+      } else {
+        setTimeout(this.move, this.data.delay * 1000);
+      }
+    }
+  },
+
+  move() {
+    const waypointSystem = this.el.sceneEl.systems.waypoint;
+    const waypoints = waypointSystem.registeredWaypoints.filter(
+      (waypoint) => waypoint.components.waypoint.data.canBeOccupied && !waypoint.components.waypoint.data.isOccupied
+    );
+    const firstUnoccupiedWaypoint = waypoints.length > 0 ? waypoints[0] : null;
+
+    if (firstUnoccupiedWaypoint) {
+      firstUnoccupiedWaypoint.emit("click", { withTransition: false });
+    }
+  },
+});
+
+AFRAME.registerPrimitive("a-waypoint", {
+  defaultComponents: {
+    networked: { template: "#waypoint-template", attachTemplateToLocal: false, persistent: true, owner: "scene" },
+    waypoint: {},
+    // We should really add networked component only if waypoint.canBeOccupied but I don't see how to do it from the primitive
+    // so we remove networked component in waypoint init if canBeOccupied.
+    // The order networked then waypoint in defaultComponents is important here for it to work.
+  },
+
+  mappings: {
+    id: "networked.networkId",
+    "can-be-clicked": "waypoint.canBeClicked",
+    "can-be-occupied": "waypoint.canBeOccupied",
+    "can-be-spawn-point": "waypoint.canBeSpawnPoint",
+    "snap-to-nav-mesh": "waypoint.snapToNavMesh",
+    "will-disable-motion": "waypoint.willDisableMotion",
+    "will-disable-teleporting": "waypoint.willDisableTeleporting",
+    "will-maintain-initial-orientation": "waypoint.willMaintainInitialOrientation",
   },
 });

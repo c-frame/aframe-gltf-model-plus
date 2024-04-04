@@ -47,6 +47,11 @@ The `waypoint` component make some assumptions:
 - You need to call unoccupyWaypoint() for navigation-start and moved events, see the player-info component in index.html
 - Optional: you have a player-info component on the camera rig with avatarPose string property (stand or sit) and seatRotation number property (y angle).
 
+## Components and primitives
+
+Some components can also be used on `<a-entity>`.
+See the [components documentation](https://github.com/c-frame/aframe-gltf-model-plus/blob/main/docs/components.md).
+
 ## Run the examples locally
 
 Clone the repo, install the dev dependencies and start the dev server:

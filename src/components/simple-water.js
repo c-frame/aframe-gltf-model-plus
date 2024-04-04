@@ -1,4 +1,4 @@
-/* global AFRAME, THREE */
+/* global AFRAME */
 // This is a modified copy of https://github.com/mozilla/hubs/blob/b466e6901cb2a0310b5219e2dac41731d7fa0916/src/components/simple-water.js
 // and https://github.com/mozilla/hubs/blob/f099ec6cb9a15c8f7554ffdbec592f9abf6c7267/src/objects/SimpleWaterMesh.ts
 // and https://github.com/mozilla/hubs/blob/c734c4d8c09a4969ea7793de9e500f3b39cc9a8e/src/assets/waternormals.jpg

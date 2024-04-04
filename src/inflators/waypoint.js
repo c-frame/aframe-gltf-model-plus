@@ -20,12 +20,4 @@ export function inflateWaypointFromJSON(el, componentProps, otherComponents) {
   }
 
   el.setAttribute("waypoint", componentProps);
-
-  if (componentProps.canBeClicked) {
-    if (componentProps.willDisableMotion) {
-      el.setAttribute("gltf-model", new URL("../assets/models/waypoint_sit.glb", import.meta.url).href);
-    } else {
-      el.setAttribute("gltf-model", new URL("../assets/models/waypoint_stand.glb", import.meta.url).href);
-    }
-  }
 }

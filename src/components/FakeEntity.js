@@ -1,4 +1,4 @@
-/* global AFRAME, NAF, THREE */
+/* global AFRAME, THREE */
 import { addComponent } from "../inflators/utils";
 import { EventDispatcher } from "./EventDispatcher";
 
