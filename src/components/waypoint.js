@@ -272,25 +272,35 @@ AFRAME.registerComponent("waypoint", {
 AFRAME.registerComponent("move-to-spawn-point", {
   init() {
     this.move = this.move.bind(this);
+    this.locationHashChanged = this.locationHashChanged.bind(this);
   },
 
-  play() {
-    this.el.sceneEl.addEventListener("waypoints-ready", this.move);
-  },
-
-  pause() {
-    this.el.sceneEl.removeEventListener("waypoints-ready", this.move);
-  },
-
-  move() {
-    // If the url has a hash and the hash is a waypoint then spawn at that waypoint.
+  locationHashChanged() {
     const hash = window.location.hash;
     if (hash !== "") {
       const waypoint = document.querySelector(hash);
       if (waypoint) {
         waypoint.emit("click", { withTransition: false });
-        return;
+        return true;
       }
+    }
+    return false;
+  },
+
+  play() {
+    this.el.sceneEl.addEventListener("waypoints-ready", this.move);
+    window.addEventListener("hashchange", this.locationHashChanged);
+  },
+
+  pause() {
+    this.el.sceneEl.removeEventListener("waypoints-ready", this.move);
+    window.removeEventListener("hashchange", this.locationHashChanged);
+  },
+
+  move() {
+    // If the url has a hash and the hash is a waypoint then spawn at that waypoint.
+    if (this.locationHashChanged()) {
+      return;
     }
 
     // Else spawn at the first defined spawn point or the center.
@@ -345,6 +355,8 @@ AFRAME.registerComponent("move-to-unoccupied-waypoint", {
 
   listenerTrigger() {
     this.triggered = true;
+    // If the component is used with the connected event and the url includes a hash to spawn on a specific waypoint, then don't move.
+    if (this.data.on === "connected" && window.location.hash !== "") return;
     if (this.triggered && this.waypointsReady) {
       setTimeout(this.move, this.data.delay * 1000);
     }
