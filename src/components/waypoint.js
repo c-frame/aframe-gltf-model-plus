@@ -283,6 +283,17 @@ AFRAME.registerComponent("move-to-spawn-point", {
   },
 
   move() {
+    // If the url has a hash and the hash is a waypoint then spawn at that waypoint.
+    const hash = window.location.hash;
+    if (hash !== "") {
+      const waypoint = document.querySelector(hash);
+      if (waypoint) {
+        waypoint.emit("click", { withTransition: false });
+        return;
+      }
+    }
+
+    // Else spawn at the first defined spawn point or the center.
     const waypointSystem = this.el.sceneEl.systems.waypoint;
     const spawnPoints = waypointSystem.registeredWaypoints.filter(
       (waypoint) => waypoint.components.waypoint.data.canBeSpawnPoint
