@@ -254,6 +254,8 @@ export const gltfModelPlus = {
       return;
     }
 
+    el.sceneEl.systems.waypoint.glbLoading += 1;
+    console.log("[wp] increment glbLoading", el.sceneEl.systems.waypoint.glbLoading);
     this.ready.then(function () {
       self.el.emit("model-loading", { src });
       self.loader.load(
@@ -346,6 +348,10 @@ export const gltfModelPlus = {
             }
           });
 
+          // Need to be decremented before executing finalizer that create waypoints
+          el.sceneEl.systems.waypoint.glbLoading -= 1;
+          console.log("[wp] decrement glbLoading", el.sceneEl.systems.waypoint.glbLoading);
+
           for (let i = 0; i < finalizers.length; i++) {
             finalizers[i]();
           }
@@ -360,9 +366,6 @@ export const gltfModelPlus = {
           // el could be a FakeEntity if we aliased gtlf-model to gtlf-model-plus, so we check classList is not undefined
           if (el.classList?.contains("environment-settings")) {
             gltfInflators.get("environment-settings")(el.sceneEl, environmentSettings);
-            queueMicrotask(() => {
-              el.sceneEl.emit("waypoints-ready");
-            });
           }
 
           setTimeout(() => {
