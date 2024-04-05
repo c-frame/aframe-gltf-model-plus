@@ -345,6 +345,8 @@ AFRAME.registerComponent("move-to-unoccupied-waypoint", {
 
   listenerTrigger() {
     this.triggered = true;
+    // If the component is used with the connected event and the url includes a hash to spawn on a specific waypoint, then don't move.
+    if (this.data.on === "connected" && window.location.hash !== "") return;
     if (this.triggered && this.waypointsReady) {
       setTimeout(this.move, this.data.delay * 1000);
     }

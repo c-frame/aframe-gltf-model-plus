@@ -35,6 +35,7 @@ After 3s delay on naf connected event:
 ```
 
 A delay is needed so we have the waypoints isOccupied information from the other participants.
+With `on: connected`, if the url includes a hash to spawn on a specific waypoint, then the component doesn't do anything.
 
 or on a plane on click (default):
 
