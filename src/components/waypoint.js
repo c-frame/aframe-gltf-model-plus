@@ -44,6 +44,24 @@ AFRAME.registerSystem("waypoint", {
     this.occupyWaypoint = false;
     this.showClickableWaypoints = false;
     this.registeredWaypoints = [];
+    this.glbLoading = 0;
+    this.pendingEmitWaypointsReady = false;
+  },
+  scheduleEmitWaypointsReady() {
+    if (this.pendingEmitWaypointsReady) return;
+    this.pendingEmitWaypointsReady = true;
+    console.log("[wp] schedule emitting waypoints-ready in a microtask");
+    queueMicrotask(() => {
+      if (this.glbLoading > 0) {
+        console.log(`[wp] ${this.glbLoading} glb still loading, cancel emitting waypoints-ready`);
+        this.pendingEmitWaypointsReady = false;
+        return;
+      }
+
+      console.log("[wp] emit waypoints-ready");
+      this.el.emit("waypoints-ready");
+      this.pendingEmitWaypointsReady = false;
+    });
   },
   toggleClickableWaypoints() {
     this.showClickableWaypoints = !this.showClickableWaypoints;
@@ -211,6 +229,8 @@ AFRAME.registerComponent("waypoint", {
     const idx = this.system.registeredWaypoints.indexOf(this.el);
     if (idx === -1) {
       this.system.registeredWaypoints.push(this.el);
+      console.log("[wp] register waypoint");
+      this.system.scheduleEmitWaypointsReady();
     }
   },
   unregisterWaypoint() {
