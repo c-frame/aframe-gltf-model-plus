@@ -318,17 +318,16 @@ export const gltfModelPlus = {
                     }
                   }
 
-                  for (let i = 0; i < clips.length; i++) {
-                    const oneClip = clips[i];
-                    const action = self.mixer.clipAction(oneClip, node);
+                  for (const clip of clips) {
+                    const action = self.mixer.clipAction(clip, node);
                     action.enabled = true;
                     // If timeScale is set, use it.
-                    if (oneClip.componentProps.timeScale !== 1) {
-                      action.setEffectiveTimeScale(oneClip.componentProps.timeScale);
+                    if (clip.componentProps.timeScale !== 1) {
+                      action.timeScale = clip.componentProps.timeScale;
                     }
-                    // If timeScale is set, use it.
-                    if (oneClip.componentProps.startOffset !== 0) {
-                      action.startAt(self.mixer.time - oneClip.componentProps.startOffset);
+                    // If startOffset is set, use it.
+                    if (clip.componentProps.startOffset !== 0) {
+                      action.time = clip.componentProps.startOffset;
                     }
                     action.setLoop(THREE.LoopRepeat, Infinity).play();
                   }
