@@ -307,6 +307,8 @@ export const gltfModelPlus = {
                       for (let i = 0; i < clipNames.length; i++) {
                         const n = clipNames[i];
                         const a = animations.find(({ name }) => name === n);
+                        // Add the Hubs defined componentProps, we need them later.
+                        a.componentProps = componentProps;
                         if (a) {
                           clips.push(a);
                         } else {
@@ -316,9 +318,17 @@ export const gltfModelPlus = {
                     }
                   }
 
-                  for (let i = 0; i < clips.length; i++) {
-                    const action = self.mixer.clipAction(clips[i], node);
+                  for (const clip of clips) {
+                    const action = self.mixer.clipAction(clip, node);
                     action.enabled = true;
+                    // If timeScale is set, use it.
+                    if (clip.componentProps.timeScale !== 1) {
+                      action.timeScale = clip.componentProps.timeScale;
+                    }
+                    // If startOffset is set, use it.
+                    if (clip.componentProps.startOffset !== 0) {
+                      action.time = clip.componentProps.startOffset;
+                    }
                     action.setLoop(THREE.LoopRepeat, Infinity).play();
                   }
                 } else {
