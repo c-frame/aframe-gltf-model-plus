@@ -358,9 +358,12 @@ export const gltfModelPlus = {
             }
           });
 
-          // Need to be decremented before executing finalizer that create waypoints
+          // Need to be decremented before executing finalizers that create waypoints
           el.sceneEl.systems.waypoint.glbLoading -= 1;
           console.log("[wp] decrement glbLoading", el.sceneEl.systems.waypoint.glbLoading);
+          // We still need to call scheduleEmitWaypointsReady() in case there is no waypoints
+          // in the glb but we defined waypoints with a-waypoint primitive.
+          el.sceneEl.systems.waypoint.scheduleEmitWaypointsReady();
 
           for (let i = 0; i < finalizers.length; i++) {
             finalizers[i]();
