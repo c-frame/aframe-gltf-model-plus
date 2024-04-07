@@ -30,3 +30,9 @@ export const createEntityAndReparent = (node, klass = undefined) => {
   sceneEl.object3D.attach(node);
   return entity;
 };
+
+export const absoluteURLForAsset =
+  window.absoluteURLForAsset ||
+  ((asset) => {
+    return asset;
+  });
