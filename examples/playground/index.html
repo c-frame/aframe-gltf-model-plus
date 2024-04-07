@@ -17,9 +17,12 @@
     <script src="https://cdn.jsdelivr.net/npm/aframe-look-at-component@1.0.0/dist/aframe-look-at-component.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/networked-aframe/naf-valid-avatars@4b116a4/src/player-info.js"></script>
     <script>
-      window.createAudioContext = () => {
-        window.audioContext = new AudioContext();
-        window.audioContext.resume();
+      window.userClicked = false;
+
+      window.userHasClicked = () => {
+        if (!window.userClicked) {
+          window.userClicked = true;
+        }
       };
 
       // @var url {string} The url as string.
@@ -33,6 +36,21 @@
 
         return newurl;
       };
+
+      window.emitClick = () => {
+        // Select the button element
+        var button = document.querySelector('#btn-start');
+
+        // Create the click event
+        var clickEvent = new MouseEvent('click', {
+            'view': window,
+            'bubbles': true,
+            'cancelable': false
+        });
+
+        // Dispatch the event on the button
+        button.dispatchEvent(clickEvent);
+      }
 
       window.playAllSounds = () => {
         const sounds = document.querySelectorAll("[sound]");
@@ -178,7 +196,7 @@
         debug: true;
         adapter: easyrtc;
         audio: true;
-    "
+      "
       shadow="type: pcfsoft"
       gltf-model="meshoptDecoderPath:https://unpkg.com/meshoptimizer@0.19.0/meshopt_decoder.js"
       raycaster="far: 5; objects: .clickable;"
@@ -276,7 +294,7 @@
         id="btn-start"
         class="hidden"
         style="position: absolute; top: 0; left: 0; width: 100vw; height: 100vh"
-        onclick="javascript:this.parentNode.classList.add('hidden');window.createAudioContext();window.playAllSounds();"
+        onclick="javascript:this.parentNode.classList.add('hidden');window.userHasClicked();window.playAllSounds();"
       >
         <span
           style="
@@ -341,6 +359,10 @@
                   // window.createAudioContext();
                   document.querySelector("#btn-start").classList.add("hidden");
                   confirmStart.classList.remove("hidden");
+
+                  if (window.userClicked) {
+                    window.setTimeout(window.emitClick, 1000);
+                  }
                 }
 
                 // Stop all sound if there are sounds.
