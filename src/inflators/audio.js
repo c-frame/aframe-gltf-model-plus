@@ -1,21 +1,11 @@
-import { absoluteURLForAsset, createEntityAndReparent } from "./utils";
+import { absoluteURLForAsset, addComponent } from "./utils";
 
 export function inflateAudio(node, componentProps, otherComponents) {
-  // const componentName = "sound";
-  // if (!AFRAME.components[componentName]) {
-  //   console.error(`Component ${componentName} not registered`);
-  //   return;
-  // }
-
-  const el = createEntityAndReparent(node);
-  el.classList.add(node.name);
-
   const audioParams = otherComponents["audio-params"];
 
-  // Set different property names.q
+  // Set properties.
   const audioProps = {
-    // autoplay: componentProps.autoPlay,
-    autoplay: false,
+    autoplay: componentProps.autoPlay,
     distanceModel: audioParams.distanceModel,
     loop: componentProps.loop,
     maxDistance: audioParams.maxDistance,
@@ -26,15 +16,5 @@ export function inflateAudio(node, componentProps, otherComponents) {
     volume: audioParams.gain,
   };
 
-  if (componentProps.autoPlay) {
-    el.setAttribute("sound-autoplay", true);
-  }
-
-  // Remove properties not handled or different in A-Frame troika-text.
-  // delete audioProps.autoPlay;
-  // delete audioProps.controls;
-
-  el.setAttribute("sound", audioProps);
-
-  return el;
+  addComponent(node, "sound", audioProps);
 }
