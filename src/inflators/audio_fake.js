@@ -1,22 +1,15 @@
-// import { absoluteURLForAsset, createEntityAndReparent } from "./utils";
 import { absoluteURLForAsset, addComponent } from "./utils";
+import { FakeEntity } from "../components/FakeEntity";
 
 export function inflateAudio(node, componentProps, otherComponents) {
-  // const componentName = "sound";
-  // if (!AFRAME.components[componentName]) {
-  //   console.error(`Component ${componentName} not registered`);
-  //   return;
-  // }
-
-  console.log(node);
-  // const el = createEntityAndReparent(node);
-  // el.classList.add(node.name);
+  node.fakeEl = new FakeEntity(node);
+  node.fakeEl.setObject3D("mesh", node);
 
   const audioParams = otherComponents["audio-params"];
 
   // Set different property names.q
   const audioProps = {
-    autoplay: false,
+    autoplay: true,
     distanceModel: audioParams.distanceModel,
     loop: componentProps.loop,
     maxDistance: audioParams.maxDistance,
@@ -37,7 +30,5 @@ export function inflateAudio(node, componentProps, otherComponents) {
 
   // el.setAttribute("sound", audioProps);
 
-  const el = addComponent(node, "sound", audioProps);
-
-  return el;
+  addComponent(node, "sound", audioProps);
 }
