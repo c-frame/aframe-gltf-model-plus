@@ -346,6 +346,7 @@ AFRAME.registerComponent("move-to-unoccupied-waypoint", {
   schema: {
     on: { type: "string", default: "click" },
     delay: { type: "number", default: 0 },
+    filterRegExp: { type: "string", default: "" },
   },
   init() {
     this.move = this.move.bind(this);
@@ -395,9 +396,14 @@ AFRAME.registerComponent("move-to-unoccupied-waypoint", {
 
   move() {
     const waypointSystem = this.el.sceneEl.systems.waypoint;
-    const waypoints = waypointSystem.registeredWaypoints.filter(
-      (waypoint) => waypoint.components.waypoint.data.canBeOccupied && !waypoint.components.waypoint.data.isOccupied
-    );
+    const filterRegExp = this.data.filterRegExp ? new RegExp(this.data.filterRegExp) : null;
+    const waypoints = waypointSystem.registeredWaypoints.filter((waypoint) => {
+      let include = waypoint.components.waypoint.data.canBeOccupied && !waypoint.components.waypoint.data.isOccupied;
+      if (filterRegExp && !waypoint.id.match(filterRegExp)) {
+        include = false;
+      }
+      return include;
+    });
     const firstUnoccupiedWaypoint = waypoints.length > 0 ? waypoints[0] : null;
 
     if (firstUnoccupiedWaypoint) {
