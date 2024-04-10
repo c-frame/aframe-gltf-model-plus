@@ -52,6 +52,12 @@ or on a plane on click (default):
 ></a-plane>
 ```
 
+Filter waypoints with a regular expression:
+
+```html
+<a-plane move-to-unoccupied-waypoint="filterRegExp:seat[0-9]+row[23]"></a-plane>
+```
+
 ## a-waypoint primitive
 
 Seated waypoint:
