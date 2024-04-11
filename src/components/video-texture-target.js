@@ -28,25 +28,25 @@ AFRAME.registerComponent("video-texture-target", {
           FAKE_ALPHA_ENABLED: fakeAlphaEnabled ? 1 : 0,
         },
         vertexShader: /* glsl */ `
-            varying vec2 vUv;
-            void main() {
-              vUv = uv;
-              gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-            }
-          `,
+          varying vec2 vUv;
+          void main() {
+            vUv = uv;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
         fragmentShader: /* glsl */ `
-            varying vec2 vUv;
-            uniform sampler2D map;
-            void main() {
-              vec4 diffuseColor = texture2D(map, vUv);
-              gl_FragColor = vec4(diffuseColor.rgb, 1.0);
-              #if FAKE_ALPHA_ENABLED == 1
-              if (diffuseColor.g - diffuseColor.r > 0.15) {
-                gl_FragColor.a = 0.0;
-              }
-              #endif
+          varying vec2 vUv;
+          uniform sampler2D map;
+          void main() {
+            vec4 diffuseColor = texture2D(map, vUv);
+            gl_FragColor = vec4(diffuseColor.rgb, 1.0);
+            #if FAKE_ALPHA_ENABLED == 1
+            if (diffuseColor.g - diffuseColor.r > 0.15) {
+              gl_FragColor.a = 0.0;
             }
-          `,
+            #endif
+          }
+        `,
       });
       if (fakeAlphaEnabled) {
         material.transparent = true;
