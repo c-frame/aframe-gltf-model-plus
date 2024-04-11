@@ -277,7 +277,8 @@ export const gltfModelPlus = {
 
             if (node.userData.gltfExtensions && node.userData.gltfExtensions.MOZ_hubs_components) {
               const hubsComponents = node.userData.gltfExtensions.MOZ_hubs_components;
-              console.log(src, hubsComponents, node.name);
+              const srcForLogging = src.startsWith("data:") ? "data:application/octet-stream;base64,..." : src;
+              console.log(srcForLogging, hubsComponents, node.name);
               Object.entries(hubsComponents).forEach(([componentName, componentProps]) => {
                 if (componentName === "environment-settings") {
                   environmentSettings = componentProps;
