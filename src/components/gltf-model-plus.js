@@ -308,9 +308,9 @@ export const gltfModelPlus = {
                       for (let i = 0; i < clipNames.length; i++) {
                         const n = clipNames[i];
                         const a = animations.find(({ name }) => name === n);
-                        // Add the Hubs defined componentProps, we need them later.
-                        a.componentProps = componentProps;
                         if (a) {
+                          // Add the Hubs defined componentProps, we need them later.
+                          a.componentProps = componentProps;
                           clips.push(a);
                         } else {
                           console.warn(`Could not find animation named '${n}'`);
