@@ -308,9 +308,9 @@ export const gltfModelPlus = {
                       for (let i = 0; i < clipNames.length; i++) {
                         const n = clipNames[i];
                         const a = animations.find(({ name }) => name === n);
-                        // Add the Hubs defined componentProps, we need them later.
-                        a.componentProps = componentProps;
                         if (a) {
+                          // Add the Hubs defined componentProps, we need them later.
+                          a.componentProps = componentProps;
                           clips.push(a);
                         } else {
                           console.warn(`Could not find animation named '${n}'`);
@@ -380,6 +380,8 @@ export const gltfModelPlus = {
           // el could be a FakeEntity if we aliased gtlf-model to gtlf-model-plus, so we check classList is not undefined
           if (el.classList?.contains("environment-settings")) {
             gltfInflators.get("environment-settings")(el.sceneEl, environmentSettings);
+            // Clear the cache after successfully loaded the glb to free some memory
+            THREE.Cache.clear();
           }
 
           setTimeout(() => {
