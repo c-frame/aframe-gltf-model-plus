@@ -79,3 +79,36 @@ Spawn point:
 ```html
 <a-waypoint id="spawnpoint" can-be-spawn-point="true" position="-25 0 0" rotation="0 90 0"></a-waypoint>
 ```
+
+## open-link
+
+Example of a clickable button to move to a specific waypoint:
+
+```html
+<a-waypoint id="entrance" position="4.5 0 46" rotation="0 180 0"></a-waypoint>
+<a-plane
+  class="clickable"
+  width="2"
+  height="0.6"
+  material="color:black"
+  text="value: exit the meeting room; width: 4; align: center"
+  position="-5 2 150"
+  billboard
+  open-link="href:#entrance"
+></a-plane>
+```
+
+Example of opening a link:
+
+```html
+<a-plane
+  class="clickable"
+  width="2"
+  height="0.6"
+  material="color:black"
+  text="value: go to aframe website; width: 4; align: center"
+  position="-5 2 150"
+  billboard
+  open-link="href:https://aframe.io"
+></a-plane>
+```
