@@ -164,7 +164,7 @@
         For another scene, you probably want to set it to a higher value.
       -->
       <a-assets timeout="30000">
-        <a-asset-item id="sceneGLB" src="./hubs_components_audio_007.glb"></a-asset-item>
+        <a-asset-item id="sceneGLB" src="./hubs_components_example_005.glb"></a-asset-item>
       </a-assets>
       <a-entity
         id="rig"
@@ -180,6 +180,35 @@
       <a-entity id="gltf-model-plus-entity" class="environment-settings" gltf-model-plus="#sceneGLB"></a-entity>
 
       <a-entity light="type: point; color: #f4f4f4; intensity: 0.4; distance: 0" position="0 2 0"></a-entity>
+
+      <a-plane
+        class="clickable"
+        width="1.5"
+        height="0.5"
+        material="color:black"
+        text="value: sit on a\nnearby seat; width: 4; align: center"
+        position="-2.5 -3.5 -1"
+        billboard
+        move-to-unoccupied-waypoint
+      ></a-plane>
+
+      <a-cylinder radius="0.25" height="0.5" position="-3.5 -4.74 -3" rotation="0 -150 0">
+        <a-waypoint
+          id="seat1"
+          position="0 0.27 0"
+          can-be-clicked="true"
+          can-be-occupied="true"
+          will-disable-motion="true"
+        ></a-waypoint>
+      </a-cylinder>
+
+      <!-- <a-waypoint
+        id="seat1"
+        position="-4 -4.5 -2"
+        can-be-clicked="true"
+        can-be-occupied="true"
+        will-disable-motion="true"
+      ></a-waypoint> -->
     </a-scene>
 
     <!--
