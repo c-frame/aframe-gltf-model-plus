@@ -133,9 +133,7 @@ Legend:
 
 ### Media
 
-- [ ] Audio
-- [ ] Audio Params: sound effects with old audio component or audio+audio-params components
-  - [ ] synced audio with networked id
+- [x] Audio: sounds with old audio component or audio+audio-params components
 - [?] Audio Source
 - [?] Audio Target
 - [?] Audio Zone
