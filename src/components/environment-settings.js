@@ -1,14 +1,9 @@
 /* global AFRAME, THREE */
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 import { gltfInflators } from "../inflators";
+import { absoluteURLForAsset } from "../inflators/utils";
 
 const HDR_FILE_RE = /\.hdr$/;
-
-const absoluteURLForAsset =
-  window.absoluteURLForAsset ||
-  ((asset) => {
-    return asset;
-  });
 
 // same defaults as the defaultEnvironmentSettings function
 AFRAME.registerComponent("environment-settings", {
