@@ -10,10 +10,27 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.slim.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/open-easyrtc@2.0.20/api/easyrtc.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/networked-aframe@^0.12.0/dist/networked-aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/networked-aframe/naf-janus-adapter@3.2.0/examples/js/audio-system.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@fern-solutions/aframe-mirror@1.1.1/dist/mirror.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-cursor-teleport@1.5.0/dist/aframe-cursor-teleport-component.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/AdaRoseCannon/aframe-xr-boilerplate@f34468b9503d0c7326b9af0f1f09959004916875/simple-navmesh-constraint.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aframe-troika-text@0.11.0/dist/aframe-troika-text.min.js"></script>
+    <script>
+      // @var url {string} The url as string.
+      window.absoluteURLForAsset = (url) => {
+        let newurl = "";
+
+        if (!url) return "";
+        if (url.startsWith("https://uploads-prod.reticulum.io/files/")) {
+          newurl = url.replace(
+            "https://uploads-prod.reticulum.io/files/",
+            "https://cdn.jsdelivr.net/gh/c-frame/outdoor-festival@e9311cf/"
+          );
+        }
+
+        return newurl;
+      };
+    </script>
     <script src="../../dist/gltf-model-plus.min.js"></script>
     <script>
       // Replace this by your own player-info component

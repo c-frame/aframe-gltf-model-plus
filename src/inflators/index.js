@@ -1,3 +1,5 @@
+import { inflateAudio } from "./audio";
+import { inflateAudioParams } from "./audio-params";
 import { inflateBillboard } from "./billboard";
 import { inflateEnvironmentSettings } from "./environment-settings";
 import { inflateLink } from "./link";
@@ -11,6 +13,8 @@ import { inflateUVScroll } from "./uv-scroll";
 import { inflateWaypoint, inflateWaypointFromJSON } from "./waypoint";
 
 export const gltfInflators = new Map();
+gltfInflators.set("audio", inflateAudio);
+gltfInflators.set("audio-params", inflateAudioParams);
 gltfInflators.set("billboard", inflateBillboard);
 gltfInflators.set("environment-settings", inflateEnvironmentSettings);
 gltfInflators.set("link", inflateLink);

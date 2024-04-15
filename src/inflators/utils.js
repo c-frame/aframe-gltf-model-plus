@@ -30,3 +30,16 @@ export const createEntityAndReparent = (node, klass = undefined) => {
   sceneEl.object3D.attach(node);
   return entity;
 };
+
+/**
+ * Check if the window.absoluteURLForAsset function is defined, and use it to
+ * convert the asset URLs to local URLs where the files are actually stored
+ * to avoid CORS issues.
+ * If the function is not defined, return the asset URL as is.
+ * @param {string} asset The asset URL to convert.
+ */
+export const absoluteURLForAsset =
+  window.absoluteURLForAsset ||
+  ((asset) => {
+    return asset;
+  });

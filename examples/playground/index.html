@@ -10,12 +10,26 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.slim.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/open-easyrtc@2.0.20/api/easyrtc.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/networked-aframe@^0.12.0/dist/networked-aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/networked-aframe/naf-janus-adapter@3.2.0/examples/js/audio-system.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@fern-solutions/aframe-mirror@1.1.1/dist/mirror.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-cursor-teleport@1.5.0/dist/aframe-cursor-teleport-component.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/AdaRoseCannon/aframe-xr-boilerplate@f34468b9503d0c7326b9af0f1f09959004916875/simple-navmesh-constraint.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aframe-troika-text@0.11.0/dist/aframe-troika-text.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/aframe-look-at-component@1.0.0/dist/aframe-look-at-component.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/networked-aframe/naf-valid-avatars@4b116a4/src/player-info.js"></script>
+    <script>
+      // @var url {string} The url as string.
+      window.absoluteURLForAsset = (url) => {
+        let newurl = "";
+
+        if (!url) return "";
+        if (url.startsWith("https://vr.unodo-design.com/assets/")) {
+          newurl = url.replace("https://vr.unodo-design.com/assets/", "./");
+        }
+
+        return newurl;
+      };
+    </script>
     <script src="../../dist/gltf-model-plus.min.js"></script>
     <script>
       AFRAME.registerComponent("shortcuts", {
@@ -105,6 +119,8 @@
           <li>[g] toggle fly mode</li>
           <li>[shift down] move fast</li>
           <li>[space] toggle visibility of clickable waypoints</li>
+          <li>&nbsp;</li>
+          <li>[click on the screen once] start the sound</li>
         </ul>
       </div>
     </div>
@@ -147,7 +163,7 @@
         For another scene, you probably want to set it to a higher value.
       -->
       <a-assets timeout="30000">
-        <a-asset-item id="sceneGLB" src="./hubs_components_example_004.glb"></a-asset-item>
+        <a-asset-item id="sceneGLB" src="./hubs_components_example_005.glb"></a-asset-item>
       </a-assets>
       <a-entity
         id="rig"
@@ -256,7 +272,11 @@
 
               reader.onload = function (e) {
                 // Set the gltf-model-plus attribute of the gltf-model-plus component to the dropped file.
-                document.querySelector("[gltf-model-plus]").setAttribute("gltf-model-plus", e.target.result);
+                // Set an empty string as source as a workaround to force the "model-loaded" event
+                // when the same GLB is loaded again.
+                const gltfModelPlus = document.querySelector("[gltf-model-plus]");
+                gltfModelPlus.setAttribute("gltf-model-plus", "");
+                gltfModelPlus.setAttribute("gltf-model-plus", e.target.result);
               };
 
               reader.readAsDataURL(file);
