@@ -39,7 +39,8 @@ AFRAME.registerComponent("particle-emitter", {
   },
 
   async setTexture(src) {
-    const texture = await new TextureLoader().loadAsync(src);
+    const textureLoader = new TextureLoader().setCrossOrigin('anonymous');
+    const texture = await textureLoader.loadAsync(src);
 
     // Guard against src changing while request was in flight
     if (this.data.src !== src) {
@@ -56,7 +57,7 @@ AFRAME.registerComponent("particle-emitter", {
     const particleEmitter = this.particleEmitter;
 
     if (prevData.src !== data.src) {
-      this.setTexture(data.src, data.resolve).catch(console.error);
+      this.setTexture(data.src).catch(console.error);
     }
 
     if (
