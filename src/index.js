@@ -3,6 +3,7 @@ import "./components/environment-settings";
 import "./components/open-link";
 import "./components/gltf-model-plus";
 import "./components/media-frame";
+import "./components/particle-emitter";
 import "./components/reflection-probe";
 import "./components/simple-water";
 import "./components/uv-scroll";
