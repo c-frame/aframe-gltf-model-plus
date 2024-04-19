@@ -40,4 +40,9 @@ module.exports = {
       },
     ],
   },
+  resolve: {
+    alias: {
+      "@mozillareality/easing-functions": path.resolve(__dirname, 'node_modules/lib-hubs/packages/easing-functions/lib/esm/index')
+    }
+  }
 };
