@@ -116,7 +116,7 @@ Legend:
 
 - [x] Link (open-link to not conflict with aframe link component)
 - [x] Media Frame
-- [ ] Particle Emitter
+- [x] Particle Emitter
 - [x] Simple Water (use simple TextureLoader instead of HubsTextureLoader so no ImageBitmap, only support high quality so MeshStandardMaterial)
 - [ ] Spawner
 - [x] Text (with [aframe-troika-text](https://github.com/lojjic/aframe-troika-text))
