@@ -210,7 +210,7 @@ AFRAME.registerComponent("waypoint", {
       const position = new THREE.Vector3();
       spawnPoint.object3D.getWorldPosition(position);
       const playerInfo = cameraRig.components["player-info"];
-      const avatarSitOffset = playerInfo.avatarSitOffset ?? 0.45;
+      const avatarSitOffset = playerInfo && playerInfo.avatarSitOffset ? playerInfo.avatarSitOffset : 0.45;
       if (avatarPose === "sit") {
         position.y -= avatarSitOffset;
         camera.object3D.position.y = 1.15;
