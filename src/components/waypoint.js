@@ -76,7 +76,7 @@ AFRAME.registerSystem("waypoint", {
     const quaternion = new THREE.Quaternion();
     quaternion.setFromEuler(new THREE.Euler(0, THREE.MathUtils.degToRad(rotation.y), 0));
     const cameraRig = document.querySelector("#rig,#cameraRig");
-    const camera = cameraRig.querySelector("[camera]");
+    const camera = cameraRig.querySelector("a-camera,[camera]");
     const cursorTeleport = cameraRig?.components["cursor-teleport"];
     withTransition = withTransition && !cameraRig.sceneEl.is("vr-mode");
     if (withTransition && cursorTeleport) {
@@ -103,7 +103,7 @@ AFRAME.registerSystem("waypoint", {
   },
   unoccupyWaypoint() {
     const cameraRig = document.querySelector("#rig,#cameraRig");
-    const camera = cameraRig.querySelector("[camera]");
+    const camera = cameraRig.querySelector("a-camera,[camera]");
 
     for (const waypoint of this.registeredWaypoints) {
       if (waypoint.components.waypoint.data.occupiedBy === getClientId()) {
@@ -194,7 +194,7 @@ AFRAME.registerComponent("waypoint", {
       const withTransition = false;
       this.system.unoccupyWaypoint();
       const cameraRig = document.querySelector("#rig,#cameraRig");
-      const camera = cameraRig.querySelector("[camera]");
+      const camera = cameraRig.querySelector("a-camera,[camera]");
 
       // There is a check for occupyWaypoint in the player-info component for the moved event
       // to call this.el.sceneEl.systems.waypoint.unoccupyWaypoint()
@@ -334,7 +334,7 @@ AFRAME.registerComponent("move-to-spawn-point", {
       firstSpawnPoint.emit("click", { withTransition: false }); // even if waypoint is not canBeClickable, this is to share the logic
     } else {
       const cameraRig = document.querySelector("#rig,#cameraRig");
-      const camera = cameraRig.querySelector("[camera]");
+      const camera = cameraRig.querySelector("a-camera,[camera]");
       waypointSystem.teleportTo({ x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: 0 }, false);
       cameraRig.setAttribute("player-info", "avatarPose", "stand");
       camera.object3D.position.y = 1.6;
