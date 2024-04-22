@@ -82,8 +82,9 @@ AFRAME.registerSystem("waypoint", {
     if (withTransition && cursorTeleport) {
       cursorTeleport.teleportTo(position, quaternion);
     } else {
-      if (cameraRig.hasAttribute("simple-navmesh-constraint")) {
-        cameraRig.setAttribute("simple-navmesh-constraint", "enabled", false);
+      const navMeshConstraint = document.querySelector('[simple-navmesh-constraint]');
+      if (navMeshConstraint) {
+        navMeshConstraint.setAttribute("simple-navmesh-constraint", {enabled: false});
       }
       const camForRotation = camera.object3D;
       const destQuaternion = new THREE.Quaternion();
@@ -92,8 +93,8 @@ AFRAME.registerSystem("waypoint", {
       destQuaternion.multiply(quaternion);
       cameraRig.object3D.position.copy(position);
       cameraRig.object3D.quaternion.copy(destQuaternion);
-      if (cameraRig.hasAttribute("simple-navmesh-constraint")) {
-        cameraRig.setAttribute("simple-navmesh-constraint", "enabled", true);
+      if (navMeshConstraint) {
+        navMeshConstraint.setAttribute("simple-navmesh-constraint", {enabled: true});
       }
     }
 

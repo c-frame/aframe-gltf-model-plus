@@ -348,12 +348,6 @@ export const gltfModelPlus = {
                         self.removers.push(() => {
                           entity.object3D.traverse(disposeNode);
                           if (entity.parentNode) entity.parentNode.removeChild(entity);
-                          if (componentName === "nav-mesh") {
-                            // Temporary until we add child-attached/child-detached support in simple-navmesh-constraint
-                            // https://github.com/networked-aframe/naf-valid-avatars/issues/28
-                            const cameraRig = document.querySelector("#rig,#cameraRig");
-                            cameraRig?.removeAttribute("simple-navmesh-constraint");
-                          }
                         });
                       }
                     });
