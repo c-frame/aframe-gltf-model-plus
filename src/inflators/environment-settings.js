@@ -2,8 +2,10 @@
 import { LUTCubeLoader } from "three/addons/loaders/LUTCubeLoader.js";
 import blenderLutPath from "../assets/blender-lut.cube";
 
+const WITH_LUTTONEMAPPING = !!THREE.LUTToneMapping;
+
 export const defaultEnvironmentSettings = {
-  toneMapping: "LUTToneMapping",
+  toneMapping: WITH_LUTTONEMAPPING ? "LUTToneMapping" : "NoToneMapping",
   toneMappingExposure: 1,
   backgroundColor: "skyblue",
   backgroundTexture: null,
@@ -47,10 +49,10 @@ export function inflateEnvironmentSettings(sceneEl, settings) {
   const scene = sceneEl.object3D;
   const renderer = sceneEl.renderer;
   let materialsNeedUpdate = false;
-  const newToneMapping = THREE[settings.toneMapping];
+  let newToneMapping = THREE[settings.toneMapping];
   if (typeof newToneMapping === "undefined") {
-    console.error("You need an aframe build with the tonemappingLUT patch to make LUTToneMapping work.");
-    return;
+    console.warn("You need an aframe build with the tonemappingLUT patch to make LUTToneMapping work. Falling back to NoToneMapping");
+    newToneMapping = THREE.NoToneMapping;
   }
   if (renderer.toneMapping !== newToneMapping) {
     renderer.toneMapping = newToneMapping;
