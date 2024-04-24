@@ -1,4 +1,7 @@
 /* global AFRAME, THREE, NAF */
+
+const WITH_NAF = !!window.NAF;
+
 function addWaypointTemplate() {
   const templateOuter = document.createElement("template");
   const templateInner = document.createElement("a-entity");
@@ -21,7 +24,9 @@ function addWaypointTemplate() {
   NAF.schemas.templateCache[refTemplateId] = templateOuter;
 }
 
-addWaypointTemplate();
+if (WITH_NAF) {
+  addWaypointTemplate();
+}
 
 function genClientId() {
   return String(crypto.getRandomValues(new Uint32Array(1))[0]);
@@ -33,7 +38,11 @@ function getClientId() {
   // this.el.setAttribute("waypoint", { isOccupied: true, occupiedBy: NAF.clientId });
   // with NAF.clientId empty string didn't set empty string but kept "scene", we use here clientId that is not empty even if not connected
   // so the unoccupyWaypoint function works correctly when not connected.
-  return NAF.clientId || clientId;
+  if (WITH_NAF) {
+    return NAF.clientId || clientId;
+  } else {
+    return clientId;
+  }
 }
 
 AFRAME.registerSystem("waypoint", {
@@ -115,7 +124,7 @@ AFRAME.registerSystem("waypoint", {
         }
         // In case of reconnect, someone else may have the actual ownership
         // of my seat, so be sure to take ownership.
-        if (waypoint.components.networked && NAF.connection.adapter) NAF.utils.takeOwnership(waypoint);
+        if (WITH_NAF && waypoint.components.networked && NAF.connection.adapter) NAF.utils.takeOwnership(waypoint);
       }
     }
 
@@ -172,6 +181,7 @@ AFRAME.registerComponent("waypoint", {
       // persistent entity disconnect. Every participant gains the ownership, so
       // there is a race condition to set isOccupied:false here.
       if (
+	WITH_NAF &&
         !this.el.sceneEl.is("naf:reconnecting") &&
         this.data.isOccupied &&
         NAF.connection.activeDataChannels[this.data.occupiedBy] === false
@@ -202,7 +212,7 @@ AFRAME.registerComponent("waypoint", {
       // We set isOccupied here even for waypoint canBeClicked && !canBeOccupied on purpose to not show the figure if we're on it
       this.system.occupyWaypoint = true;
       this.el.setAttribute("waypoint", { isOccupied: true, occupiedBy: getClientId() });
-      if (this.el.components.networked && NAF.connection.adapter) NAF.utils.takeOwnership(this.el);
+      if (WITH_NAF && this.el.components.networked && NAF.connection.adapter) NAF.utils.takeOwnership(this.el);
 
       const spawnPoint = this.el;
       const avatarPose = this.data.canBeOccupied && this.data.willDisableMotion ? "sit" : "stand";
@@ -275,7 +285,7 @@ AFRAME.registerComponent("waypoint", {
       } else {
         this.el.setAttribute("waypoint", { isOccupied: true });
       }
-      if (NAF.connection.adapter) NAF.utils.takeOwnership(this.el);
+      if (WITH_NAF && NAF.connection.adapter) NAF.utils.takeOwnership(this.el);
     }
 
     if (this.data.canBeClicked && oldData.isOccupied !== this.data.isOccupied) {
