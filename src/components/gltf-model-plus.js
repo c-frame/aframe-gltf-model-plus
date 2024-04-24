@@ -160,6 +160,9 @@ class GLTFHubsLightMapExtension {
       .then((results) => {
         const material = results[0];
         const lightMap = results[1];
+        // Lightmap channel used to be hardcoded in threejs. We now
+        // need to specify it. Hubs models always use channel 1.
+        lightMap.channel = 1;
         material.lightMap = lightMap;
         material.lightMapIntensity = extensionDef.intensity !== undefined ? extensionDef.intensity : 1;
         if (material.isMeshBasicMaterial) {
