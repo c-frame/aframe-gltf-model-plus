@@ -168,6 +168,7 @@
       <a-entity
         id="rig"
         cursor-teleport="cameraRig: #rig; cameraHead: #player; collisionEntities: .navmesh; ignoreEntities: .clickable"
+        simple-navmesh-constraint="navmesh:.navmesh;fall:0.5;height:0;exclude:.navmesh-hole;"
         movement-controls="fly:false;controls: gamepad, trackpad, keyboard, nipple;"
         move-to-spawn-point
         networked="template:#avatar-template;attachTemplateToLocal:false"
