@@ -12,7 +12,10 @@ function addMediaFrameTemplate() {
   NAF.schemas.templateCache[refTemplateId] = templateOuter;
 }
 
-addMediaFrameTemplate();
+const WITH_NAF = !!window.NAF;
+if (WITH_NAF) {
+    addMediaFrameTemplate();
+}
 
 const registeredMediaframes = [];
 const mediaFramesById = new Map();
@@ -71,7 +74,7 @@ export const mediaFrameComponent = AFRAME.registerComponent("media-frame", {
     snapToCenter: { type: "boolean", default: true },
   },
   play() {
-    const id = this.el.components.networked.data.networkId;
+    const id = WITH_NAF ? this.el.components.networked.data.networkId : this.el.id;
     const instance = { component: this, el: this.el, id };
     this.instance = instance;
     mediaFramesById.set(id, instance);

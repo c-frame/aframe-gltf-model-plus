@@ -52,6 +52,6 @@
   },
   "dependencies": {
     "three": "^0.162.0",
-    "lib-hubs": "github:mozillareality/lib-hubs#master"
+    "lib-hubs": "github:Elettrotecnica/lib-hubs#elettrotecnica"
   }
 }

@@ -1,4 +1,7 @@
 /* global AFRAME, THREE, NAF */
+
+const WITH_NAF = !!window.NAF;
+
 function addWaypointTemplate() {
   const templateOuter = document.createElement("template");
   const templateInner = document.createElement("a-entity");
@@ -21,7 +24,9 @@ function addWaypointTemplate() {
   NAF.schemas.templateCache[refTemplateId] = templateOuter;
 }
 
-addWaypointTemplate();
+if (WITH_NAF) {
+  addWaypointTemplate();
+}
 
 function genClientId() {
   return String(crypto.getRandomValues(new Uint32Array(1))[0]);
@@ -33,7 +38,11 @@ function getClientId() {
   // this.el.setAttribute("waypoint", { isOccupied: true, occupiedBy: NAF.clientId });
   // with NAF.clientId empty string didn't set empty string but kept "scene", we use here clientId that is not empty even if not connected
   // so the unoccupyWaypoint function works correctly when not connected.
-  return NAF.clientId || clientId;
+  if (WITH_NAF) {
+    return NAF.clientId || clientId;
+  } else {
+    return clientId;
+  }
 }
 
 AFRAME.registerSystem("waypoint", {
@@ -76,14 +85,15 @@ AFRAME.registerSystem("waypoint", {
     const quaternion = new THREE.Quaternion();
     quaternion.setFromEuler(new THREE.Euler(0, THREE.MathUtils.degToRad(rotation.y), 0));
     const cameraRig = document.querySelector("#rig,#cameraRig");
-    const camera = cameraRig.querySelector("[camera]");
+    const camera = cameraRig.querySelector("a-camera,[camera]");
     const cursorTeleport = cameraRig?.components["cursor-teleport"];
     withTransition = withTransition && !cameraRig.sceneEl.is("vr-mode");
     if (withTransition && cursorTeleport) {
       cursorTeleport.teleportTo(position, quaternion);
     } else {
-      if (cameraRig.hasAttribute("simple-navmesh-constraint")) {
-        cameraRig.setAttribute("simple-navmesh-constraint", "enabled", false);
+      const navMeshConstraint = document.querySelector('[simple-navmesh-constraint]');
+      if (navMeshConstraint) {
+        navMeshConstraint.setAttribute("simple-navmesh-constraint", {enabled: false});
       }
       const camForRotation = camera.object3D;
       const destQuaternion = new THREE.Quaternion();
@@ -92,8 +102,8 @@ AFRAME.registerSystem("waypoint", {
       destQuaternion.multiply(quaternion);
       cameraRig.object3D.position.copy(position);
       cameraRig.object3D.quaternion.copy(destQuaternion);
-      if (cameraRig.hasAttribute("simple-navmesh-constraint")) {
-        cameraRig.setAttribute("simple-navmesh-constraint", "enabled", true);
+      if (navMeshConstraint) {
+        navMeshConstraint.setAttribute("simple-navmesh-constraint", {enabled: true});
       }
     }
 
@@ -103,7 +113,7 @@ AFRAME.registerSystem("waypoint", {
   },
   unoccupyWaypoint() {
     const cameraRig = document.querySelector("#rig,#cameraRig");
-    const camera = cameraRig.querySelector("[camera]");
+    const camera = cameraRig.querySelector("a-camera,[camera]");
 
     for (const waypoint of this.registeredWaypoints) {
       if (waypoint.components.waypoint.data.occupiedBy === getClientId()) {
@@ -114,7 +124,7 @@ AFRAME.registerSystem("waypoint", {
         }
         // In case of reconnect, someone else may have the actual ownership
         // of my seat, so be sure to take ownership.
-        if (waypoint.components.networked && NAF.connection.adapter) NAF.utils.takeOwnership(waypoint);
+        if (WITH_NAF && waypoint.components.networked && NAF.connection.adapter) NAF.utils.takeOwnership(waypoint);
       }
     }
 
@@ -171,6 +181,7 @@ AFRAME.registerComponent("waypoint", {
       // persistent entity disconnect. Every participant gains the ownership, so
       // there is a race condition to set isOccupied:false here.
       if (
+	WITH_NAF &&
         !this.el.sceneEl.is("naf:reconnecting") &&
         this.data.isOccupied &&
         NAF.connection.activeDataChannels[this.data.occupiedBy] === false
@@ -194,14 +205,14 @@ AFRAME.registerComponent("waypoint", {
       const withTransition = false;
       this.system.unoccupyWaypoint();
       const cameraRig = document.querySelector("#rig,#cameraRig");
-      const camera = cameraRig.querySelector("[camera]");
+      const camera = cameraRig.querySelector("a-camera,[camera]");
 
       // There is a check for occupyWaypoint in the player-info component for the moved event
       // to call this.el.sceneEl.systems.waypoint.unoccupyWaypoint()
       // We set isOccupied here even for waypoint canBeClicked && !canBeOccupied on purpose to not show the figure if we're on it
       this.system.occupyWaypoint = true;
       this.el.setAttribute("waypoint", { isOccupied: true, occupiedBy: getClientId() });
-      if (this.el.components.networked && NAF.connection.adapter) NAF.utils.takeOwnership(this.el);
+      if (WITH_NAF && this.el.components.networked && NAF.connection.adapter) NAF.utils.takeOwnership(this.el);
 
       const spawnPoint = this.el;
       const avatarPose = this.data.canBeOccupied && this.data.willDisableMotion ? "sit" : "stand";
@@ -210,7 +221,7 @@ AFRAME.registerComponent("waypoint", {
       const position = new THREE.Vector3();
       spawnPoint.object3D.getWorldPosition(position);
       const playerInfo = cameraRig.components["player-info"];
-      const avatarSitOffset = playerInfo.avatarSitOffset ?? 0.45;
+      const avatarSitOffset = playerInfo && playerInfo.avatarSitOffset ? playerInfo.avatarSitOffset : 0.45;
       if (avatarPose === "sit") {
         position.y -= avatarSitOffset;
         camera.object3D.position.y = 1.15;
@@ -274,7 +285,7 @@ AFRAME.registerComponent("waypoint", {
       } else {
         this.el.setAttribute("waypoint", { isOccupied: true });
       }
-      if (NAF.connection.adapter) NAF.utils.takeOwnership(this.el);
+      if (WITH_NAF && NAF.connection.adapter) NAF.utils.takeOwnership(this.el);
     }
 
     if (this.data.canBeClicked && oldData.isOccupied !== this.data.isOccupied) {
@@ -334,7 +345,7 @@ AFRAME.registerComponent("move-to-spawn-point", {
       firstSpawnPoint.emit("click", { withTransition: false }); // even if waypoint is not canBeClickable, this is to share the logic
     } else {
       const cameraRig = document.querySelector("#rig,#cameraRig");
-      const camera = cameraRig.querySelector("[camera]");
+      const camera = cameraRig.querySelector("a-camera,[camera]");
       waypointSystem.teleportTo({ x: 0, y: 0, z: 0 }, { x: 0, y: 0, z: 0 }, false);
       cameraRig.setAttribute("player-info", "avatarPose", "stand");
       camera.object3D.position.y = 1.6;
