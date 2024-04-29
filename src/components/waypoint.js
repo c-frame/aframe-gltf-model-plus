@@ -60,7 +60,7 @@ AFRAME.registerSystem("waypoint", {
     if (this.pendingEmitWaypointsReady) return;
     this.pendingEmitWaypointsReady = true;
     console.log("[wp] schedule emitting waypoints-ready in a microtask");
-    queueMicrotask(() => {
+    setTimeout(() => {
       if (this.glbLoading > 0) {
         console.log(`[wp] ${this.glbLoading} glb still loading, cancel emitting waypoints-ready`);
         this.pendingEmitWaypointsReady = false;
@@ -68,7 +68,9 @@ AFRAME.registerSystem("waypoint", {
       }
 
       console.log("[wp] emit waypoints-ready");
-      this.el.emit("waypoints-ready");
+      setTimeout(() => {
+        this.el.emit("waypoints-ready");
+      });
       this.pendingEmitWaypointsReady = false;
     });
   },
