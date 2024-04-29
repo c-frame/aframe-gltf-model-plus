@@ -91,9 +91,9 @@ AFRAME.registerSystem("waypoint", {
     if (withTransition && cursorTeleport) {
       cursorTeleport.teleportTo(position, quaternion);
     } else {
-      const navMeshConstraint = document.querySelector('[simple-navmesh-constraint]');
+      const navMeshConstraint = document.querySelector("[simple-navmesh-constraint]");
       if (navMeshConstraint) {
-        navMeshConstraint.setAttribute("simple-navmesh-constraint", {enabled: false});
+        navMeshConstraint.setAttribute("simple-navmesh-constraint", { enabled: false });
       }
       const camForRotation = camera.object3D;
       const destQuaternion = new THREE.Quaternion();
@@ -103,7 +103,7 @@ AFRAME.registerSystem("waypoint", {
       cameraRig.object3D.position.copy(position);
       cameraRig.object3D.quaternion.copy(destQuaternion);
       if (navMeshConstraint) {
-        navMeshConstraint.setAttribute("simple-navmesh-constraint", {enabled: true});
+        navMeshConstraint.setAttribute("simple-navmesh-constraint", { enabled: true });
       }
     }
 
@@ -181,7 +181,7 @@ AFRAME.registerComponent("waypoint", {
       // persistent entity disconnect. Every participant gains the ownership, so
       // there is a race condition to set isOccupied:false here.
       if (
-	WITH_NAF &&
+        WITH_NAF &&
         !this.el.sceneEl.is("naf:reconnecting") &&
         this.data.isOccupied &&
         NAF.connection.activeDataChannels[this.data.occupiedBy] === false

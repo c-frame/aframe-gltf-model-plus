@@ -39,7 +39,7 @@ AFRAME.registerComponent("particle-emitter", {
   },
 
   async setTexture(src) {
-    const textureLoader = new TextureLoader().setCrossOrigin('anonymous');
+    const textureLoader = new TextureLoader().setCrossOrigin("anonymous");
     const texture = await textureLoader.loadAsync(src);
 
     // Guard against src changing while request was in flight

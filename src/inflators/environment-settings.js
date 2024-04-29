@@ -51,7 +51,9 @@ export function inflateEnvironmentSettings(sceneEl, settings) {
   let materialsNeedUpdate = false;
   let newToneMapping = THREE[settings.toneMapping];
   if (typeof newToneMapping === "undefined") {
-    console.warn("You need an aframe build with the tonemappingLUT patch to make LUTToneMapping work. Falling back to NoToneMapping");
+    console.warn(
+      "You need an aframe build with the tonemappingLUT patch to make LUTToneMapping work. Falling back to NoToneMapping"
+    );
     newToneMapping = THREE.NoToneMapping;
   }
   if (renderer.toneMapping !== newToneMapping) {

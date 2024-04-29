@@ -14,7 +14,7 @@ function addMediaFrameTemplate() {
 
 const WITH_NAF = !!window.NAF;
 if (WITH_NAF) {
-    addMediaFrameTemplate();
+  addMediaFrameTemplate();
 }
 
 const registeredMediaframes = [];
