@@ -9,7 +9,7 @@ I implemented support for "LUTToneMapping" (Blender 'Filmic') tone mapping so th
 see the code in inflators/environment-settings.js
 
 For this to work, you need a custom build of aframe.
-Here is how to create an aframe 1.4.2 / three 147 build with the required patch in threejs:
+Here is how to create an aframe master (post 1.5.0 release) / three 164 build with the required patch in threejs:
 
 ```
 git clone git@github.com:supermedium/three.js.git super-three
@@ -17,20 +17,20 @@ git clone git@github.com:aframevr/aframe.git
 
 cd aframe
 git pull
-git checkout aa42fe342bd1d02145054113a2737f738897825b # 1.4.2 version
+git checkout 81caf8970dfe78fc922766bf94c63b3cef30c699 # master post 1.5.0 2024-05-03 09:01 r164
 rm -rf package-lock.json node_modules
 npm install
 
 cd ../super-three
-git checkout super-r147 # look at the super-three version in aframe/package.json and adapt the branch accordingly
-git checkout -b super-r147-lut
 git remote add hubs git@github.com:MozillaReality/three.js.git
 git remote add vincentfretin git@github.com:vincentfretin/three.js.git
 git fetch origin
 git fetch hubs
+git checkout super-r164 # look at the super-three version in aframe/package.json and adapt the branch accordingly
+git checkout -b super-r164-lut
 
 # https://github.com/mrdoob/three.js/compare/dev...MozillaReality:three.js:hubs-patches-147
-
+# Note: cherry-pick the commit from the previous branch to avoid conflicts
 # PannerNode optimization https://github.com/MozillaReality/three.js/commit/d11c1b5674a614bc1b95fef746e8a81e65c8263a
 git cherry-pick d11c1b5674a614bc1b95fef746e8a81e65c8263a
 # Don't apply IBL irradiance to lightmapped objects https://github.com/MozillaReality/three.js/commit/42dec78a61db57bc7ae0cde025248c39d4a4a9cf
@@ -39,25 +39,16 @@ git cherry-pick 42dec78a61db57bc7ae0cde025248c39d4a4a9cf
 git cherry-pick 89c223982b5a95dd27d557bf8386c894fa80188d
 # Reflection probes https://github.com/MozillaReality/three.js/commit/2d3039919f26dc74f0444f8970ac122ec146ddf6
 git cherry-pick 2d3039919f26dc74f0444f8970ac122ec146ddf6
-# [HUBS] [r148] GLTFLoader: Clean up Skeleton binding https://github.com/MozillaReality/three.js/commit/f2b8b441c32efec6ca0d0c362c6447ac9a2d7875
-git cherry-pick f2b8b441c32efec6ca0d0c362c6447ac9a2d7875
-# [HUBS] [r148] GLTFLoader: Clean up node hierarchy build https://github.com/MozillaReality/three.js/commit/1f90c60c4402242f17ab5791fb1e25695ad82256
-git cherry-pick 1f90c60c4402242f17ab5791fb1e25695ad82256
-# [HUBS] [Upcoming] GLTFLoader: Add loadNode hook https://github.com/mrdoob/MozillaReality/commit/f282aec724e6fdb753424ee057215cbb238c6da2
-git cherry-pick f282aec724e6fdb753424ee057215cbb238c6da2
-# [HUBS] [Upcoming] FileLoader: HTTP Range requests support https://github.com/MozillaReality/three.js/commit/98e13ffbca2817dc557e0b6ff51031c646f207d1
-git cherry-pick 98e13ffbca2817dc557e0b6ff51031c646f207d1
-git push --set-upstream vincentfretin super-r147-lut
+git push --set-upstream vincentfretin super-r163-lut
 rm -rf node_modules/ package-lock.json
 npm install
 npm run build
 git commit -am"Build dist"
 git push
-cp build/three.\* ../aframe/node_modules/super-three/build/
-cp examples/jsm/loaders/DRACOLoader.js ../aframe/node_modules/super-three/examples/jsm/loaders/DRACOLoader.js
+cp build/three.* ../aframe/node_modules/super-three/build/
 
 cd ../aframe
 npm run dist
 
-cp dist/aframe-master.min.js\* ../gltf-model-plus/dist/
+cp dist/aframe-master.min.js* ../gltf-model-plus/dist/
 ```
