@@ -68,7 +68,7 @@ AFRAME.registerComponent("environment-settings", {
         }
 
         if (!isHDR) {
-          backgroundTexture.encoding = THREE.sRGBEncoding;
+          backgroundTexture.colorSpace = THREE.SRGBColorSpace;
         }
       }
 
@@ -100,7 +100,7 @@ AFRAME.registerComponent("environment-settings", {
         }
 
         if (!isHDR) {
-          envMapTexture.encoding = THREE.sRGBEncoding;
+          envMapTexture.colorSpace = THREE.SRGBColorSpace;
         }
       }
 
