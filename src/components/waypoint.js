@@ -367,6 +367,7 @@ AFRAME.registerComponent("move-to-unoccupied-waypoint", {
     this.listenerWaypointsReady = this.listenerWaypointsReady.bind(this);
     this.waypointsReady = false;
     this.triggered = false;
+    this.moved = false;
   },
 
   play() {
@@ -388,6 +389,7 @@ AFRAME.registerComponent("move-to-unoccupied-waypoint", {
   },
 
   listenerTrigger() {
+    if (this.data.on === "connected" && this.moved) return;
     this.triggered = true;
     // If the component is used with the connected event and the url includes a hash to spawn on a specific waypoint, then don't move.
     if (this.data.on === "connected" && window.location.hash !== "") return;
@@ -397,6 +399,7 @@ AFRAME.registerComponent("move-to-unoccupied-waypoint", {
   },
 
   listenerWaypointsReady() {
+    if (this.data.on === "connected" && this.moved) return;
     this.waypointsReady = true;
     if (this.triggered && this.waypointsReady) {
       if (this.data.delay === 0) {
@@ -408,6 +411,7 @@ AFRAME.registerComponent("move-to-unoccupied-waypoint", {
   },
 
   move() {
+    this.moved = true;
     const waypointSystem = this.el.sceneEl.systems.waypoint;
     const filterRegExp = this.data.filterRegExp ? new RegExp(this.data.filterRegExp) : null;
     const waypoints = waypointSystem.registeredWaypoints.filter((waypoint) => {
