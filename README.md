@@ -12,8 +12,8 @@ This is an alternate implementation of how Hubs imported the scene glb with afra
 ```html
 <head>
   <title>My A-Frame Scene</title>
-  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@main/dist/aframe-1.4.2-custom.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@main/dist/gltf-model-plus.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1169ac6/dist/aframe-master-custom-r164.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1169ac6/dist/gltf-model-plus.min.js"></script>
   ...
 </head>
 <body>
