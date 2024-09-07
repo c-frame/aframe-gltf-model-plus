@@ -12,8 +12,8 @@ This is an alternate implementation of how Hubs imported the scene glb with afra
 ```html
 <head>
   <title>My A-Frame Scene</title>
-  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1169ac6/dist/aframe-master-custom-r164.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1169ac6/dist/gltf-model-plus.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.0.0/dist/aframe-master-custom-r164.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.0.0/dist/gltf-model-plus.min.js"></script>
   ...
 </head>
 <body>
@@ -75,15 +75,15 @@ and refresh the page.
 You can deploy the content of the `examples/playground` folder to any server with static hosting but be sure to replace those two script tags:
 
 ```html
-<script src="../../dist/aframe-1.4.2-custom.min.js"></script>
+<script src="../../dist/aframe-master-custom-r164.min.js"></script>
 <script src="../../dist/gltf-model-plus.min.js"></script>
 ```
 
 by
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@main/dist/aframe-1.4.2-custom.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@main/dist/gltf-model-plus.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.0.0/dist/aframe-master-custom-r164.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.0.0/dist/gltf-model-plus.min.js"></script>
 ```
 
 Depending on your needs, if your experience doesn't require multi-users, you can run it on GitHub Pages for free. For this you need to push the folder content on a public GitHub repository and enable GitHub Pages in the repository settings.
