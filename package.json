@@ -51,7 +51,7 @@
     "webpack-dev-server": "^5.0.2"
   },
   "dependencies": {
-    "three": "^0.164.0",
+    "three": "^0.168.0",
     "lib-hubs": "github:Elettrotecnica/lib-hubs#elettrotecnica"
   }
 }

@@ -12,7 +12,7 @@ This is an alternate implementation of how Hubs imported the scene glb with afra
 ```html
 <head>
   <title>My A-Frame Scene</title>
-  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.0.0/dist/aframe-master-custom-r164.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.0.0/dist/aframe-master-custom-r168.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.0.0/dist/gltf-model-plus.min.js"></script>
   ...
 </head>
@@ -75,14 +75,14 @@ and refresh the page.
 You can deploy the content of the `examples/playground` folder to any server with static hosting but be sure to replace those two script tags:
 
 ```html
-<script src="../../dist/aframe-master-custom-r164.min.js"></script>
+<script src="../../dist/aframe-master-custom-r168.min.js"></script>
 <script src="../../dist/gltf-model-plus.min.js"></script>
 ```
 
 by
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.0.0/dist/aframe-master-custom-r164.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.0.0/dist/aframe-master-custom-r168.min.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.0.0/dist/gltf-model-plus.min.js"></script>
 ```
 

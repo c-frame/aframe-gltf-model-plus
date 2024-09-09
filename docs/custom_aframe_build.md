@@ -9,7 +9,7 @@ I implemented support for "LUTToneMapping" (Blender 'Filmic') tone mapping so th
 see the code in inflators/environment-settings.js
 
 For this to work, you need a custom build of aframe.
-Here is how to create an aframe master (post 1.5.0 release) / three 164 build with the required patch in threejs:
+Here is how to create an aframe master (pre 1.7.0 release) / three 168 build with the required patch in threejs:
 
 ```
 git clone git@github.com:supermedium/three.js.git super-three
@@ -17,7 +17,7 @@ git clone git@github.com:aframevr/aframe.git
 
 cd aframe
 git pull
-git checkout 81caf8970dfe78fc922766bf94c63b3cef30c699 # master post 1.5.0 2024-05-03 09:01 r164
+git checkout 2aca98cbbc5f1f03431ce07f107709baa1718df8 # master pre 1.7.0 2024-09-08 r168
 rm -rf package-lock.json node_modules
 npm install
 
@@ -26,8 +26,8 @@ git remote add hubs git@github.com:MozillaReality/three.js.git
 git remote add vincentfretin git@github.com:vincentfretin/three.js.git
 git fetch origin
 git fetch hubs
-git checkout super-r164 # look at the super-three version in aframe/package.json and adapt the branch accordingly
-git checkout -b super-r164-lut
+git checkout super-168 # look at the super-three version in aframe/package.json and adapt the branch accordingly
+git checkout -b super-168-lut
 
 # https://github.com/mrdoob/three.js/compare/dev...MozillaReality:three.js:hubs-patches-147
 # Note: cherry-pick the commit from the previous branch to avoid conflicts
@@ -39,13 +39,13 @@ git cherry-pick 42dec78a61db57bc7ae0cde025248c39d4a4a9cf
 git cherry-pick 89c223982b5a95dd27d557bf8386c894fa80188d
 # Reflection probes https://github.com/MozillaReality/three.js/commit/2d3039919f26dc74f0444f8970ac122ec146ddf6
 git cherry-pick 2d3039919f26dc74f0444f8970ac122ec146ddf6
-git push --set-upstream vincentfretin super-r163-lut
+git push --set-upstream vincentfretin super-168-lut
 rm -rf node_modules/ package-lock.json
 npm install
 npm run build
 git commit -am"Build dist"
 git push
-cp build/three.* ../aframe/node_modules/super-three/build/
+cp build/three.* ../aframe/node_modules/three/build/
 
 cd ../aframe
 npm run dist
