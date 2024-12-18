@@ -12,7 +12,7 @@ This is an alternate implementation of how Hubs imported the scene glb with afra
 ```html
 <head>
   <title>My A-Frame Scene</title>
-  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@main/dist/aframe-master-custom-r171.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@5a4750b/dist/aframe-master-custom-r171.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.0.0/dist/gltf-model-plus.min.js"></script>
   ...
 </head>
@@ -82,7 +82,7 @@ You can deploy the content of the `examples/playground` folder to any server wit
 by
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@main/dist/aframe-master-custom-r171.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@5a4750b/dist/aframe-master-custom-r171.min.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.0.0/dist/gltf-model-plus.min.js"></script>
 ```
 
