@@ -51,7 +51,8 @@
     "webpack-dev-server": "^5.0.2"
   },
   "dependencies": {
-    "three": "^0.172.0",
-    "lib-hubs": "github:Elettrotecnica/lib-hubs#elettrotecnica"
+    "@mozillareality/easing-functions": "^0.1.1",
+    "lib-hubs": "github:Elettrotecnica/lib-hubs#elettrotecnica",
+    "three": "^0.172.0"
   }
 }
