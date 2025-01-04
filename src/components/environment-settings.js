@@ -18,6 +18,8 @@ AFRAME.registerComponent("environment-settings", {
         "CineonToneMapping",
         "ACESFilmicToneMapping",
         "CustomToneMapping",
+        "AgXToneMapping",
+        "NeutralToneMapping",
         "LUTToneMapping",
       ],
     },
