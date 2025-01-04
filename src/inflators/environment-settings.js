@@ -85,7 +85,16 @@ export function inflateEnvironmentSettings(sceneEl, settings) {
   if (settings.backgroundTexture) {
     // Assume texture is always an equirect for now
     settings.backgroundTexture.mapping = THREE.EquirectangularReflectionMapping;
-    settings.backgroundTexture.flipY = true;
+    // When backgroundTexture is loaded via the aframe component, flipY is true
+    // for hdr and ldr (loaded with TextureLoader that creates an img) and all is okay.
+    // When the texture is loaded from the glb, for hdr and ldr (png/jpg/webp)
+    // textures loaded with ImageBitmapLoader from GLTFLoader,
+    // flipY is false, and we need the threejs patch
+    // https://github.com/Hubs-Foundation/three.js/commit/928eb3cf7030f55eadb44d74ffd16451eda40781
+    // to flip it for ldr, but we don't want to flip it for hdr so we set it to true.
+    if (settings.backgroundTexture.userData.mimeType === "image/vnd.radiance") {
+      settings.backgroundTexture.flipY = true;
+    }
     scene.background = settings.backgroundTexture;
   } else {
     scene.background = new THREE.Color(settings.backgroundColor);
