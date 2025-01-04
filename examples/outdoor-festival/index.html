@@ -18,17 +18,15 @@
     <script>
       // @var url {string} The url as string.
       window.absoluteURLForAsset = (url) => {
-        let newurl = "";
-
         if (!url) return "";
         if (url.startsWith("https://uploads-prod.reticulum.io/files/")) {
-          newurl = url.replace(
+          return url.replace(
             "https://uploads-prod.reticulum.io/files/",
             "https://cdn.jsdelivr.net/gh/c-frame/outdoor-festival@d3e76c8/"
           );
         }
 
-        return newurl;
+        return url;
       };
     </script>
     <script src="../../dist/gltf-model-plus.min.js"></script>

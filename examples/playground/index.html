@@ -20,14 +20,12 @@
     <script>
       // @var url {string} The url as string.
       window.absoluteURLForAsset = (url) => {
-        let newurl = "";
-
         if (!url) return "";
         if (url.startsWith("https://vr.unodo-design.com/assets/")) {
-          newurl = url.replace("https://vr.unodo-design.com/assets/", "./");
+          return url.replace("https://vr.unodo-design.com/assets/", "./");
         }
 
-        return newurl;
+        return url;
       };
     </script>
     <script src="../../dist/gltf-model-plus.min.js"></script>
