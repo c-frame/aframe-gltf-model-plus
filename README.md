@@ -13,7 +13,7 @@ This is an alternate implementation of how Hubs imported the scene glb with afra
 <head>
   <title>My A-Frame Scene</title>
   <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@a41e57d/dist/aframe-master-custom-r172.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.0.0/dist/gltf-model-plus.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.1.0/dist/gltf-model-plus.min.js"></script>
   ...
 </head>
 <body>
@@ -83,7 +83,7 @@ by
 
 ```html
 <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@a41e57d/dist/aframe-master-custom-r172.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.0.0/dist/gltf-model-plus.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.1.0/dist/gltf-model-plus.min.js"></script>
 ```
 
 Depending on your needs, if your experience doesn't require multi-users, you can run it on GitHub Pages for free. For this you need to push the folder content on a public GitHub repository and enable GitHub Pages in the repository settings.
