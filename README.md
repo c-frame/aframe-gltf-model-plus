@@ -9,11 +9,25 @@ This is an alternate implementation of how Hubs imported the scene glb with afra
 
 ## Usage
 
+Some features require [patches in three.js](https://github.com/c-frame/aframe-gltf-model-plus/blob/main/docs/custom_aframe_build.md) to work properly. We're using the aframe ES module with a super-three fork with some HUBS patches in the code below.
+Be sure to load any script that uses global AFRAME or THREE with `type="module"`.
+
 ```html
 <head>
   <title>My A-Frame Scene</title>
-  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@a41e57d/dist/aframe-master-custom-r172.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.1.0/dist/gltf-model-plus.min.js"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "aframe": "https://aframe.io/releases/1.7.0/aframe.module.min.js",
+        "three": "https://cdn.jsdelivr.net/gh/vincentfretin/three.js@super-r173-5-lut/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/gh/vincentfretin/three.js@super-r173-5-lut/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module">
+    import AFRAME from 'aframe';
+  </script>
+  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.1.0/dist/gltf-model-plus.min.js" type="module"></script>
   ...
 </head>
 <body>
@@ -75,15 +89,13 @@ and refresh the page.
 You can deploy the content of the `examples/playground` folder to any server with static hosting but be sure to replace those two script tags:
 
 ```html
-<script src="../../dist/aframe-master-custom-r172.min.js"></script>
-<script src="../../dist/gltf-model-plus.min.js"></script>
+<script src="../../dist/gltf-model-plus.min.js" type="module"></script>
 ```
 
 by
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@a41e57d/dist/aframe-master-custom-r172.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.1.0/dist/gltf-model-plus.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.1.0/dist/gltf-model-plus.min.js" type="module"></script>
 ```
 
 Depending on your needs, if your experience doesn't require multi-users, you can run it on GitHub Pages for free. For this you need to push the folder content on a public GitHub repository and enable GitHub Pages in the repository settings.
@@ -152,16 +164,14 @@ Legend:
 
 ### Scene
 
-Some features require a [custom aframe build](https://github.com/c-frame/aframe-gltf-model-plus/blob/main/docs/custom_aframe_build.md).
-
 - [x] Navigation Mesh (aframe-extras nav-mesh component is set on it for aframe-extras nav-agent, and also a class navmesh that can be used with simple-navmesh-constraint)
 - [?] Scene Preview Camera
 - [x] Video Texture Target (set on a material associated to a plane on an avatar or in the scene)
 - [?] Skybox
-- [x] Environment Settings (from Scene icon)
-  - [x] toneMapping with LUTToneMapping support (require custom aframe build) & toneMappingExposure
+- [x] Environment Settings (from Scene icon) (require three.js patch for non hdr background texture loaded from glb)
+  - [x] toneMapping with LUTToneMapping support (require three.js patch) & toneMappingExposure
 - [ ] Fog (from Scene icon)
-- [x] Support of MOZ_lightmap (Node in Shading tab)
-- [x] Reflection Probe (require custom aframe build)
+- [x] Support of MOZ_lightmap (Node in Shading tab) (require three.js patch)
+- [x] Reflection Probe (require three.js patch)
 
 For comparison of this repository with Hubs code, see [mapping to aframe components in Hubs's gltf-component-mappings.js](https://github.com/mozilla/hubs/blob/f1213d3e8b8a21960f49d1e7f0504825f59ceef8/src/gltf-component-mappings.js).
