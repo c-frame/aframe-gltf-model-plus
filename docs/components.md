@@ -112,3 +112,34 @@ Example of opening a link:
   open-link="href:https://aframe.io"
 ></a-plane>
 ```
+
+## media-image
+
+Load an image, this creates a plane geometry and adjust its width to keep the
+image aspect ratio.
+
+```html
+<a-entity
+  position="0 1.6 -3"
+  scale="2 2 2"
+  rotation="0 20 0"
+  media-image="src: ./rainbow.jpg"
+></a-entity>
+```
+
+For a 360 image:
+
+```html
+<a-entity
+  position="0 1.6 0"
+  media-image="projection: 360-equirectangular; src: ./360.jpg"
+></a-entity>
+```
+
+If you're using a ktx2 image, be sure to set `basisTranscoderPath`:
+
+```html
+<a-scene
+  gltf-model="basisTranscoderPath:https://cdn.jsdelivr.net/npm/three@0.173.0/examples/jsm/libs/basis/">
+```
+
