@@ -149,7 +149,7 @@ Legend:
 - [?] Audio Source
 - [?] Audio Target
 - [?] Audio Zone
-- [ ] Image
+- [x] Image (supports gif, jpg, png, webp, avif and ktx2, animated gif not implemented)
 - [ ] Model
 - [ ] PDF
 - [ ] Video
