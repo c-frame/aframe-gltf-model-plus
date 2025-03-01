@@ -1,7 +1,7 @@
 /* global AFRAME, THREE */
 import errorImageSrc from "../assets/media-error.png";
 
-function scaleToAspectRatio(el, ratio) {
+export function scaleToAspectRatio(el, ratio) {
   const width = Math.min(1.0, 1.0 / ratio);
   const height = Math.min(1.0, ratio);
   el.object3DMap.mesh.scale.set(width, height, 1);
@@ -9,7 +9,7 @@ function scaleToAspectRatio(el, ratio) {
 }
 
 let errorTexture;
-function getErrorTexture() {
+export function getErrorTexture() {
   if (errorTexture) {
     return errorTexture;
   }
@@ -26,8 +26,8 @@ export const mediaImageComponent = AFRAME.registerComponent("media-image", {
   schema: {
     src: { type: "string" },
     projection: { type: "string", default: "flat", oneOf: ["flat", "360-equirectangular"] },
-    alphaMode: { type: "string", default: "" },
-    alphaCutoff: { type: "number" },
+    alphaMode: { type: "string", default: "blend", oneOf: ["opaque", "blend", "mask"] },
+    alphaCutoff: { type: "number", default: 0.5 },
   },
 
   update(oldData) {
@@ -60,6 +60,8 @@ export const mediaImageComponent = AFRAME.registerComponent("media-image", {
     this.el.emit("image-loading");
 
     if (this.mesh && this.mesh.material.map && src !== oldData.src) {
+      this.mesh.material.map.dispose();
+      this.mesh.material.map.source.data = null;
       this.mesh.material.map = null;
       this.mesh.material.needsUpdate = true;
     }
@@ -94,7 +96,7 @@ export const mediaImageComponent = AFRAME.registerComponent("media-image", {
       if (imageNotFound) {
         this.mesh.material.transparent = true;
       } else {
-        // if transparency setting isn't explicitly defined, default to on for all gifs, and basis textures with alpha
+        // if transparency setting isn't explicitly defined, default to on for all gifs, and ktx2 textures with alpha
         switch (this.data.alphaMode) {
           case "opaque":
             this.mesh.material.transparent = false;
@@ -124,10 +126,13 @@ export const mediaImageComponent = AFRAME.registerComponent("media-image", {
 
   remove() {
     if (this.mesh) {
-      this.mesh.material.map = null;
+      this.mesh.material.map.dispose();
+      this.mesh.material.map.source.data = null;
       this.mesh.material.dispose();
       this.mesh.geometry.dispose();
       this.el.removeObject3D("mesh");
+      this.mesh.el = null;
+      this.mesh = null;
     }
   },
 });

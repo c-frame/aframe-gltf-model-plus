@@ -143,3 +143,37 @@ If you're using a ktx2 image, be sure to set `basisTranscoderPath`:
   gltf-model="basisTranscoderPath:https://cdn.jsdelivr.net/npm/three@0.173.0/examples/jsm/libs/basis/">
 ```
 
+## media-video
+
+Load a video, autoplay muted without controls by default:
+
+```html
+<a-entity
+  position="0 1.6 -3"
+  scale="2 2 2"
+  rotation="0 20 0"
+  media-video="src: ./video.mp4"
+></a-entity>
+```
+
+If you want a video with sound, you need to set autoplay to false and controls to
+true. Currently controls true only add the clickable class to the entity so that you can
+play or pause the video, the sound is not spatial.
+
+```html
+<a-entity
+  position="0 1.6 -3"
+  scale="2 2 2"
+  rotation="0 20 0"
+  media-video="src: ./video.mp4; autoPlay: false; controls: true"
+></a-entity>
+```
+
+For a 360 video:
+
+```html
+<a-entity
+  position="0 1.6 0"
+  media-image="projection: 360-equirectangular; src: ./video.mp4"
+></a-entity>
+```

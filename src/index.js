@@ -4,6 +4,7 @@ import "./components/open-link";
 import "./components/gltf-model-plus";
 import "./components/media-frame";
 import "./components/media-image";
+import "./components/media-video";
 import "./components/particle-emitter";
 import "./components/reflection-probe";
 import "./components/simple-water";
