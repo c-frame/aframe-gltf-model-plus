@@ -174,6 +174,6 @@ For a 360 video:
 ```html
 <a-entity
   position="0 1.6 0"
-  media-image="projection: 360-equirectangular; src: ./video.mp4"
+  media-video="projection: 360-equirectangular; src: ./video.mp4"
 ></a-entity>
 ```
