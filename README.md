@@ -152,7 +152,7 @@ Legend:
 - [x] Image (supports gif, jpg, png, webp, avif and ktx2, animated gif not implemented)
 - [ ] Model
 - [ ] PDF
-- [ ] Video
+- [x] Video (spatial sound not implemented)
 
 ### Object
 
