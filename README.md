@@ -28,18 +28,27 @@ Be sure to load any script that uses global AFRAME or THREE with `type="module"`
     import AFRAME from 'aframe';
   </script>
   <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.1.0/dist/gltf-model-plus.min.js" type="module"></script>
-  ...
+  <script>
+    window.absoluteURLForAsset = (url) => {
+      if (!url) return "";
+
+      if (url.startsWith("https://uploads-prod.reticulum.io/files/")) {
+        return url.replace("https://uploads-prod.reticulum.io/files/", "./files/");
+      }
+
+      return url;
+    }
+  </script>
 </head>
 <body>
   <a-scene>
     <a-assets timeout="30000">
-      <a-asset-item
-        id="sceneGLB"
-        src="https://cdn.jsdelivr.net/gh/c-frame/outdoor-festival@e9311cf/Outdoor_Festival.glb"
-      ></a-asset-item>
+      <a-asset-item id="sceneGLB" src="./scene.glb"></a-asset-item>
+      <!--<a-asset-item id="objectsGLB" src="./objects.gltf"></a-asset-item>-->
+      <!-- put the files in a files directory next to objects.gltf and uncomment the second gltf-model-plus below -->
     </a-assets>
     <a-entity class="environment-settings" gltf-model-plus="#sceneGLB"></a-entity>
-    ...
+    <!--<a-entity gltf-model-plus="#objectsGLB"></a-entity>-->
   </a-scene>
 </body>
 ```

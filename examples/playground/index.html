@@ -35,6 +35,10 @@
           return url.replace("https://vr.unodo-design.com/assets/", "./");
         }
 
+        if (url.startsWith("https://uploads-prod.reticulum.io/files/")) {
+          return url.replace("https://uploads-prod.reticulum.io/files/", "./files/");
+        }
+
         return url;
       };
     </script>
@@ -172,6 +176,8 @@
       -->
       <a-assets timeout="30000">
         <a-asset-item id="sceneGLB" src="./hubs_components_example_006.glb"></a-asset-item>
+        <!--<a-asset-item id="objectsGLB" src="./objects.gltf"></a-asset-item>-->
+        <!-- put the files in a files directory next to objects.gltf and uncomment the second gltf-model-plus below -->
       </a-assets>
       <a-entity
         id="rig"
@@ -186,6 +192,7 @@
       </a-entity>
 
       <a-entity class="environment-settings" gltf-model-plus="#sceneGLB"></a-entity>
+      <!--<a-entity gltf-model-plus="#objectsGLB"></a-entity>-->
 
       <a-entity light="type: point; color: #f4f4f4; intensity: 0.4; distance: 0" position="0 2 0"></a-entity>
 
