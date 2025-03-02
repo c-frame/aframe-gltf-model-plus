@@ -37,7 +37,6 @@ export const mediaImageComponent = AFRAME.registerComponent("media-video", {
 
     if (this.mesh && this.mesh.material.map && src !== oldData.src) {
       this.mesh.material.map.dispose();
-      this.mesh.material.map.source.data = null;
       this.mesh.material.map = null;
       this.mesh.material.needsUpdate = true;
     }
@@ -86,11 +85,15 @@ export const mediaImageComponent = AFRAME.registerComponent("media-video", {
       this.mesh.material.needsUpdate = true;
 
       if (projection === "flat" && !videoNotFound) {
-        videoEl.addEventListener(
-          "loadedmetadata",
+        const loadedmetadataListener = () => {
+          ratio = videoEl.videoHeight / videoEl.videoWidth;
+          scaleToAspectRatio(this.el, ratio);
+        };
+        videoEl.addEventListener("loadedmetadata", loadedmetadataListener);
+        texture.addEventListener(
+          "dispose",
           () => {
-            ratio = videoEl.videoHeight / videoEl.videoWidth;
-            scaleToAspectRatio(this.el, ratio);
+            videoEl.removeEventListener("loadedmetadata", loadedmetadataListener);
           },
           { once: true }
         );
@@ -116,7 +119,6 @@ export const mediaImageComponent = AFRAME.registerComponent("media-video", {
   remove() {
     if (this.mesh) {
       this.mesh.material.map.dispose();
-      this.mesh.material.map.source.data = null;
       this.mesh.material.dispose();
       this.mesh.geometry.dispose();
       this.el.removeObject3D("mesh");

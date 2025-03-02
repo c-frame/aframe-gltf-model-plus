@@ -61,7 +61,6 @@ export const mediaImageComponent = AFRAME.registerComponent("media-image", {
 
     if (this.mesh && this.mesh.material.map && src !== oldData.src) {
       this.mesh.material.map.dispose();
-      this.mesh.material.map.source.data = null;
       this.mesh.material.map = null;
       this.mesh.material.needsUpdate = true;
     }
@@ -127,7 +126,6 @@ export const mediaImageComponent = AFRAME.registerComponent("media-image", {
   remove() {
     if (this.mesh) {
       this.mesh.material.map.dispose();
-      this.mesh.material.map.source.data = null;
       this.mesh.material.dispose();
       this.mesh.geometry.dispose();
       this.el.removeObject3D("mesh");
