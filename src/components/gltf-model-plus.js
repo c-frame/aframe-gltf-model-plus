@@ -278,8 +278,10 @@ export const gltfModelPlus = {
               node.reflectionProbeMode = "static";
             }
 
-            if (node.userData.gltfExtensions && node.userData.gltfExtensions.MOZ_hubs_components) {
-              const hubsComponents = node.userData.gltfExtensions.MOZ_hubs_components;
+            // In objects.gltf, it's HUBS_components
+            const hubsComponents =
+              node.userData.gltfExtensions?.MOZ_hubs_components ?? node.userData.gltfExtensions?.HUBS_components;
+            if (hubsComponents) {
               const srcForLogging = src.startsWith("data:") ? "data:application/octet-stream;base64,..." : src;
               console.log(srcForLogging, hubsComponents, node.name);
               Object.entries(hubsComponents).forEach(([componentName, componentProps]) => {
@@ -352,7 +354,9 @@ export const gltfModelPlus = {
                       }
                     });
                   } else {
-                    console.warn(`Unknown Hubs component '${componentName}'`);
+                    if (componentName !== "pinnable") {
+                      console.warn(`Unknown Hubs component '${componentName}'`);
+                    }
                   }
                 }
               });
