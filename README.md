@@ -10,7 +10,7 @@ This is an alternate implementation of how Hubs imported the scene glb with afra
 ## Usage
 
 Some features require [patches in three.js](https://github.com/c-frame/aframe-gltf-model-plus/blob/main/docs/custom_aframe_build.md) to work properly. We're using the aframe ES module with a super-three fork with some HUBS patches in the code below.
-Be sure to load any script that uses global AFRAME or THREE with `type="module"`.
+Be sure to load any script that uses global AFRAME or THREE with `defer`.
 
 ```html
 <head>
@@ -27,7 +27,7 @@ Be sure to load any script that uses global AFRAME or THREE with `type="module"`
   <script type="module">
     import AFRAME from 'aframe';
   </script>
-  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.2.0/dist/gltf-model-plus.min.js" type="module"></script>
+  <script defer src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.2.0/dist/gltf-model-plus.min.js"></script>
   <script>
     window.absoluteURLForAsset = (url) => {
       if (!url) return "";
@@ -98,13 +98,13 @@ and refresh the page.
 You can deploy the content of the `examples/playground` folder to any server with static hosting but be sure to replace those two script tags:
 
 ```html
-<script src="../../dist/gltf-model-plus.min.js" type="module"></script>
+<script defer src="../../dist/gltf-model-plus.min.js"></script>
 ```
 
 by
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.2.0/dist/gltf-model-plus.min.js" type="module"></script>
+<script defer src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.2.0/dist/gltf-model-plus.min.js"></script>
 ```
 
 Depending on your needs, if your experience doesn't require multi-users, you can run it on GitHub Pages for free. For this you need to push the folder content on a public GitHub repository and enable GitHub Pages in the repository settings.
