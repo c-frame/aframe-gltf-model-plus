@@ -27,7 +27,7 @@ Be sure to load any script that uses global AFRAME or THREE with `defer`.
   <script type="module">
     import AFRAME from 'aframe';
   </script>
-  <script defer src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.2.0/dist/gltf-model-plus.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.2.1/dist/gltf-model-plus.min.js"></script>
   <script>
     window.absoluteURLForAsset = (url) => {
       if (!url) return "";
@@ -104,7 +104,7 @@ You can deploy the content of the `examples/playground` folder to any server wit
 by
 
 ```html
-<script defer src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.2.0/dist/gltf-model-plus.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.2.1/dist/gltf-model-plus.min.js"></script>
 ```
 
 Depending on your needs, if your experience doesn't require multi-users, you can run it on GitHub Pages for free. For this you need to push the folder content on a public GitHub repository and enable GitHub Pages in the repository settings.

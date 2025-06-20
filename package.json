@@ -1,6 +1,6 @@
 {
   "name": "@c-frame/aframe-gltf-model-plus",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "gltf-model-plus component to load glb file with hubs extensions.",
   "main": "dist/gltf-model-plus.min.js",
   "module": "index.js",
