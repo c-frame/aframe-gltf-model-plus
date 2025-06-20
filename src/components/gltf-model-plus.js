@@ -264,6 +264,9 @@ export const gltfModelPlus = {
       self.loader.load(
         src,
         function gltfLoaded(gltfModel) {
+          if (src !== self.data) {
+            return;
+          }
           el.emit("model-downloaded");
           self.model = gltfModel.scene || gltfModel.scenes[0];
           self.model.animations = gltfModel.animations;
