@@ -2,8 +2,29 @@
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 import { gltfInflators } from "../inflators";
 import { absoluteURLForAsset } from "../inflators/utils";
+import { defaultEnvironmentSettings } from "../inflators/environment-settings";
 
 const HDR_FILE_RE = /\.hdr$/;
+
+async function loadTexture(src) {
+  const url = absoluteURLForAsset(src);
+  const isHDR = HDR_FILE_RE.test(url);
+  const loader = isHDR ? new RGBELoader().setDataType(THREE.HalfFloatType) : new THREE.TextureLoader();
+  loader.setWithCredentials(false);
+  const texture = await new Promise((resolve, reject) => loader.load(url, resolve, undefined, reject));
+  if (texture.minFilter === THREE.NearestMipmapNearestFilter || texture.minFilter === THREE.NearestMipmapLinearFilter) {
+    texture.minFilter = THREE.NearestFilter;
+  } else if (
+    texture.minFilter === THREE.LinearMipmapNearestFilter ||
+    texture.minFilter === THREE.LinearMipmapLinearFilter
+  ) {
+    texture.minFilter = THREE.LinearFilter;
+  }
+  if (!isHDR) {
+    texture.colorSpace = THREE.SRGBColorSpace;
+  }
+  return texture;
+}
 
 // same defaults as the defaultEnvironmentSettings function
 AFRAME.registerComponent("environment-settings", {
@@ -28,7 +49,7 @@ AFRAME.registerComponent("environment-settings", {
       default: 1,
     },
     backgroundTexture: {
-      type: "string",
+      type: "map",
       default: "",
     },
     backgroundColor: {
@@ -36,84 +57,78 @@ AFRAME.registerComponent("environment-settings", {
       default: "skyblue",
     },
     envMapTexture: {
-      type: "string",
+      type: "map",
       default: "",
     },
   },
   init() {
+    this._backgroundTexture = null;
+    this._envMapTexture = null;
+  },
+  update(oldData) {
+    const backgroundTextureChanged = this.data.backgroundTexture !== oldData.backgroundTexture;
+    const envMapTextureChanged = this.data.envMapTexture !== oldData.envMapTexture;
+
+    if (backgroundTextureChanged) {
+      if (this._backgroundTexture) {
+        this._backgroundTexture.dispose();
+        this._backgroundTexture = null;
+      }
+    }
+    if (envMapTextureChanged) {
+      if (this._envMapTexture) {
+        this._envMapTexture.dispose();
+        this._envMapTexture = null;
+      }
+    }
+
+    const backgroundTexture = this.data.backgroundTexture;
+    const envMapTexture = this.data.envMapTexture;
+
     (async () => {
-      let backgroundTexture = null;
-      if (this.data.backgroundTexture) {
-        const backgroundTextureUrl = absoluteURLForAsset(this.data.backgroundTexture);
-        const isHDR = HDR_FILE_RE.test(backgroundTextureUrl);
-        let loader;
-        if (isHDR) {
-          loader = new RGBELoader().setDataType(THREE.HalfFloatType);
+      const [newBackgroundTexture, newEnvMapTexture] = await Promise.all([
+        backgroundTextureChanged && backgroundTexture ? loadTexture(backgroundTexture) : null,
+        envMapTextureChanged && envMapTexture ? loadTexture(envMapTexture) : null,
+      ]);
+      if (!this.data) return;
+
+      let anyStale = false;
+      if (backgroundTextureChanged) {
+        if (backgroundTexture !== this.data.backgroundTexture) {
+          if (newBackgroundTexture) newBackgroundTexture.dispose();
+          anyStale = true;
         } else {
-          loader = new THREE.TextureLoader();
-        }
-
-        loader.setWithCredentials(false);
-        backgroundTexture = await new Promise((resolve, reject) =>
-          loader.load(backgroundTextureUrl, resolve, undefined, reject)
-        );
-        if (
-          backgroundTexture.minFilter === THREE.NearestMipmapNearestFilter ||
-          backgroundTexture.minFilter === THREE.NearestMipmapLinearFilter
-        ) {
-          backgroundTexture.minFilter = THREE.NearestFilter;
-        } else if (
-          backgroundTexture.minFilter === THREE.LinearMipmapNearestFilter ||
-          backgroundTexture.minFilter === THREE.LinearMipmapLinearFilter
-        ) {
-          backgroundTexture.minFilter = THREE.LinearFilter;
-        }
-
-        if (!isHDR) {
-          backgroundTexture.colorSpace = THREE.SRGBColorSpace;
+          this._backgroundTexture = newBackgroundTexture;
         }
       }
-
-      let envMapTexture = null;
-      if (this.data.envMapTexture) {
-        const envMapTextureUrl = absoluteURLForAsset(this.data.envMapTexture);
-        const isHDR = HDR_FILE_RE.test(envMapTextureUrl);
-        let loader;
-        if (isHDR) {
-          loader = new RGBELoader().setDataType(THREE.HalfFloatType);
+      if (envMapTextureChanged) {
+        if (envMapTexture !== this.data.envMapTexture) {
+          if (newEnvMapTexture) newEnvMapTexture.dispose();
+          anyStale = true;
         } else {
-          loader = new THREE.TextureLoader();
-        }
-
-        loader.setWithCredentials(false);
-        envMapTexture = await new Promise((resolve, reject) =>
-          loader.load(envMapTextureUrl, resolve, undefined, reject)
-        );
-        if (
-          envMapTexture.minFilter === THREE.NearestMipmapNearestFilter ||
-          envMapTexture.minFilter === THREE.NearestMipmapLinearFilter
-        ) {
-          envMapTexture.minFilter = THREE.NearestFilter;
-        } else if (
-          envMapTexture.minFilter === THREE.LinearMipmapNearestFilter ||
-          envMapTexture.minFilter === THREE.LinearMipmapLinearFilter
-        ) {
-          envMapTexture.minFilter = THREE.LinearFilter;
-        }
-
-        if (!isHDR) {
-          envMapTexture.colorSpace = THREE.SRGBColorSpace;
+          this._envMapTexture = newEnvMapTexture;
         }
       }
+      if (anyStale) return;
 
-      const settings = {
+      gltfInflators.get("environment-settings")(this.el.sceneEl, {
         toneMapping: this.data.toneMapping,
         toneMappingExposure: this.data.toneMappingExposure,
-        backgroundTexture: backgroundTexture,
+        backgroundTexture: this._backgroundTexture,
         backgroundColor: this.data.backgroundColor,
-        envMapTexture: envMapTexture,
-      };
-      gltfInflators.get("environment-settings")(this.el.sceneEl, settings);
+        envMapTexture: this._envMapTexture,
+      });
     })();
+  },
+  remove() {
+    if (this._backgroundTexture) {
+      this._backgroundTexture.dispose();
+      this._backgroundTexture = null;
+    }
+    if (this._envMapTexture) {
+      this._envMapTexture.dispose();
+      this._envMapTexture = null;
+    }
+    gltfInflators.get("environment-settings")(this.el.sceneEl, defaultEnvironmentSettings);
   },
 });
