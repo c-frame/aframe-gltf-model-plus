@@ -74,13 +74,13 @@ AFRAME.registerComponent("video-texture-target", {
       this.el.setObject3D("screen", this.mesh);
     }
 
-    if (!this.video) {
-      this.setupVideo();
-    }
-
     if (newStream !== this.stream) {
       if (this.stream) {
         this._clearMediaStream();
+      }
+
+      if (!this.video) {
+        this.setupVideo();
       }
 
       if (newStream) {
@@ -116,7 +116,9 @@ AFRAME.registerComponent("video-texture-target", {
         video.pause();
         video.srcObject = null;
         video.load();
-        this.el.sceneEl.emit("video-removed", { video: this.video, el: this.el });
+        video.remove();
+        this.video = null;
+        this.el.sceneEl.emit("video-removed", { video: video, el: this.el });
       }
 
       this.videoTexture.dispose();
