@@ -1,5 +1,5 @@
 /* global AFRAME, THREE */
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 import { defaultEnvironmentSettings } from "../inflators/environment-settings";
 import { gltfInflators } from "../inflators";
 
@@ -230,7 +230,7 @@ export const gltfModelPlus = {
     this.loader
       .register((parser) => new GLTFHubsComponentsExtension(parser))
       .register((parser) => new GLTFHubsLightMapExtension(parser))
-      .register((parser) => new GLTFMozTextureRGBE(parser, new RGBELoader().setDataType(THREE.HalfFloatType)));
+      .register((parser) => new GLTFMozTextureRGBE(parser, new HDRLoader().setDataType(THREE.HalfFloatType)));
     if (dracoLoader) {
       this.loader.setDRACOLoader(dracoLoader);
     }
