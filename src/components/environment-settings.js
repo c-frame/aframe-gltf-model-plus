@@ -1,5 +1,5 @@
 /* global AFRAME, THREE */
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 import { gltfInflators } from "../inflators";
 import { absoluteURLForAsset } from "../inflators/utils";
 import { defaultEnvironmentSettings } from "../inflators/environment-settings";
@@ -9,7 +9,7 @@ const HDR_FILE_RE = /\.hdr$/;
 async function loadTexture(src) {
   const url = absoluteURLForAsset(src);
   const isHDR = HDR_FILE_RE.test(url);
-  const loader = isHDR ? new RGBELoader().setDataType(THREE.HalfFloatType) : new THREE.TextureLoader();
+  const loader = isHDR ? new HDRLoader().setDataType(THREE.HalfFloatType) : new THREE.TextureLoader();
   loader.setWithCredentials(false);
   const texture = await new Promise((resolve, reject) => loader.load(url, resolve, undefined, reject));
   if (texture.minFilter === THREE.NearestMipmapNearestFilter || texture.minFilter === THREE.NearestMipmapLinearFilter) {
