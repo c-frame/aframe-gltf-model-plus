@@ -18,16 +18,16 @@ Be sure to load any script that uses global AFRAME or THREE with `defer`.
   <script type="importmap">
     {
       "imports": {
-        "aframe": "https://aframe.io/releases/1.7.0/aframe.module.min.js",
-        "three": "https://cdn.jsdelivr.net/gh/vincentfretin/three.js@super-r173-5-lut/build/three.module.js",
-        "three/addons/": "https://cdn.jsdelivr.net/gh/vincentfretin/three.js@super-r173-5-lut/examples/jsm/"
+        "aframe": "https://aframe.io/releases/1.8.0/aframe.module.min.js",
+        "three": "https://cdn.jsdelivr.net/gh/vincentfretin/three.js@super-r184-lut/build/three.module.min.js",
+        "three/addons/": "https://cdn.jsdelivr.net/gh/vincentfretin/three.js@super-r184-lut/examples/jsm/"
       }
     }
   </script>
   <script type="module">
     import AFRAME from 'aframe';
   </script>
-  <script defer src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.3.0/dist/gltf-model-plus.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.4.0/dist/gltf-model-plus.min.js"></script>
   <script>
     window.absoluteURLForAsset = (url) => {
       if (!url) return "";
@@ -104,7 +104,7 @@ You can deploy the content of the `examples/playground` folder to any server wit
 by
 
 ```html
-<script defer src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.3.0/dist/gltf-model-plus.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/gh/c-frame/aframe-gltf-model-plus@1.4.0/dist/gltf-model-plus.min.js"></script>
 ```
 
 Depending on your needs, if your experience doesn't require multi-users, you can run it on GitHub Pages for free. For this you need to push the folder content on a public GitHub repository and enable GitHub Pages in the repository settings.
