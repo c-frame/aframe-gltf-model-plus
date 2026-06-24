@@ -7,16 +7,16 @@
     <script type="importmap">
       {
         "imports": {
-          "aframe": "https://aframe.io/releases/1.7.0/aframe.module.min.js",
-          "three": "https://cdn.jsdelivr.net/gh/vincentfretin/three.js@super-r173-5-lut/build/three.module.js",
-          "three/addons/": "https://cdn.jsdelivr.net/gh/vincentfretin/three.js@super-r173-5-lut/examples/jsm/"
+          "aframe": "https://aframe.io/releases/1.8.0/aframe.module.min.js",
+          "three": "https://cdn.jsdelivr.net/gh/vincentfretin/three.js@super-r184-lut/build/three.module.min.js",
+          "three/addons/": "https://cdn.jsdelivr.net/gh/vincentfretin/three.js@super-r184-lut/examples/jsm/"
         }
       }
     </script>
     <script type="module">
       import AFRAME from 'aframe';
     </script>
-    <script defer src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.5.4/dist/aframe-extras.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.7.0/dist/aframe-extras.min.js"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/open-easyrtc@2.1.0/api/easyrtc.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/networked-aframe@^0.14.0/dist/networked-aframe.min.js"></script>
@@ -24,7 +24,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/@fern-solutions/aframe-mirror@1.1.2/dist/mirror.umd.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/gh/c-frame/aframe-cursor-teleport@1.6.0/dist/aframe-cursor-teleport-component.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/gh/AdaRoseCannon/aframe-xr-boilerplate@bca4792/simple-navmesh-constraint.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/aframe-troika-text@0.12.0/dist/aframe-troika-text.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/aframe-troika-text@0.14.0/dist/aframe-troika-text.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/aframe-look-at-component@1.0.0/dist/aframe-look-at-component.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/gh/networked-aframe/naf-valid-avatars@4b116a4/src/player-info.js"></script>
     <script>
@@ -156,7 +156,6 @@
 
     <a-scene
       light="defaultLightsEnabled:false"
-      renderer="physicallyCorrectLights:true;colorManagement:true"
       networked-scene="
         connectOnLoad: false;
         room: hub;
@@ -164,8 +163,8 @@
         adapter: easyrtc;
         audio: true;
     "
-      shadow="type: pcfsoft"
-      gltf-model="meshoptDecoderPath:https://unpkg.com/meshoptimizer@0.19.0/meshopt_decoder.js;basisTranscoderPath:https://cdn.jsdelivr.net/npm/three@0.173.0/examples/jsm/libs/basis/"
+      shadow="type: pcf"
+      gltf-model="meshoptDecoderPath:https://unpkg.com/meshoptimizer@1.1.1/meshopt_decoder.cjs;basisTranscoderPath:https://cdn.jsdelivr.net/npm/three@0.184.0/examples/jsm/libs/basis/"
       raycaster="far: 5; objects: .clickable;"
       cursor="rayOrigin: mouse"
       shortcuts
