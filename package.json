@@ -53,6 +53,6 @@
   "dependencies": {
     "@mozillareality/easing-functions": "^0.1.1",
     "lib-hubs": "github:Elettrotecnica/lib-hubs#elettrotecnica",
-    "three": "^0.172.0"
+    "three": "^0.184.0"
   }
 }
