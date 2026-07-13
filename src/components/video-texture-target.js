@@ -228,6 +228,13 @@ AFRAME.registerComponent("video-texture-target", {
   },
 
   startVideoSharing(evt) {
+    if (evt.detail.el !== this.el) {
+      // share_video_enabled is a scene-level event, it fires on every
+      // video-texture-target instance. Only react if the share targets this
+      // entity, otherwise we would set isVideoSharing and take ownership of
+      // entities used by other participants.
+      return;
+    }
     this.isVideoSharing = true;
     this.mediaSourceUsed = evt.detail.source;
 
