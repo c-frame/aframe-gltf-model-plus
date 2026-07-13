@@ -88,7 +88,14 @@ AFRAME.registerComponent("video-texture-target", {
 
         const playResult = this.video.play();
         if (playResult instanceof Promise) {
-          playResult.catch((e) => NAF.log.error(`Error play video stream`, e));
+          playResult.catch((e) => {
+            // AbortError is expected when the stream changes again before
+            // this video got its first frames, the play() promise is then
+            // interrupted by the pause() in _clearMediaStream.
+            if (e.name !== "AbortError") {
+              NAF.log.error(`Error play video stream`, e);
+            }
+          });
         }
 
         this.videoTexture = new THREE.VideoTexture(this.video);
@@ -163,6 +170,12 @@ AFRAME.registerComponent("video-texture-target", {
       const streamName = parts[2];
 
       const stream = await NAF.connection.adapter.getMediaStream(streamClientId, streamName);
+
+      if (this.data.src !== src) {
+        // src changed while we were waiting for the stream, a newer update
+        // call is handling it, don't overwrite its stream with a stale one.
+        return;
+      }
 
       const mediaStream = stream;
       this._setMediaStream(mediaStream);
